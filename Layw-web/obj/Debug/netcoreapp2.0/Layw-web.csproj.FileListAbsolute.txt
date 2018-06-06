@@ -1,0 +1,11 @@
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.deps.json
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.runtimeconfig.json
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.runtimeconfig.dev.json
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.dll
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.csprojResolveAssemblyReference.cache
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.csproj.CoreCompileInputs.cache
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.AssemblyInfoInputs.cache
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.AssemblyInfo.cs
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.pdb
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.dll
+C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.pdb
