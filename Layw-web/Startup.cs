@@ -26,8 +26,8 @@ namespace FitbitAuth
             {
                 // https://dev.fitbit.com/build/reference/web-api/oauth2/
                 // https://dev.fitbit.com/
-                options.ClientId = "<OAuth 2.0 Client ID>";
-                options.ClientSecret = "<Client Secret>";
+                options.ClientId = "22CT2W";
+                options.ClientSecret = "431a34ca17c79d6bc368f86d5fcc8f73";
 
                 // Importante per avere accesso all'access token.
                 options.SaveTokens = true;

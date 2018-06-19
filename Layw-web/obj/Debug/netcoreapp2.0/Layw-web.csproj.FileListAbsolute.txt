@@ -9,3 +9,14 @@ C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\D
 C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.pdb
 C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.dll
 C:\Users\Alessandro\Desktop\Università\Applicazioni web\Layw-web\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.pdb
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.deps.json
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.runtimeconfig.json
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.runtimeconfig.dev.json
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.dll
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Debug\netcoreapp2.0\Layw-web.pdb
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.csprojResolveAssemblyReference.cache
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.csproj.CoreCompileInputs.cache
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.AssemblyInfoInputs.cache
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.AssemblyInfo.cs
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.dll
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Debug\netcoreapp2.0\Layw-web.pdb

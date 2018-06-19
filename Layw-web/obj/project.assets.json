@@ -13309,23 +13309,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Alessandro\\.nuget\\packages\\": {},
+    "C:\\Users\\lucap\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Alessandro\\Desktop\\Università\\Applicazioni web\\Layw-web\\Layw-web\\Layw-web.csproj",
+      "projectUniqueName": "C:\\Users\\lucap\\Desktop\\layw-web\\layw-appwebvc-2018\\Layw-web\\Layw-web.csproj",
       "projectName": "Layw-web",
-      "projectPath": "C:\\Users\\Alessandro\\Desktop\\Università\\Applicazioni web\\Layw-web\\Layw-web\\Layw-web.csproj",
-      "packagesPath": "C:\\Users\\Alessandro\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Alessandro\\Desktop\\Università\\Applicazioni web\\Layw-web\\Layw-web\\obj\\",
+      "projectPath": "C:\\Users\\lucap\\Desktop\\layw-web\\layw-appwebvc-2018\\Layw-web\\Layw-web.csproj",
+      "packagesPath": "C:\\Users\\lucap\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lucap\\Desktop\\layw-web\\layw-appwebvc-2018\\Layw-web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Alessandro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lucap\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
