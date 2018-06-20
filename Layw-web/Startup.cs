@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 
 namespace FitbitAuth
@@ -41,10 +39,10 @@ namespace FitbitAuth
 
             .AddFitbit(options =>
             {
-                var configurationFitbit = Configuration.GetSection("fitbit-codes").Get<FitbitCodes>();
-
                 // https://dev.fitbit.com/build/reference/web-api/oauth2/
                 // https://dev.fitbit.com/
+                var configurationFitbit = Configuration.GetSection("fitbit-codes").Get<FitbitCodes>();
+
                 options.ClientId = configurationFitbit.ClientId;
                 options.ClientSecret = configurationFitbit.ClientSecret;
 
@@ -58,17 +56,11 @@ namespace FitbitAuth
                         // Qui è possibile salvare il token.
                         var accessToken = context.AccessToken;
 
-                        var values = new Dictionary<string, string>
-                        {
-                           { "accessToken", accessToken },
-                        };
-
                         var configurationIP = Configuration.GetSection("homestation-ip").Get<HomestationIP>();
-                        var content = new FormUrlEncodedContent(values);
-                        var response = await client.PostAsync(configurationIP.getTotalUrl(), content);
-                        var responseString = await response.Content.ReadAsStringAsync();
-
-                        Console.WriteLine(responseString);
+                        
+                        var content = new StringContent("{ \"accessToken\" : " + accessToken + "}");
+                        var response =  await client.PostAsync(configurationIP.getTotalUrl(), content);
+                        var responseString = await response.Content.ReadAsStringAsync();    
                     }
                 };
             });
@@ -89,8 +81,9 @@ namespace FitbitAuth
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("oops something went wrong...");
+                await context.Response.WriteAsync("Oops something went wrong...");
             });
         }
+        
     }
 }
