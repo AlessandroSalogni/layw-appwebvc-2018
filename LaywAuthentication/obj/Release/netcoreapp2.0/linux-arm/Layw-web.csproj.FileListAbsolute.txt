@@ -1,0 +1,14 @@
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\libhostpolicy.so
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\libhostfxr.so
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\Layw-web
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\Layw-web.deps.json
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\Layw-web.runtimeconfig.json
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\Layw-web.runtimeconfig.dev.json
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\Layw-web.dll
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\bin\Release\netcoreapp2.0\linux-arm\Layw-web.pdb
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Release\netcoreapp2.0\linux-arm\Layw-web.csproj.CoreCompileInputs.cache
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Release\netcoreapp2.0\linux-arm\Layw-web.AssemblyInfoInputs.cache
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Release\netcoreapp2.0\linux-arm\Layw-web.AssemblyInfo.cs
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Release\netcoreapp2.0\linux-arm\Layw-web.dll
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Release\netcoreapp2.0\linux-arm\Layw-web.pdb
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\Layw-web\obj\Release\netcoreapp2.0\linux-arm\Layw-web.csprojAssemblyReference.cache
