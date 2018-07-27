@@ -28,16 +28,14 @@ C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\bin\Debug\
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\bin\Debug\netcoreapp2.0\LaywAuthentication.runtimeconfig.dev.json
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\bin\Debug\netcoreapp2.0\LaywAuthentication.dll
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\bin\Debug\netcoreapp2.0\LaywAuthentication.pdb
-C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.csproj.CoreCompileInputs.cache
-C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.AssemblyInfoInputs.cache
-C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.AssemblyInfo.cs
-C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.dll
-C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.pdb
-C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.csprojAssemblyReference.cache
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\bin\Debug\netcoreapp2.0\LaywAuthentication.Views.dll
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\bin\Debug\netcoreapp2.0\LaywAuthentication.Views.pdb
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.csprojAssemblyReference.cache
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.csproj.CoreCompileInputs.cache
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.RazorAssemblyInfo.cache
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.RazorAssemblyInfo.cs
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.AssemblyInfoInputs.cache
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.AssemblyInfo.cs
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.TagHelpers.input.cache
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.TagHelpers.output.cache
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.RazorCoreGenerate.cache
@@ -48,4 +46,6 @@ C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.RazorTargetAssemblyInfo.cache
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.RazorTargetAssemblyInfo.cs
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.Views.pdb
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.dll
+C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.pdb
 C:\Users\lucap\Desktop\layw-web\layw-appwebvc-2018\LaywAuthentication\obj\Debug\netcoreapp2.0\LaywAuthentication.csproj.CopyComplete
