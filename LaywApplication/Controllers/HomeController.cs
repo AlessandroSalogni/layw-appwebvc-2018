@@ -15,7 +15,7 @@ namespace LaywApplication.Controllers
     {
         public IActionResult Index()
         {
-            String jsonResult = Get("http://localhost:4567/api/v1.0/users/1");
+            String jsonResult = Get("http://localhost:4567/api/v1.0/users/2");
             JObject json = JObject.Parse(jsonResult);
             
             Patient p = JsonConvert.DeserializeObject<Patient>(json.GetValue("user").ToString());
@@ -29,13 +29,17 @@ namespace LaywApplication.Controllers
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
+            
+            try
             {
-                return reader.ReadToEnd();
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    using (Stream stream = response.GetResponseStream())
+                        using (StreamReader reader = new StreamReader(stream))
+                            return reader.ReadToEnd();
             }
+            catch(WebException e) { }
+
+            return "{}";
         }
     }
 }
