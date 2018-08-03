@@ -1,12 +1,8 @@
 .vs/
 LaywApplication/bin/
 LaywApplication/obj/
-LaywApplication/LaywApplication.csproj
-LaywApplication/LaywApplication.csproj.user
 LaywAuthentication/bin/
 LaywAuthentication/obj/
-LaywAuthentication/LaywAuthentication.csproj
-LaywAuthentication/LaywAuthentication.csproj.user
 
 # Ignore Gradle GUI config
 gradle-app.setting
