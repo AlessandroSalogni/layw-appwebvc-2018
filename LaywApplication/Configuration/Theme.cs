@@ -31,7 +31,7 @@ namespace LaywApplication.Configuration
             [Description("sidebar-collapsed")] SidebarCollapsed,
             [Description("sidebar-mini")] SidebarMini,
             [Description("fixed")] Fixed,
-            [Description("layout-top-nav")] LayoutTopNav
+            [Description("layout-top-nav ")] LayoutTopNav
         };
 
         public Skins Skin
