@@ -1,10 +1,10 @@
-LaywApplication/wwwroot
-.vs
-LaywApplication/bin
-LaywApplication/obj
-LaywAuthentication/wwwroot
-LaywAuthentication/bin
-LaywAuthentication/obj
+LaywApplication/wwwroot/
+.vs/
+LaywApplication/bin/
+LaywApplication/obj/
+LaywAuthentication/wwwroot/
+LaywAuthentication/bin/
+LaywAuthentication/obj/
 
 # Ignore Gradle GUI config
 gradle-app.setting
