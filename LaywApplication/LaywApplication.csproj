@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
+    <Authors>Coppeta, Perotti, Salogni</Authors>
+    <Product>LaywApplication</Product>
+    <Company>LAYW</Company>
   </PropertyGroup>
 
   <ItemGroup>
