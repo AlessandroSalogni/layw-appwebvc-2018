@@ -1,4 +1,6 @@
-﻿@model List<Patient>
+﻿@*
+    @model List<Patient>
+*@
 
 <ul class="sidebar-menu" data-widget="tree">
     @*<li class="header">HEADER</li>*@
@@ -13,14 +15,14 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            @{
-                foreach (Patient p in Model)
-                {
-                    <li><a href="#">@p.Name</a></li>
-                }
+            @*@{
+            foreach (Patient p in Model)
+            {
+                <li><a href="#">@p.Name</a></li>
             }
+        }*@
 
         </ul>
-        
+
     </li>
 </ul>

@@ -36,7 +36,7 @@ namespace LaywAuthentication
                 options.LoginPath = "/login";
                 options.LogoutPath = "/signout";
             })
-
+            
             .AddFitbit(options =>
             {
                 // https://dev.fitbit.com/build/reference/web-api/oauth2/
