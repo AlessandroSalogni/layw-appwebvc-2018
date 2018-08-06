@@ -1,38 +1,29 @@
-﻿@*
-    @model List<Patient>
-    @{
-        ViewBag.Title = "Layw";
-        ViewBag.PageHeader = "Index";
-    }
-*@
-@model string
+﻿@model string
 @using Microsoft.AspNetCore.Authentication
 
 <div>
     @if (User?.Identity?.IsAuthenticated ?? false)
     {
         <h1>Welcome, @User.Identity.Name</h1>
-        
-        <p>
-            @foreach (var claim in Context.User.Claims)
-            {
-                <div>@claim.Type: <b>@claim.Value</b></div>
-            }
-        </p>
-
         <a class="btn btn-lg btn-danger" href="/signout?returnUrl=%2F">Sign out</a>
     }
 
     else
     {
-        <h1>Welcome, anonymous</h1>
+        <h1>Welcome. Sign in Look After Your Weight</h1>
         <a class="btn btn-lg btn-success" href="/signin?returnUrl=%2F">Sign in</a>
     }
 </div>
 
+@*
+    @model List<Patient>
+    @{
+        ViewBag.Title = "Layw";
+        ViewBag.PageHeader = "Index";
+    }
+*@
+
 <!--
-
-
 <div id="grid"></div>
 
 <script>

@@ -42,8 +42,9 @@ namespace LaywApplication
 
             .AddGoogle(options =>
              {
-                 options.ClientId = "678601597629-d61b2d2lig6n4mbvqm307dhqohnnvaoc.apps.googleusercontent.com";
-                 options.ClientSecret = "hUWEmxu-EVIsFWErlVmxspHr";
+                 var configurationGoogle = Configuration.GetSection("google-codes").Get<GoogleCodes>();
+                 options.ClientId = configurationGoogle.ClientId;
+                 options.ClientSecret = configurationGoogle.ClientSecret;
              });
 
             services.AddMvc();
@@ -56,8 +57,6 @@ namespace LaywApplication
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
-
             /*
              Shortcut per:
 
@@ -65,6 +64,10 @@ namespace LaywApplication
                 name: "default",
                 template: "{controller=Home}/{action=Index}/{id?}");
              */
+
+            app.UseStaticFiles();
+            app.UseAuthentication();
+            //app.UseMvc();
             app.UseMvcWithDefaultRoute();
 
             app.Run(async (context) =>
