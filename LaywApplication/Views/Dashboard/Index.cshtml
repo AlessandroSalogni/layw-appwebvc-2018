@@ -1,0 +1,43 @@
+﻿@model List<Patient>
+@{
+	ViewBag.Title = "Layw";
+	ViewBag.PageHeader = "Index";
+}
+
+<div id="grid"></div>
+
+<script>
+
+	$(document).ready(function () {
+		var data = @(Json.Serialize(Model));
+
+		$("#grid").kendoGrid({
+			dataSource: {
+				data: data,
+				schema: {
+					model: {
+						fields: {
+							name: { type: "string" },
+							country: { type: "string" },
+							dateOfBirth: { type: "string" },
+							gender: { type: "string" },
+							height: { type: "number" }
+						}
+					}
+				}
+			},
+			scrollable: true,
+			sortable: true,
+			filterable: true,
+			editable: false,
+			columns: [
+				{ field: "name", title: "Name" },
+				{ field: "dateOfBirth", title: "Date of birth" },
+				{ field: "country", title: "Country" },
+				{ field: "gender", title: "Gender" },
+				{ field: "height", title: "Height" }
+			]
+		});
+	})
+
+</script>

@@ -29,7 +29,7 @@ namespace LaywApplication.Controllers
             // Instruct the middleware corresponding to the requested external identity
             // provider to redirect the user agent to its own authorization endpoint.
             // Note: the authenticationScheme parameter must match the value configured in Startup.cs
-            return Challenge(new AuthenticationProperties { RedirectUri = "/" }, provider);
+            return Challenge(new AuthenticationProperties { RedirectUri = "/dashboard" }, provider);
         }
 
         [HttpGet("~/signout"), HttpPost("~/signout")]
