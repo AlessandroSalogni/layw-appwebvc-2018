@@ -11,6 +11,11 @@ namespace LaywApplication.Controllers
     public class HomeController : Controller
     {
         [HttpGet("~/")]
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            if (User?.Identity?.IsAuthenticated ?? false)
+                return Redirect("~/dashboard");
+            return View();
+        }
     }
 }

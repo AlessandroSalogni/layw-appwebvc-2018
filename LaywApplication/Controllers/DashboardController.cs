@@ -15,7 +15,7 @@ namespace LaywApplication.Controllers
         [HttpGet("~/dashboard")]
         public IActionResult Index()
         {
-            string jsonResult = Utils.Get("http://localhost:4567/api/v1.0/users?doctor-id=1");
+            string jsonResult = Utils.Get("http://localhost:4567/api/v1.0/users?doctor-id=rikiper96@gmail.com");
             JObject json = JObject.Parse(jsonResult);
             JArray jsonArray = (JArray)json.GetValue("users");
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Policy;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.APIUtils;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace LaywApplication
 {

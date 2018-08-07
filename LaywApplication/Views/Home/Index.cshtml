@@ -1,17 +1,12 @@
 ﻿@model string
 @using Microsoft.AspNetCore.Authentication
+
 @{ 
-	Layout = "_LoginLayout";
+    Layout = "_LoginLayout";
 }
 
 <div>
-    @if (User?.Identity?.IsAuthenticated ?? false)
-    {
-        <h1>Welcome, @User.Identity.Name</h1>
-        <a class="btn btn-lg btn-danger" href="/signout?returnUrl=%2F">Sign out</a>
-    }
-
-    else
+    @if (User?.Identity?.IsAuthenticated ?? false) { }else
     {
         <h1>Welcome. Sign in Look After Your Weight</h1>
         <a class="btn btn-lg btn-success" href="/signin?returnUrl=%2F">Sign in</a>
