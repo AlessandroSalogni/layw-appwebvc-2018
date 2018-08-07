@@ -5,10 +5,8 @@
     Layout = "_LoginLayout";
 }
 
-<div>
-    @if (User?.Identity?.IsAuthenticated ?? false) { }else
-    {
-        <h1>Welcome. Sign in Look After Your Weight</h1>
-        <a class="btn btn-lg btn-success" href="/signin?returnUrl=%2F">Sign in</a>
-    }
+<div style="text-align:center">
+    @*@if (User?.Identity?.IsAuthenticated ?? false) { } else { }*@
+    <h1>Welcome. Sign in Look After Your Weight</h1>
+    <a class="btn btn-lg btn-info" href="/signin?returnUrl=%2F">Sign in</a>
 </div>
