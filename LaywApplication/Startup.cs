@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
+using LaywApplication.Controllers.APIUtils;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace LaywApplication
 {
@@ -45,6 +49,20 @@ namespace LaywApplication
                  var configurationGoogle = Configuration.GetSection("google-codes").Get<GoogleCodes>();
                  options.ClientId = configurationGoogle.ClientId;
                  options.ClientSecret = configurationGoogle.ClientSecret;
+                 
+                 options.Events = new OAuthEvents
+                 {
+                     OnCreatingTicket = async context =>
+                     {
+                         //todo cercare se c'è un modo migliore per recuperare dati
+                         string email = context.Identity.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+                         string name = context.Identity.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
+
+                         //todo Gestire che il medico esista già con una get che ancora non c'è
+                         string json = "{\"doctor\": {\"name\": \"" + name + "\", \"email\": \"" + email + "\"}}";
+                         Utils.Post("http://localhost:4567/api/v1.0/doctors", json);
+                     }
+                 };
              });
 
             services.AddMvc();
