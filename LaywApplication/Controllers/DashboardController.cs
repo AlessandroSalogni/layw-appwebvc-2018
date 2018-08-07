@@ -14,8 +14,9 @@ namespace LaywApplication.Controllers
     {
         [HttpGet("~/dashboard")]
         public IActionResult Index()
-        {
-            string jsonResult = Utils.Get("http://localhost:4567/api/v1.0/users?doctor-id=rikiper96@gmail.com");
+        { 
+            //Cercare di memorizzare la mail del dottore per utilizzarla ovunque
+            string jsonResult = Utils.Get("http://localhost:4567/api/v1.0/users?doctor-id=" + User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value);
             JObject json = JObject.Parse(jsonResult);
             JArray jsonArray = (JArray)json.GetValue("users");
 

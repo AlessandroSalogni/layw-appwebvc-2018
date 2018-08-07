@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.APIUtils;
+using LaywApplication.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
@@ -53,7 +54,7 @@ namespace LaywApplication
                              //todo cercare se c'è un modo migliore per recuperare dati
                              string email = context.Identity.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
                              string name = context.Identity.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value;
-
+                             
                              //todo Gestire che il medico esista già con una get che ancora non c'è
                              string json = "{\"doctor\": {\"name\": \"" + name + "\", \"email\": \"" + email + "\"}}";
                              Utils.Post("http://localhost:4567/api/v1.0/doctors", json);
