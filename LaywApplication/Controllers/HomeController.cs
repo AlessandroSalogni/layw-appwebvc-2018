@@ -15,7 +15,7 @@ namespace LaywApplication.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
                 return Redirect("~/dashboard");
-            return View();
+            return Redirect("~/signin");
         }
     }
 }
