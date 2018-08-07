@@ -1,22 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @model AuthenticationScheme[]
-@{ 
-    Layout = "_LoginLayout";
+@{
+	Layout = "_LoginLayout";
 }
 
-<div style="text-align:center">
-    <h1>Authentication</h1>
-    <p class="lead">Sign in Look After Your Weight using one of these external providers:</p>
+<div class="container-fluid">
+	<div class="row text-center">
+		<div class="col-md-6 col-md-push-3 card">
+			<h1>Sign in Look After Your Weight</h1>
+			<h4>using one of these external providers:</h4>
 
-    @foreach (var scheme in Model)
-    {
-    <form action="/signin" method="post">
-        <input type="hidden" name="Provider" value="@scheme.Name" />
-        <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+			@foreach (var scheme in Model)
+			{
+				<form action="/signin" method="post">
+					<input type="hidden" name="Provider" value="@scheme.Name" />
+					<input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
 
-        <button class="btn btn-lg btn-social btn-@scheme.DisplayName.ToLower()">
-            <span class="fa fa-@scheme.DisplayName.ToLower()"></span> Sign in-up LAYW using @scheme.DisplayName
-        </button>
-    </form>
-    }
+					<button class="btn btn-lg btn-social btn-@scheme.DisplayName.ToLower()">
+						<span class="fa fa-@scheme.DisplayName.ToLower()"></span> Sign in-up LAYW using @scheme.DisplayName
+					</button>
+				</form>
+			}
+		</div>
+	</div>
 </div>
