@@ -7,9 +7,9 @@
     <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
     <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
     -->
-    <li class="treeview">
+    <li class="treeview active">
         <a href="#">
-            <i class="fa fa-link"></i> <span>Patients</span>
+            <i class="fa fa-heartbeat"></i> <span>Patients</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -18,7 +18,21 @@
             @{
                 foreach (Patient p in Model)
                 {
-                    <li><a href="#">@p.Name</a></li>
+            <li>
+                <a href="#">
+                    @{
+                        if (p.Gender == Gender.MALE)
+                        {
+                            <i class="fa fa-male"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-female"></i>
+                        }
+                    }
+                    @p.Name
+                </a>
+            </li>
                 }
             }
         </ul>
