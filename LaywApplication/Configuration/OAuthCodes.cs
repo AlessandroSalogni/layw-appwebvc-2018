@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Configuration
 {
-    public class GoogleCodes
+    public class OAuthCodes
     {
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
