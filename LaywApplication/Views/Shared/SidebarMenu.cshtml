@@ -1,4 +1,4 @@
-﻿@model List<Patient>
+﻿@model Doctor
 
 
 <ul class="sidebar-menu" data-widget="tree">
@@ -16,7 +16,7 @@
         </a>
         <ul class="treeview-menu">
             @{
-                foreach (Patient p in Model)
+                foreach (Patient p in Model.Patients)
                 {
             <li>
                 <a href="#">
