@@ -16,7 +16,15 @@ namespace LaywApplication.Controllers
         [HttpGet("~/dashboard")]
         public IActionResult Index()
         {
-            Doctor doctor = new Doctor(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value, User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value);
+            //todo SISTEMARE, non molto bello
+            Uri apiRequestUri = new Uri(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri").Value);
+            dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()));
+            Uri image = result.picture ?? result.data.url;
+
+            Doctor doctor = new Doctor(
+                User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value, 
+                User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value, 
+                image);
 
             string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
             Utils.Post("http://localhost:4567/api/v1.0/doctors", jsonResult);

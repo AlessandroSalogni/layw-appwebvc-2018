@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.APIUtils;
 using LaywApplication.Models;
@@ -44,6 +46,15 @@ namespace LaywApplication
                  var configuration = Configuration.GetSection("google-codes").Get<OAuthCodes>();
                  options.ClientId = configuration.ClientId;
                  options.ClientSecret = configuration.ClientSecret;
+
+                 options.Events = new OAuthEvents
+                 {
+                     OnCreatingTicket = context =>
+                     {
+                         context.Identity.AddClaim(new Claim(ClaimTypes.Uri, "https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + context.AccessToken, ClaimValueTypes.String, "Google"));
+                         return Task.FromResult(0);
+                     }
+                 };
              })
              
             .AddFacebook(options =>
@@ -51,6 +62,15 @@ namespace LaywApplication
                  var configuration = Configuration.GetSection("facebook-codes").Get<OAuthCodes>();
                  options.ClientId = configuration.ClientId;
                  options.ClientSecret = configuration.ClientSecret;
+
+                 options.Events = new OAuthEvents
+                 {
+                     OnCreatingTicket = context =>
+                     {
+                         context.Identity.AddClaim(new Claim(ClaimTypes.Uri, "https://graph.facebook.com/me/picture?redirect&access_token=" + context.AccessToken, ClaimValueTypes.String, "Facebook"));
+                         return Task.FromResult(0);
+                     }
+                 };
              });
 
             services.AddMvc();
