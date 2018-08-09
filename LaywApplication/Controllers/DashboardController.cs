@@ -51,6 +51,6 @@ namespace LaywApplication.Controllers
             dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()));
             return result.picture ?? result.data.url;
         }
-}
+
     }
 }
