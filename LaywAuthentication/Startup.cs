@@ -59,7 +59,7 @@ namespace LaywAuthentication
                         var configurationIP = Configuration.GetSection("homestation-ip").Get<HomestationIP>();
                         
                         var content = new StringContent("{ \"accessToken\" : " + accessToken + "}");
-                        var response =  await client.PostAsync(configurationIP.getTotalUrl(), content);
+                        var response =  await client.PostAsync(configurationIP.GetTotalUrl(), content);
                         var responseString = await response.Content.ReadAsStringAsync();    
                     }
                 };
