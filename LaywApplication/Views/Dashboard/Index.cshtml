@@ -3,3 +3,68 @@
     ViewBag.Title = "Layw";
     ViewBag.PageHeader = "Index";
 }
+<div id="example">
+    <div class="demo-section k-content wide">
+        <div id="chart"></div>
+    </div>
+    
+    <script>
+        function createChart() {
+            $("#chart").kendoChart({
+                title: {
+                    text: "Goals steps"
+                },
+                legend: {
+                    position: "top"
+                },
+                seriesDefaults: {
+                    labels: {
+                        template: "#= category # - #= kendo.format('{0:P}', percentage)#",
+                        position: "outsideEnd",
+                        visible: true,
+                        background: "transparent"
+                    }
+                },
+                series: [{
+                    type: "donut",
+                    data: [{
+                        category: "Achieved",
+                        value: @Model.Patients.Count(x => x.Gender == Gender.MALE),
+                        color: "#0080FF"
+                    },
+                    {
+                        category: "Not achieved",
+                        value: @Model.Patients.Count(x => x.Gender == Gender.FEMALE),
+                        color: "#FF40A0"
+                    }]
+                }],
+                tooltip: {
+                    visible: true,
+                    template: "#= category # - #= kendo.format('{0:P}', percentage) #"
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            createChart();
+            $(document).bind("kendo:skinChange", createChart);
+            $(".box").bind("change", refresh);
+        });
+
+        function refresh() {
+            var chart = $("#chart").data("kendoChart"),
+                pieSeries = chart.options.series[0],
+                labels = $("#labels").prop("checked"),
+                alignInputs = $("input[name='alignType']"),
+                alignLabels = alignInputs.filter(":checked").val();
+
+            chart.options.transitions = false;
+            pieSeries.labels.visible = labels;
+            pieSeries.labels.align = alignLabels;
+
+            alignInputs.attr("disabled", !labels);
+
+            chart.refresh();
+        }
+    </script>
+</div>
