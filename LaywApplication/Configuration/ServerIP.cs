@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LaywAuthentication.Configuration
+namespace LaywApplication.Configuration
 {
-    public class HomestationIP
+    public class ServerIP
     {
         public string IP { get; set; }
         public int Port { get; set; }
@@ -13,7 +13,7 @@ namespace LaywAuthentication.Configuration
 
         public string GetTotalUrl()
         {
-            return "http://" + IP + ":" + Port + Url; 
+            return "http://" + IP + ":" + Port + Url;
         }
     }
 }

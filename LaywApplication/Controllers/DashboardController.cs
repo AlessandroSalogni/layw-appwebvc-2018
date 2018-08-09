@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LaywApplication.Configuration;
 using LaywApplication.Controllers.APIUtils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,23 +15,25 @@ namespace LaywApplication.Controllers
 
     public class DashboardController : Controller
     {
+        private readonly IOptions<ServerIP> config;
+
+        public DashboardController(IOptions<ServerIP> config)
+        {
+            this.config = config;
+        }
+
         [HttpGet("~/dashboard")]
         public IActionResult Index()
         {
-            //todo SISTEMARE, non molto bello
-            Uri apiRequestUri = new Uri(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri").Value);
-            dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()));
-            Uri image = result.picture ?? result.data.url;
-
             Doctor doctor = new Doctor(
                 User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value, 
                 User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value, 
-                image);
+                GetProfileImage());
 
             string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
-            Utils.Post("http://localhost:4567/api/v1.0/doctors", jsonResult);
+            Utils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
 
-            jsonResult = Utils.Get("http://localhost:4567/api/v1.0/users?doctor-id=" + doctor.EMail);
+            jsonResult = Utils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail);
             JObject json = JObject.Parse(jsonResult);
             JArray jsonArray = (JArray)json.GetValue("users");
 
@@ -40,5 +44,13 @@ namespace LaywApplication.Controllers
             //di nome Index, ovvero la view che ha lo stesso nome della action del controller
             return View(doctor);
         }
+
+        private Uri GetProfileImage()
+        {
+            Uri apiRequestUri = new Uri(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri").Value);
+            dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()));
+            return result.picture ?? result.data.url;
+        }
+}
     }
 }

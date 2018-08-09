@@ -29,6 +29,7 @@ namespace LaywApplication
         {
             services.Configure<Kendo>(Configuration.GetSection("kendo"));
             services.Configure<Theme>(Configuration.GetSection("theme"));
+            services.Configure<ServerIP>(Configuration.GetSection("server-ip"));
 
             services.AddAuthentication(options =>
             {
@@ -67,7 +68,7 @@ namespace LaywApplication
                  {
                      OnCreatingTicket = context =>
                      {
-                         context.Identity.AddClaim(new Claim(ClaimTypes.Uri, "https://graph.facebook.com/me/picture?redirect&access_token=" + context.AccessToken, ClaimValueTypes.String, "Facebook"));
+                         context.Identity.AddClaim(new Claim(ClaimTypes.Uri, "https://graph.facebook.com/me/picture?redirect&type=large&access_token=" + context.AccessToken, ClaimValueTypes.String, "Facebook"));
                          return Task.FromResult(0);
                      }
                  };
