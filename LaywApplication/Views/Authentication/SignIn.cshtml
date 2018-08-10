@@ -1,26 +1,95 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @model AuthenticationScheme[]
-@{
-	Layout = "Layouts/_LoginLayout";
+@{ 
+	Layout = null;
 }
 
-<div class="container-fluid">
-	<div class="row text-center">
-		<div class="col-md-6 col-md-push-3 card">
-			<h1>Sign in Look After Your Weight</h1>
-			<h4>using one of these external providers:</h4>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-			@foreach (var scheme in Model)
-			{
-				<form action="/signin" method="post">
-					<input type="hidden" name="Provider" value="@scheme.Name" />
-					<input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="~/bootstrap-social-gh-pages/bootstrap-social.css">
 
-					<button class="btn btn-block btn-social btn-@scheme.DisplayName.ToLower()" style="margin-top:15px">
-						<span class="fa fa-@scheme.DisplayName.ToLower()"></span> Sign in-up LAYW using @scheme.DisplayName
-					</button>
-				</form>
+	<style>
+		body, html, #LoginForm {
+			height: 100%;
+		}
+		#LoginForm {
+			background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			padding: 10px;
+			display: flex;
+			align-items: center;
+		}
+		#LoginForm .panel h2 {
+			color: #444444;
+			font-size: 18px;
+			margin: 0 0 8px 0;
+		}
+		#LoginForm .panel p {
+			color: #777777;
+			font-size: 14px;
+			margin-bottom: 30px;
+			line-height: 24px;
+		}
+		#LoginForm .main-div {
+			background: #ffffff none repeat scroll 0 0;
+			border-radius: 10px;
+			margin: 10px auto 30px;
+			padding: 50px 60px 70px;
+		}
+		#LoginForm .btn-form > .btn-social > :first-child {
+			width: 36px;
+			line-height: 28px;
+		}
+		#LoginForm .btn-form > .btn {
+			margin-bottom: 10px;
+		}
+		#LoginForm .btn-form > .btn > .fa {
+			padding: 5px;
+		}
+		#LoginForm .btn-form:last-child > .btn {
+			margin-bottom: 0;
+		}
+		@@media (min-width: 1200px) {
+			#LoginForm .main-div {
+				padding: 60px 70px 80px;
 			}
+		}
+	</style>
+</head>
+<body id="LoginForm">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-11 col-sm-9 col-md-7 col-lg-5 main-div">
+				<div class="panel text-center">
+					<h2>Sign in Look After Your Weight</h2>
+					<p>Please select one of these external providers</p>
+				</div>
+
+				@foreach (var scheme in Model)
+				{
+					<form class="btn-form" action="/signin" method="post">
+						<input type="hidden" name="Provider" value="@scheme.Name" />
+						<input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+
+						<button class="btn btn-block btn-social btn-@scheme.DisplayName.ToLower() text-center">
+							<span class="fa fa-@scheme.DisplayName.ToLower()"></span>Sign in using @scheme.DisplayName
+						</button>
+					</form>
+				}
+			</div>
 		</div>
 	</div>
-</div>
+</body>
+</html>
