@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LaywApplication.Models
 {
@@ -12,9 +10,8 @@ namespace LaywApplication.Models
             this.EMail = EMail;
             this.Name = Name;
             this.Image = Image;
-            this.Patients = new List<Patient>();
+            Patients = new List<Patient>();
         }
-
         public string EMail { get; }
         public string Name { get; }
         public Uri Image { get; }
