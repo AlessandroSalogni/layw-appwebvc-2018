@@ -11,5 +11,6 @@ namespace LaywApplication.Models
         public int Height { get; set; }
         public int Age { get; set; }
         public String Country { get; set; }
+        public int Id { get; set; }
     }
 }

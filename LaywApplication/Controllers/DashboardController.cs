@@ -8,6 +8,7 @@ using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers
@@ -16,6 +17,7 @@ namespace LaywApplication.Controllers
     public class DashboardController : Controller
     {
         private readonly IOptions<ServerIP> config;
+        private static Doctor doctor;
 
         public DashboardController(IOptions<ServerIP> config)
         {
@@ -27,7 +29,7 @@ namespace LaywApplication.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                Doctor doctor = new Doctor(
+                doctor = new Doctor(
                 User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value,
                 User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value,
                 new Uri(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri").Value));
@@ -48,6 +50,26 @@ namespace LaywApplication.Controllers
             }
             else
                 return Redirect("~/signin");
+        }
+        
+        [HttpGet("~/dashboard/goalstepsdaily")]
+        public async Task<IEnumerable<int>> Read()
+        {
+                List<GoalsStepsDaily> goalStepsList = new List<GoalsStepsDaily>();
+
+                var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
+
+                foreach (Patient patient in doctor.Patients)
+                {
+                    string jsonResult = Utils.Get(config.Value.GetTotalUrl() + "users/" + '1' /*patient.Id*/ + "/goals-steps-daily/current");
+                    JObject json = JObject.Parse(jsonResult);
+                    JObject jsonObject = (JObject)json.GetValue("goals-steps-daily");
+
+                    goalStepsList.Add(JsonConvert.DeserializeObject<GoalsStepsDaily>(jsonObject.ToString(), dateTimeConverter));
+                }
+
+                int[] array = new int[] { 1, 2, 3 };
+                return array.ToList<int>();
         }
     }
 }

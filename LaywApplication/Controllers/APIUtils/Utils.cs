@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace LaywApplication.Controllers.APIUtils
 {
@@ -14,6 +15,13 @@ namespace LaywApplication.Controllers.APIUtils
                 result = client.DownloadString(uri);
             return result;
         }
+        //public async static Task<T> GetAwait(string uri)
+        //{
+        //    string result;
+        //    using (var client = new WebClient())
+        //        result = await client.DownloadString(uri);
+        //    return result;
+        //}
 
         public static string Post(string uri, string body)
         {
