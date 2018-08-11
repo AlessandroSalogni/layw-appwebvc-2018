@@ -38,7 +38,7 @@ namespace LaywApplication.Controllers
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
             // after a successful authentication flow (e.g Google or Facebook).
-            return SignOut(new AuthenticationProperties { RedirectUri = "/" },
+            return SignOut(new AuthenticationProperties { RedirectUri = "/signin" },
                 CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
