@@ -3,53 +3,114 @@
     ViewBag.Title = "Layw";
     ViewBag.PageHeader = "Index";
 }
-<div id="example">
-    <div class="demo-section k-content wide">
-        <div id="chart"></div>
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="box box-default">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="box-body">
+                    <div id="chartStepsDaily"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-7">
+            <div class="box box-default">
+                <div class="box-body">
+                    <div id="grid"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <script>
-        function createChart() {
-            $("#chart").kendoChart({
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: "~/dashboard/goalstepsdaily",
-                            dataType: "json"
-                        }
-                    },
-                    sort: {
-                        field: "order",
-                        dir: "asc"
-                    },
-                    group: {
-                        field: "year"
+</div>
+
+
+<script>
+	function createChart() {
+		var baseUrl = "@Url.Content("~/dashboard/goalstepsdaily")";
+        $("#chartStepsDaily").kendoChart({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: baseUrl,
+                        type: "get",
+                        dataType: "json"
                     }
                 },
-                legend: {
-                    position: "top"
-                },
-                title: {
-                    text: "1024x768 screen resolution trends"
-                },
-                seriesDefaults: {
-                    type: "donut",
-                    startAngle: 270
-                },
-                series: [{
-                    field: "share",
-                    categoryField: "resolution",
-                    visibleInLegendField: "visibleInLegend",
-                    padding: 10
-                }],
-                tooltip: {
-                    visible: true,
-                    template: "#= dataItem.resolution #: #= value #% (#= dataItem.year #)"
-                }
-            });
-        }
+            },
+            legend: {
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "pie"
+			},
+            series: [{
+				field: "amount",
+				categoryField: "category",
+				padding: 0
+			}],
+			tooltip: {
+				visible: true,
+				format: "N0",
+				template: "#= category # - #= kendo.format('{0:P}', percentage)#"
+			}
+		});
+	}
 
-        $(document).ready(createChart);
-        $(document).bind("kendo:skinChange", createChart);
-    </script>
-</div>
+    $(document).ready(createChart);
+    $(document).bind("kendo:skinChange", createChart);
+
+    $(document).ready(function () {
+        var baseUrl = "@Url.Content("~/dashboard/goalstepsdaily")";
+
+        $("#grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: { url: baseUrl, type: "GET" },
+                },
+                serverPaging: false,
+                serverSorting: false,
+                batch: false,
+                schema: {
+                    model: {
+                        fields: {
+                            category: {type: "string"},
+                            patients: { type: "string" }
+                        }
+                    }
+                }
+            },
+            scrollable: true,
+            sortable: true,
+            filterable: true,
+            columns: [
+                {
+                    field: "category",
+                    title: "Category"
+                },
+                {
+                    field: "patients",
+                    title: "Patients",
+                }
+            ],
+            saveChanges: function (e) {
+                // Refresh della grid per avere gli ID.
+                e.sender.one("dataBound", function () {
+                    e.sender.dataSource.read();
+                });
+            },
+        });
+    })
+
+</script>
+
