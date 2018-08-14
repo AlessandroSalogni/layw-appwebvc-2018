@@ -15,6 +15,12 @@ namespace LaywApplication.Controllers
 {
     public class GoalStepsDailyController : Controller, ICrudController
     {
+        struct AchievedGoals
+        {
+            public GoalsStepsDaily GoalsStepsDaily;
+            public int StepsDone;
+            public string Name;
+        }
         private readonly IOptions<ServerIP> config;
         
         public GoalStepsDailyController(IOptions<ServerIP> config)
@@ -22,53 +28,38 @@ namespace LaywApplication.Controllers
             this.config = config;
         }
 
-        struct AchievedGoals
-        {
-            public GoalsStepsDaily GoalsStepsDaily;
-            public int StepsDone;
-            public string Name;
-        }
-
-        [HttpGet("~/dashboard/goalstepsdaily")]
+        [HttpGet("~/dashboard/[controller]")]
         public ActionResult Read()
         {
             List<AchievedGoals> agList = new List<AchievedGoals>();
-
-            var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
-
+            
             foreach (Patient patient in DashboardController.doctor.Patients)
             {
-                string jsonResultGoals = Utils.Get(config.Value.GetTotalUrl() + "users/" + patient.Id + "/goals-steps-daily/current");
-                string jsonResultActivity = Utils.Get(config.Value.GetTotalUrl() + "users/" + patient.Id + "/activity-summary?date=16-07-2018");
-
-                JObject json = JObject.Parse(jsonResultGoals);
-                JObject jsonObject = (JObject)json.GetValue("goals-steps-daily");
-
-                JObject jsonAct = JObject.Parse(jsonResultActivity);
-                JObject jsonObjectAct = (JObject)jsonAct.GetValue("activity-summary");
-
-                AchievedGoals ag;
-                ag.GoalsStepsDaily = JsonConvert.DeserializeObject<GoalsStepsDaily>(jsonObject.ToString(), dateTimeConverter);
-                ag.StepsDone = (int)jsonObjectAct.GetValue("steps");
-                ag.Name = patient.Name;
-                agList.Add(ag);
+                agList.Add(GetAchievedGoals(patient.Id));
             }
 
             int notAchieved = agList.Count(x => x.GoalsStepsDaily.Goal > x.StepsDone);
-            int achieved = agList.Count - notAchieved;
+            int ac = agList.Count - notAchieved;
 
             var query = from x in agList where x.GoalsStepsDaily.Goal > x.StepsDone select x.Name;
-            List<string> nameNotA = query.ToList();
-
             var query2 = from x in agList where x.GoalsStepsDaily.Goal <= x.StepsDone select x.Name;
-            List<string> nameA = query2.ToList();
-
-            return Json(new List<object> { new { category = "Achieved", amount = achieved, color = "#00E100", patients = nameA }, new { category = "Not Achieved", amount = notAchieved, color = "#FF0000", patients = nameNotA } });
+            
+            if (Request.Query["achieved"].Equals("yes"))
+                return Json(query2.ToList());
+            else if (Request.Query["achieved"].Equals("no"))
+                return Json(query.ToList());
+            else
+                return Json(new List<object> { new { category = "Achieved", amount = ac, color = "#00E100"}, new { category = "Not Achieved", amount = notAchieved, color = "#FF0000"} });
         }
 
-        /*
-        [HttpGet("~/dashboard/goalstepsdaily")]
+        [HttpGet("~/dashboard/patients/{id}/[controller]/current")]
         public ActionResult Read(int id)
+        {
+            AchievedGoals ag = GetAchievedGoals(id);
+            return Json(new List<object> { new { category = "Done", amount = ag.StepsDone, color = "#00E100" }, new { category = "To do", amount = ag.GoalsStepsDaily.Goal, color = "#FF0000" } });
+        }
+
+        private AchievedGoals GetAchievedGoals(int id)
         {
             var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
 
@@ -86,10 +77,8 @@ namespace LaywApplication.Controllers
             ag.StepsDone = (int)jsonObjectAct.GetValue("steps");
             ag.Name = DashboardController.doctor.Patients.FirstOrDefault(x => x.Id == id).Name;
 
-
-            return Json(new List<object> { new { category = "Done", amount = ag.StepsDone, color = "#00E100" }, new { category = "To do", amount = ag.GoalsStepsDaily.Goal, color = "#FF0000" } });
+            return ag;
         }
-        */
     }
     
 }

@@ -13,6 +13,5 @@ namespace LaywApplication.Controllers
 
         [HttpGet]
         ActionResult Read(int id);
-
     }
 }

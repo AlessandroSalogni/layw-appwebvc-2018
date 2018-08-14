@@ -1,0 +1,108 @@
+﻿<div class="box box-default">
+    <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+            <i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-box-tool" data-widget="remove">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="chart" id="chart-@ViewBag.Type"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="demo-section k-content">
+                    <h4>Achieved</h4>
+                    <input id="achieved-@ViewBag.Type" style="width: 100%" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="demo-section k-content">
+                    <h4>Not Achieved</h4>
+                    <input id="notachieved-@ViewBag.Type" style="width: 100%" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	function createChart() {
+		var baseUrl = "@Url.Content("~/dashboard/goalstepsdaily")";
+        $("#chart-@ViewBag.Type").kendoChart({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: baseUrl,
+                        type: "get",
+                        dataType: "json",
+                        data: { achieved: "summarize" }
+                    }
+                },
+            },
+            title: {
+                position: "top",
+                text: "@ViewBag.Title"
+            },
+            legend: {
+                position: "top"
+            },
+            seriesDefaults: {
+                type: "donut"
+			},
+            series: [{
+				field: "amount",
+				categoryField: "category",
+				padding: 0
+			}],
+			tooltip: {
+				visible: true,
+				format: "N0",
+				template: "#= category # - #= kendo.format('{0:P}', percentage)#"
+            }, chartArea: {
+                margin: 1,
+                height: 300
+            },
+        });
+
+
+        $("#notachieved-@ViewBag.Type").kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: {
+                        dataType: "json",
+                        url: baseUrl,
+                        type: "get",
+                        data: { achieved: "no" }
+                    }
+                }
+            }
+        });
+
+        $("#achieved-@ViewBag.Type").kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: {
+                        dataType: "json",
+                        url: baseUrl,
+                        type: "get",
+                        data: { achieved: "yes" }
+                    }
+                }
+            }
+        });
+
+        $(window).bind("resize", function () {
+            $(".chart").data("kendoChart").refresh();
+        });
+    }
+
+    $(document).ready(createChart);
+    $(document).bind("kendo:skinChange", createChart);
+</script>
+
