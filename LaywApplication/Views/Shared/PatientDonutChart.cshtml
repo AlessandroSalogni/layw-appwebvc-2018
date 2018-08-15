@@ -1,0 +1,71 @@
+﻿<div class="demo-section k-content wide">
+    <div id="chart"></div>
+</div>
+<script>
+    function createChart() {
+            var baseUrl = "@Url.Content("~/dashboard/patients/" + @ViewBag.Id + "/goalstepsdaily/current")";
+            $("#chart").kendoChart({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: baseUrl,
+                            dataType: "json"
+                        }
+                    },
+                    sort: {
+                        field: "day",
+                        dir: "asc"
+                    }
+                },
+                title: {
+                    text: "Goal steps daily of a week"
+                },
+                legend: {
+                    position: "top"
+                },
+                seriesDefaults: {
+                    type: "column"
+                },
+                series:
+                [{
+                    field: "steps",
+                    categoryField: "day",
+                    name: "Steps"
+                }],
+                categoryAxis: {
+                    labels: {
+                        rotation: -90
+                    },
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                valueAxis: {
+                    labels: {
+                        format: "N0"
+                    },
+                    majorUnit: 1000,
+                    plotBands: [{
+                        from: 0,
+                        to: 5000, //TODO Schiaffato, trovare il modo di prenderlo
+                        color: "#c00",
+                        opacity: 0.3
+                    }],
+                    line: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    format: "N0"
+                }
+            });
+    }
+
+    $(window).bind("resize", function () {
+        $(".chart").data("kendoChart").refresh();
+    });
+
+    $(document).ready(createChart);
+    $(document).bind("kendo:skinChange", createChart);
+</script>

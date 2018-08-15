@@ -29,28 +29,44 @@ namespace LaywApplication.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                doctor = new Doctor(
-                User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value,
-                User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value,
-                new Uri(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri").Value));
-
-                string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
-
-                Utils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
-
-                jsonResult = Utils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail);
-                JObject json = JObject.Parse(jsonResult);
-                JArray jsonArray = (JArray)json.GetValue("users");
-
-                foreach (JObject obj in jsonArray)
-                    doctor.Patients.Add(JsonConvert.DeserializeObject<Patient>(obj.ToString()));
-
-                //Ritorna la view della cartella home (ovvero la cartella che ha lo stesso prefisso di questo controller)
-                //di nome Index, ovvero la view che ha lo stesso nome della action del controller
+                BuildDoctor();
                 return View(doctor);
             }
             else
                 return Redirect("~/signin");
+        }
+
+        [HttpGet("~/dashboard/patients/{id}")]
+        public IActionResult Patient(int id)
+        {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                BuildDoctor();
+
+                ViewBag.Id = id;
+                return View("Patient", doctor);
+            }
+            else
+                return Redirect("~/signin");
+        }
+
+        private void BuildDoctor()
+        {
+            doctor = new Doctor(
+                User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value,
+                User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value,
+                new Uri(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri").Value));
+
+            string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
+
+            Utils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
+
+            jsonResult = Utils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail);
+            JObject json = JObject.Parse(jsonResult);
+            JArray jsonArray = (JArray)json.GetValue("users");
+
+            foreach (JObject obj in jsonArray)
+                doctor.Patients.Add(JsonConvert.DeserializeObject<Patient>(obj.ToString()));
         }
 
     }

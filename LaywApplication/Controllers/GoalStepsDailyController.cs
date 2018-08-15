@@ -18,7 +18,7 @@ namespace LaywApplication.Controllers
         struct AchievedGoals
         {
             public GoalsStepsDaily GoalsStepsDaily;
-            public int StepsDone;
+            public ActivitySummary ActivitySummary;
             public string Name;
         }
         private readonly IOptions<ServerIP> config;
@@ -34,15 +34,13 @@ namespace LaywApplication.Controllers
             List<AchievedGoals> agList = new List<AchievedGoals>();
             
             foreach (Patient patient in DashboardController.doctor.Patients)
-            {
                 agList.Add(GetAchievedGoals(patient.Id));
-            }
-
-            int notAchieved = agList.Count(x => x.GoalsStepsDaily.Goal > x.StepsDone);
+            
+            int notAchieved = agList.Count(x => x.GoalsStepsDaily.Goal > x.ActivitySummary.Steps);
             int ac = agList.Count - notAchieved;
 
-            var query = from x in agList where x.GoalsStepsDaily.Goal > x.StepsDone select x.Name;
-            var query2 = from x in agList where x.GoalsStepsDaily.Goal <= x.StepsDone select x.Name;
+            var query = from x in agList where x.GoalsStepsDaily.Goal > x.ActivitySummary.Steps select x.Name;
+            var query2 = from x in agList where x.GoalsStepsDaily.Goal <= x.ActivitySummary.Steps select x.Name;
             
             if (Request.Query["achieved"].Equals("yes"))
                 return Json(query2.ToList());
@@ -56,7 +54,14 @@ namespace LaywApplication.Controllers
         public ActionResult Read(int id)
         {
             AchievedGoals ag = GetAchievedGoals(id);
-            return Json(new List<object> { new { category = "Done", amount = ag.StepsDone, color = "#00E100" }, new { category = "To do", amount = ag.GoalsStepsDaily.Goal, color = "#FF0000" } });
+            List<object> js = new List<object>();
+
+            for(int i=0; i<7; i++)
+            {//TODO Fare una get settimanale, ora solo per prova
+                js.Add(new { steps = ag.ActivitySummary.Steps + 1000*i, day = ag.ActivitySummary.Date.AddDays(i).ToShortDateString() });
+            }
+
+            return Json(js);
         }
 
         private AchievedGoals GetAchievedGoals(int id)
@@ -74,7 +79,8 @@ namespace LaywApplication.Controllers
 
             AchievedGoals ag;
             ag.GoalsStepsDaily = JsonConvert.DeserializeObject<GoalsStepsDaily>(jsonObject.ToString(), dateTimeConverter);
-            ag.StepsDone = (int)jsonObjectAct.GetValue("steps");
+            ag.ActivitySummary = JsonConvert.DeserializeObject<ActivitySummary>(jsonObjectAct.ToString(), dateTimeConverter);
+
             ag.Name = DashboardController.doctor.Patients.FirstOrDefault(x => x.Id == id).Name;
 
             return ag;

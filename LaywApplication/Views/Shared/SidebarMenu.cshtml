@@ -14,7 +14,7 @@
             foreach (Patient p in Model.Patients.OrderBy(x => x.Name))
             {
                 <li>
-                    <a href="#">
+                    <a href="~/dashboard/patients/@p.Id">
                         @{
                             if (p.Gender == Gender.MALE) { <i class="fa fa-mars" style="color:#0080FF"></i> }
                             else { <i class="fa fa-venus" style="color:#FF40A0"></i> }

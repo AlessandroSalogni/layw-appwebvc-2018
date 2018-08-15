@@ -3,11 +3,12 @@
 	@inject IOptions<LaywApplication.Configuration.Theme> Theme
 
 	@{
-		var kendo = Kendo.Value;
-		var theme = Theme.Value;
+        var homeUrl = "https://localhost:44333";//TODO Non schiaffare
+        var kendo = Kendo.Value;
+        var theme = Theme.Value;
 
-		ViewBag.Logo = "logo.png";
-		ViewBag.LogoMini = "logo50x50.png";
+        ViewBag.Logo = "logo.png";
+        ViewBag.LogoMini = "logo50x50.png";
 	}
 
 	<!DOCTYPE html>
@@ -76,7 +77,7 @@
             <!-- Main Header -->
             <header class="main-header">
                 <!-- Logo -->
-                <a href="index2.html" class="logo">
+                <a href="@(homeUrl)" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><img src="~/AdminLTE-2.4.3/dist/img/@ViewBag.LogoMini"></span>
                     <!-- logo for regular state and mobile devices -->

@@ -1,0 +1,26 @@
+﻿@model Doctor
+@{
+    ViewBag.PageHeader = "Patient";
+}
+
+<h2>Patient</h2>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            @{
+                ViewBag.Type = "StepsDaily";
+                ViewBag.Title = "Goal Steps Daily";
+                await Html.RenderPartialAsync("PatientDonutChart");
+            }
+        </div>
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4">
+
+        </div>
+    </div>
+</div>
+
+
