@@ -33,7 +33,7 @@
 
 <script>
 	function createChart() {
-		var baseUrl = "@Url.Content("~/dashboard/goalstepsdaily")";
+		var baseUrl = "@Url.Content("~/dashboard/" + ViewBag.Path)";
         $("#chart-@ViewBag.Type").kendoChart({
             dataSource: {
                 transport: {

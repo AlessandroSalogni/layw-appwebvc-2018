@@ -49,7 +49,7 @@ namespace LaywApplication.Controllers.APIUtils
         {
             string result;
             using (var client = new WebClient())
-                result = client.DownloadString(uri);
+                result = client.DownloadString(uri);//TODO gestire codice di errore
             return result;
         }
         //public async static Task<T> GetAwait(string uri)
