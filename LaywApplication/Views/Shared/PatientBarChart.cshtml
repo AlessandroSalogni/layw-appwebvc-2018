@@ -3,13 +3,18 @@
 </div>
 <script>
     function createChart() {
-            var baseUrl = "@Url.Content("~/dashboard/patients/" + @ViewBag.Id + "/goalstepsdaily/current")";
+            var baseUrl = "@Url.Content("~/dashboard/patients/" + @ViewBag.Id + "/goalstepsdaily")";
             $("#chart").kendoChart({
                 dataSource: {
                     transport: {
                         read: {
                             url: baseUrl,
-                            dataType: "json"
+                            dataType: "json",
+                            type: "get",
+                            data: {
+                                beginDate: "16-07-2018", 
+                                period: "1w"
+                            }
                         }
                     },
                     sort: {
@@ -47,7 +52,7 @@
                     majorUnit: 1000,
                     plotBands: [{
                         from: 0,
-                        to: 5000, //TODO Schiaffato, trovare il modo di prenderlo
+                        to: 1000, //TODO Schiaffato, trovare il modo di prenderlo
                         color: "#c00",
                         opacity: 0.3
                     }],
