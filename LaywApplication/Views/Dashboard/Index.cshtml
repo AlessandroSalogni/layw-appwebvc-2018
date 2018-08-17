@@ -23,8 +23,9 @@
         </div>
         <div class="col-sm-4">
             @{ 
-                ViewBag.Type = "StepsFai";
-                ViewBag.Title = "Goal Steps Fai";
+                ViewBag.Path = "goalcaloriesout";
+                ViewBag.Type = "CaloriesOut";
+                ViewBag.Title = "Goal Calories Out";
                 await Html.RenderPartialAsync("DashboardDonutChart");
             }
         </div>
