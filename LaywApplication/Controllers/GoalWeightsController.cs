@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers
 {
-    public class GoalWeightsController : Controller
+    public class GoalWeightsController : Controller, ICrudController
     {
         struct AchievedGoals
         {
@@ -70,6 +70,11 @@ namespace LaywApplication.Controllers
             ag.Name = DashboardController.doctor.Patients.FirstOrDefault(x => x.Id == id).Name;
 
             return ag;
+        }
+
+        public ActionResult Read(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
