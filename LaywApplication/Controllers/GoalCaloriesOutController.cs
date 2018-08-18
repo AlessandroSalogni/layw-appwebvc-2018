@@ -37,11 +37,11 @@ namespace LaywApplication.Controllers
             foreach (Patient patient in DashboardController.doctor.Patients)
                 agList.Add(GetAchievedGoals(patient.Id, DateTime.Now.ToShortDateString().Replace('/', '-')));
 
-            int notAchieved = agList.Count(x => x.GoalsCalories.Goal > x.ActivitySummary.CaloriesOut);
+            int notAchieved = agList.Count(x => x.GoalsCalories.Goal > x.ActivitySummary.CaloriesCategory.OutCalories);
             int ac = agList.Count - notAchieved;
 
-            var query = from x in agList where x.GoalsCalories.Goal > x.ActivitySummary.CaloriesOut select x.Name;
-            var query2 = from x in agList where x.GoalsCalories.Goal <= x.ActivitySummary.CaloriesOut select x.Name;
+            var query = from x in agList where x.GoalsCalories.Goal > x.ActivitySummary.CaloriesCategory.OutCalories select x.Name;
+            var query2 = from x in agList where x.GoalsCalories.Goal <= x.ActivitySummary.CaloriesCategory.OutCalories select x.Name;
 
             if (Request.Query["achieved"].Equals("yes"))
                 return Json(query2.ToList());
