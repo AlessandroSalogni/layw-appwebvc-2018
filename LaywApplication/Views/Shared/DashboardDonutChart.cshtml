@@ -1,12 +1,12 @@
-﻿<div class="box box-default">
-    <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-            <i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-box-tool" data-widget="remove">
-            <i class="fa fa-times"></i>
-        </button>
-    </div>
+﻿<div class="box box-default text-center">
+	<div class="box-header with-border">
+		<h3 class="box-title">@ViewBag.Title</h3>
+		<div class="box-tools pull-right">
+			<button type="button" class="btn btn-box-tool" data-widget="collapse">
+				<i class="fa fa-minus"></i>
+			</button>
+		</div>
+	</div>
     <div class="box-body">
         <div class="row">
             <div class="col-sm-12">
@@ -38,16 +38,11 @@
             dataSource: {
                 transport: {
                     read: {
-                        url: baseUrl,
+                        url: baseUrl + "/summary",
                         type: "get",
-                        dataType: "json",
-                        data: { achieved: "summarize" }
-                    }
+						dataType: "json"
+					}
                 },
-            },
-            title: {
-                position: "top",
-                text: "@ViewBag.Title"
             },
             legend: {
                 position: "top"
@@ -58,7 +53,7 @@
             series: [{
 				field: "amount",
 				categoryField: "category",
-				padding: 0
+				padding: 15
 			}],
 			tooltip: {
 				visible: true,
@@ -76,9 +71,8 @@
                 transport: {
                     read: {
                         dataType: "json",
-                        url: baseUrl,
-                        type: "get",
-                        data: { achieved: "no" }
+                        url: baseUrl + "/notachieved",
+                        type: "get"
                     }
                 }
             }
@@ -89,9 +83,8 @@
                 transport: {
                     read: {
                         dataType: "json",
-                        url: baseUrl,
-                        type: "get",
-                        data: { achieved: "yes" }
+                        url: baseUrl + "/achieved",
+                        type: "get"
                     }
                 }
             }
