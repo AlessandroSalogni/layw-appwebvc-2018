@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-sm-4">
             @{ 
-                ViewBag.Path = "goalstepsdaily";
+                ViewBag.Path = "goalstepschartdashboard";
                 ViewBag.Type = "StepsDaily";
                 ViewBag.Title = "Goal Steps Daily";
                 await Html.RenderPartialAsync("DashboardDonutChart");
@@ -15,7 +15,7 @@
         </div>
         <div class="col-sm-4">
             @{ 
-                ViewBag.Path = "goalweights";
+                ViewBag.Path = "goalweightschartdashboard";
                 ViewBag.Type = "Weight";
                 ViewBag.Title = "Goal Weight";
                 await Html.RenderPartialAsync("DashboardDonutChart");
@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-4">
             @{ 
-                ViewBag.Path = "goalcaloriesout";
+                ViewBag.Path = "goalcaloriesoutchartdashboard";
                 ViewBag.Type = "CaloriesOut";
                 ViewBag.Title = "Goal Calories Out";
                 await Html.RenderPartialAsync("DashboardDonutChart");
