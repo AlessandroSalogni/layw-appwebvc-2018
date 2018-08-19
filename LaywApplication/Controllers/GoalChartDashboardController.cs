@@ -31,23 +31,23 @@ namespace LaywApplication.Controllers
         }
 
         [HttpGet("achieved")]
-        public ActionResult ReadAchieved()
+        public async Task<ActionResult> ReadAchieved()
         {
-            List<AchievedGoals> achievedGoalsList = GetAchievedGoals(DateTime.Now.ToShortDateString().Replace('/', '-'));
+            List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
             return Json((from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) <= 0 select x.Name).ToList());
         }
 
         [HttpGet("notachieved")]
-        public ActionResult ReadNotAchieved()
+        public async Task<ActionResult> ReadNotAchieved()
         {
-            List<AchievedGoals> achievedGoalsList = GetAchievedGoals(DateTime.Now.ToShortDateString().Replace('/', '-'));
+            List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
             return Json((from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) > 0 select x.Name).ToList());
         }
 
         [HttpGet("summary")]
-        public ActionResult ReadSummary()
+        public async Task<ActionResult> ReadSummary()
         {
-            List<AchievedGoals> achievedGoalsList = GetAchievedGoals(DateTime.Now.ToShortDateString().Replace('/', '-'));
+            List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
 
             int notAchieved = achievedGoalsList.Count(x => x.Goal.CompareTo(x.Summary) > 0);
             int achieved = achievedGoalsList.Count - notAchieved;
@@ -55,18 +55,18 @@ namespace LaywApplication.Controllers
             return Json(new List<object> { new { category = "Achieved", amount = achieved, color = "#00E100" }, new { category = "Not Achieved", amount = notAchieved, color = "#FF0000" } });
         }
 
-        protected abstract TType getPatientGoal(int patientId, string date);
-        protected abstract TType getPatientSummary(int patientId, string date);
+        protected abstract Task<TType> GetPatientGoalAsync(int patientId, string date);
+        protected abstract Task<TType> GetPatientSummaryAsync(int patientId, string date);
 
-        private List<AchievedGoals> GetAchievedGoals(string date)
+        private async Task<List<AchievedGoals>> GetAchievedGoalsAsync(string date)
         {
             List<AchievedGoals> achievedGoalsList = new List<AchievedGoals>();
 
             foreach (Patient patient in DashboardController.doctor.Patients)
             {
                 AchievedGoals achievedGoals;
-                achievedGoals.Goal = getPatientGoal(patient.Id, date);
-                achievedGoals.Summary = getPatientSummary(patient.Id, date);
+                achievedGoals.Goal = await GetPatientGoalAsync(patient.Id, date);
+                achievedGoals.Summary = await GetPatientSummaryAsync(patient.Id, date);
                 achievedGoals.Name = patient.Name;
 
                 achievedGoalsList.Add(achievedGoals);
@@ -81,9 +81,9 @@ namespace LaywApplication.Controllers
     {
         public GoalStepsChartDashboardController(IOptions<ServerIP> config) : base(config) { }
 
-        protected override int getPatientGoal(int patientId, string date)
+        protected override async Task<int> GetPatientGoalAsync(int patientId, string date)
         {
-            string jsonResultGoals = Utils.Get(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-steps-daily?date=" + date);
+            string jsonResultGoals = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-steps-daily?date=" + date);
 
             JObject jsonGoals = JObject.Parse(jsonResultGoals);
             JObject jsonGoalsRoot = (jsonGoals.First as JProperty).Value as JObject;
@@ -91,9 +91,9 @@ namespace LaywApplication.Controllers
             return jsonGoalsRoot.GetValue("goal").Value<int>();
         }
 
-        protected override int getPatientSummary(int patientId, string date)
+        protected override async Task<int> GetPatientSummaryAsync(int patientId, string date)
         {
-            string jsonResultActivity = Utils.Get(config.Value.GetTotalUrl() + "users/" + patientId + "/activity-summary?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            string jsonResultActivity = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/activity-summary?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
 
             JObject jsonSummary = JObject.Parse(jsonResultActivity);
             JObject jsonSummaryRoot = (jsonSummary.First as JProperty).Value as JObject;
@@ -107,9 +107,9 @@ namespace LaywApplication.Controllers
     {
         public GoalWeightsChartDashboardController(IOptions<ServerIP> config) : base(config) { }
 
-        protected override float getPatientGoal(int patientId, string date)
+        protected override async Task<float> GetPatientGoalAsync(int patientId, string date)
         {
-            string jsonResultGoals = Utils.Get(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-weight?date=" + date);
+            string jsonResultGoals = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-weight?date=" + date);
 
             JObject jsonGoals = JObject.Parse(jsonResultGoals);
             JObject jsonGoalsRoot = (jsonGoals.First as JProperty).Value as JObject;
@@ -117,9 +117,9 @@ namespace LaywApplication.Controllers
             return jsonGoalsRoot.GetValue("goal").Value<float>();
         }
 
-        protected override float getPatientSummary(int patientId, string date)
+        protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            string jsonResultActivity = Utils.Get(config.Value.GetTotalUrl() + "users/" + patientId + "/weights?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            string jsonResultActivity = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/weights?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
 
             JObject jsonSummary = JObject.Parse(jsonResultActivity);
             JObject jsonSummaryRoot = (jsonSummary.First as JProperty).Value as JObject;
@@ -133,9 +133,9 @@ namespace LaywApplication.Controllers
     {
         public GoalCaloriesOutChartDashboardController(IOptions<ServerIP> config) : base(config) { }
 
-        protected override float getPatientGoal(int patientId, string date)
+        protected override async Task<float> GetPatientGoalAsync(int patientId, string date)
         {
-            string jsonResultGoals = Utils.Get(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-calories-out?date=" + date);
+            string jsonResultGoals = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-calories-out?date=" + date);
 
             JObject jsonGoals = JObject.Parse(jsonResultGoals);
             JObject jsonGoalsRoot = (jsonGoals.First as JProperty).Value as JObject;
@@ -143,9 +143,9 @@ namespace LaywApplication.Controllers
             return jsonGoalsRoot.GetValue("goal").Value<float>();
         }
 
-        protected override float getPatientSummary(int patientId, string date)
+        protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            string jsonResultActivity = Utils.Get(config.Value.GetTotalUrl() + "users/" + patientId + "/activity-summary?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            string jsonResultActivity = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/activity-summary?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
 
             JObject jsonSummary = JObject.Parse(jsonResultActivity);
             JObject jsonSummaryRoot = (jsonSummary.First as JProperty).Value as JObject;

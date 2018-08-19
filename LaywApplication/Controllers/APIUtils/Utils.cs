@@ -47,18 +47,15 @@ namespace LaywApplication.Controllers.APIUtils
 
         public static string Get(string uri)
         {
-            string result;
             using (var client = new WebClient())
-                result = client.DownloadString(uri);//TODO gestire codice di errore
-            return result;
+                return client.DownloadString(uri);//TODO gestire codice di errore
         }
-        //public async static Task<T> GetAwait(string uri)
-        //{
-        //    string result;
-        //    using (var client = new WebClient())
-        //        result = await client.DownloadString(uri);
-        //    return result;
-        //}
+
+        public async static Task<string> GetAsync(string uri)
+        {
+            using (var client = new WebClient())
+                return await client.DownloadStringTaskAsync(uri);
+        }
 
         public static string Post(string uri, string body)
         {
