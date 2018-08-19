@@ -55,7 +55,7 @@ namespace LaywApplication
                      OnCreatingTicket = context =>
                      {
                          Uri apiRequestUri = new Uri("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + context.AccessToken);
-                         dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()));
+                         dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()).ToString());
                          
                          context.Identity.AddClaim(new Claim(ClaimTypes.Uri, (string)result.picture, ClaimValueTypes.String, "Google"));
                          return Task.FromResult(0);
@@ -74,7 +74,7 @@ namespace LaywApplication
                      OnCreatingTicket = context =>
                      {
                          Uri apiRequestUri = new Uri("https://graph.facebook.com/me/picture?redirect&type=large&access_token=" + context.AccessToken);
-                         dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()));
+                         dynamic result = JsonConvert.DeserializeObject(Utils.Get(apiRequestUri.ToString()).ToString());
                          
                          context.Identity.AddClaim(new Claim(ClaimTypes.Uri, (string)result.data.url, ClaimValueTypes.String, "Facebook"));
                          return Task.FromResult(0);

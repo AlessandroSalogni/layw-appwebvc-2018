@@ -61,8 +61,7 @@ namespace LaywApplication.Controllers
 
             Utils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
 
-            jsonResult = Utils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail);
-            JObject json = JObject.Parse(jsonResult);
+            JObject json = Utils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
             JArray jsonArray = (JArray)json.GetValue("users");
 
             foreach (JObject obj in jsonArray)
