@@ -15,6 +15,10 @@ namespace LaywApplication.Controllers
 {
     public abstract class GoalChartDashboardController<TType> : Controller where TType : IComparable<TType>
     {
+        protected Configuration.JsonData GoalConfig { get; set; }
+        protected Configuration.JsonData SummaryConfig { get; set; }
+        protected Configuration.Parameters ParametersConfig { get; set; }
+
         protected readonly IOptions<ServerIP> config;
         private readonly IsoDateTimeConverter dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
 
@@ -79,79 +83,83 @@ namespace LaywApplication.Controllers
     [Route("~/dashboard/[controller]")]
     public class GoalStepsChartDashboardController : GoalChartDashboardController<int>
     {
-        public GoalStepsChartDashboardController(IOptions<ServerIP> config) : base(config) { }
+        public GoalStepsChartDashboardController(IOptions<ServerIP> configIP, IOptions<JsonStructure> configJSON) : base(configIP)
+        {
+            GoalConfig = configJSON.Value.GoalsStepsDaily;
+            SummaryConfig = configJSON.Value.StepsSummary;
+            ParametersConfig = configJSON.Value.Parameters;
+        }
+
 
         protected override async Task<int> GetPatientGoalAsync(int patientId, string date)
         {
-            string jsonResultGoals = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-steps-daily?date=" + date);
+            JObject jsonGoals = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
+            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
 
-            JObject jsonGoals = JObject.Parse(jsonResultGoals);
-            JObject jsonGoalsRoot = (jsonGoals.First as JProperty).Value as JObject;
-
-            return jsonGoalsRoot.GetValue("goal").Value<int>();
+            return jsonGoalsRoot.GetValue(GoalConfig.Key).Value<int>();
         }
 
         protected override async Task<int> GetPatientSummaryAsync(int patientId, string date)
         {
-            string jsonResultActivity = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/activity-summary?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
 
-            JObject jsonSummary = JObject.Parse(jsonResultActivity);
-            JObject jsonSummaryRoot = (jsonSummary.First as JProperty).Value as JObject;
-
-            return jsonSummaryRoot.GetValue("steps").Value<int>();
+            return jsonSummaryRoot.GetValue(SummaryConfig.Key).Value<int>();
         }
     }
 
     [Route("~/dashboard/[controller]")]
     public class GoalWeightsChartDashboardController : GoalChartDashboardController<float>
     {
-        public GoalWeightsChartDashboardController(IOptions<ServerIP> config) : base(config) { }
+        public GoalWeightsChartDashboardController(IOptions<ServerIP> configIP, IOptions<JsonStructure> configJSON) : base(configIP)
+        {
+            GoalConfig = configJSON.Value.GoalsWeight;
+            SummaryConfig = configJSON.Value.WeightSummary;
+            ParametersConfig = configJSON.Value.Parameters;
+        }
 
         protected override async Task<float> GetPatientGoalAsync(int patientId, string date)
         {
-            string jsonResultGoals = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-weight?date=" + date);
+            JObject jsonGoals = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
+            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
 
-            JObject jsonGoals = JObject.Parse(jsonResultGoals);
-            JObject jsonGoalsRoot = (jsonGoals.First as JProperty).Value as JObject;
-
-            return jsonGoalsRoot.GetValue("goal").Value<float>();
+            return jsonGoalsRoot.GetValue(GoalConfig.Key).Value<float>();
         }
 
         protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            string jsonResultActivity = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/weights?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
 
-            JObject jsonSummary = JObject.Parse(jsonResultActivity);
-            JObject jsonSummaryRoot = (jsonSummary.First as JProperty).Value as JObject;
-
-            return jsonSummaryRoot.GetValue("weight").Value<float>();
+            return jsonSummaryRoot.GetValue(SummaryConfig.Key).Value<float>();
         }
     }
 
     [Route("~/dashboard/[controller]")]
     public class GoalCaloriesOutChartDashboardController : GoalChartDashboardController<float>
     {
-        public GoalCaloriesOutChartDashboardController(IOptions<ServerIP> config) : base(config) { }
+        public GoalCaloriesOutChartDashboardController(IOptions<ServerIP> configIP, IOptions<JsonStructure> configJSON) : base(configIP)
+        {
+            GoalConfig = configJSON.Value.GoalsCaloriesOut;
+            SummaryConfig = configJSON.Value.CaloriesSummary;
+            ParametersConfig = configJSON.Value.Parameters;
+        }
 
         protected override async Task<float> GetPatientGoalAsync(int patientId, string date)
         {
-            string jsonResultGoals = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/goals-calories-out?date=" + date);
+            JObject jsonGoals = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
+            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
 
-            JObject jsonGoals = JObject.Parse(jsonResultGoals);
-            JObject jsonGoalsRoot = (jsonGoals.First as JProperty).Value as JObject;
-
-            return jsonGoalsRoot.GetValue("goal").Value<float>();
+            return jsonGoalsRoot.GetValue(GoalConfig.Key).Value<float>();
         }
 
         protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            string jsonResultActivity = await Utils.GetAsync(config.Value.GetTotalUrl() + "users/" + patientId + "/activity-summary?date=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
+            JObject jsonCaloriesCategory = (JObject)jsonSummaryRoot.GetValue((SummaryConfig as CaloriesSummary).Object);
 
-            JObject jsonSummary = JObject.Parse(jsonResultActivity);
-            JObject jsonSummaryRoot = (jsonSummary.First as JProperty).Value as JObject;
-            JObject jsonCaloriesCategory = (JObject)jsonSummaryRoot.GetValue("caloriesCategory");
-
-            return jsonCaloriesCategory.GetValue("outCalories").Value<float>();
+            return jsonCaloriesCategory.GetValue(SummaryConfig.Key).Value<float>();
         }
     }
 }
