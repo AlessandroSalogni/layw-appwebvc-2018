@@ -1,9 +1,10 @@
-﻿<div class="demo-section k-content wide">
+﻿@model Patient
+<div class="demo-section k-content wide">
     <div id="chart"></div>
 </div>
 <script>
     function createChart() {
-            var baseUrl = "@Url.Content("~/dashboard/patients/" + @ViewBag.Id + "/goalstepsdaily")";
+            var baseUrl = "@Url.Content("~/dashboard/patients/" + @Model.Id + "/goalstepsdaily")";
             $("#chart").kendoChart({
                 dataSource: {
                     transport: {
