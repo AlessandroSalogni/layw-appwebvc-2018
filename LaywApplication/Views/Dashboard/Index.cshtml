@@ -1,33 +1,25 @@
 ﻿@model Doctor
 @{
-    ViewBag.PageHeader = "Index";
+	ViewBag.PageHeader = "Index";
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            @{ 
-                ViewBag.Path = "goalstepschartdashboard";
-                ViewBag.Type = "StepsDaily";
-                ViewBag.Title = "Goal Steps Daily";
-                await Html.RenderPartialAsync("DashboardDonutChart");
-            }
-        </div>
-        <div class="col-sm-4">
-            @{ 
-                ViewBag.Path = "goalweightschartdashboard";
-                ViewBag.Type = "Weight";
-                ViewBag.Title = "Goal Weight";
-                await Html.RenderPartialAsync("DashboardDonutChart");
-            }
-        </div>
-        <div class="col-sm-4">
-            @{ 
-                ViewBag.Path = "goalcaloriesoutchartdashboard";
-                ViewBag.Type = "CaloriesOut";
-                ViewBag.Title = "Goal Calories Out";
-                await Html.RenderPartialAsync("DashboardDonutChart");
-            }
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-sm-4">
+			@{
+				await Html.RenderPartialAsync("DashboardDonutChart", Tuple.Create("Goal Steps Daily", "goalstepschartdashboard", "StepsDaily")); //TODO sistemare
+			}
+		</div>
+		<div class="col-sm-4">
+			@{
+				await Html.RenderPartialAsync("DashboardDonutChart", Tuple.Create("Goal Weight", "goalweightschartdashboard", "Weight"));
+			}
+		</div>
+		<div class="col-sm-4">
+			@{
+				await Html.RenderPartialAsync("DashboardDonutChart", Tuple.Create("Goal Calories Out", "goalcaloriesoutchartdashboard", "CaloriesOut"));
+			}
+		</div>
+	</div>
 </div>
+

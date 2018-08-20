@@ -1,56 +1,61 @@
-﻿<div class="box box-default text-center">
+﻿@model Tuple<string, string, string>
+<div class="box box-default text-center">
 	<div class="box-header with-border">
-		<h3 class="box-title">@ViewBag.Title</h3>
+		<h3 class="box-title">@Model.Item1</h3>
 		<div class="box-tools pull-right">
 			<button type="button" class="btn btn-box-tool" data-widget="collapse">
 				<i class="fa fa-minus"></i>
 			</button>
 		</div>
 	</div>
-    <div class="box-body">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="chart" id="chart-@ViewBag.Type"></div>
-            </div>
-        </div>
+	<div class="box-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="chart" id="chart-@Model.Item3"></div>
+			</div>
+		</div>
 
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="demo-section k-content">
-                    <h4>Achieved</h4>
-                    <input id="achieved-@ViewBag.Type" style="width: 100%" />
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="demo-section k-content">
-                    <h4>Not Achieved</h4>
-                    <input id="notachieved-@ViewBag.Type" style="width: 100%" />
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div id="window-@Model.Item3">
+					<div id="achieved-@Model.Item3" class="col-sm-6" style="padding:0; border:none;"></div>
+					<div id="notachieved-@Model.Item3" class="col-sm-6" style="padding:0; border:none;"></div>
+				</div>
+				<span id="undo-@Model.Item3" class="k-button hide-on-narrow">Click here to open the window.</span>
+				<div class="responsive-message"></div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
-	function createChart() {
-		var baseUrl = "@Url.Content("~/dashboard/" + ViewBag.Path)";
-        $("#chart-@ViewBag.Type").kendoChart({
-            dataSource: {
-                transport: {
-                    read: {
-                        url: baseUrl + "/summary",
-                        type: "get",
+	function create() {
+		var baseUrl = "@Url.Content("~/dashboard/" + Model.Item2)";
+
+		createChart(baseUrl, "@Model.Item3");
+		createGrid(baseUrl, "achieved", "@Model.Item3");
+		createGrid(baseUrl, "notachieved", "@Model.Item3");
+		createWindow("@Model.Item3");
+	}
+
+	function createChart(baseUrl, type) {
+        $("#chart-" + type).kendoChart({
+			dataSource: {
+				transport: {
+					read: {
+						url: baseUrl + "/summary",
+						type: "get",
 						dataType: "json"
 					}
-                },
-            },
-            legend: {
-                position: "top"
-            },
-            seriesDefaults: {
-                type: "donut"
+				},
 			},
-            series: [{
+			legend: {
+				position: "top"
+			},
+			seriesDefaults: {
+				type: "donut"
+			},
+			series: [{
 				field: "amount",
 				categoryField: "category",
 				padding: 15
@@ -59,43 +64,74 @@
 				visible: true,
 				format: "N0",
 				template: "#= category # - #= kendo.format('{0:P}', percentage)#"
-            }, chartArea: {
-                margin: 1,
-                height: 300
-            },
-        });
+			}, chartArea: {
+				margin: 1,
+				height: 300
+			},
+		});
 
-
-        $("#notachieved-@ViewBag.Type").kendoDropDownList({
-            dataSource: {
-                transport: {
-                    read: {
-                        dataType: "json",
-                        url: baseUrl + "/notachieved",
-                        type: "get"
-                    }
-                }
-            }
-        });
-
-        $("#achieved-@ViewBag.Type").kendoDropDownList({
-            dataSource: {
-                transport: {
-                    read: {
-                        dataType: "json",
-                        url: baseUrl + "/achieved",
-                        type: "get"
-                    }
-                }
-            }
-        });
-
-        $(window).bind("resize", function () {
-            $(".chart").data("kendoChart").refresh();
-        });
+		$(window).bind("resize", function () {
+			$(".chart").data("kendoChart").refresh();
+		});
     }
 
-    $(document).ready(createChart);
-    $(document).bind("kendo:skinChange", createChart);
-</script>
+	function createGrid(baseUrl, root, type) {
+		$("#" + root + "-" + type).kendoGrid({
+			dataSource: {
+				transport: {
+					read: {
+						dataType: "json",
+						url: baseUrl + "/" + root,
+						type: "get"
+					}
+				},
+				pageSize: 10,
+				schema: {
+					model: {
+						fields: {
+							name: { type: "string" }
+						}
+					}
+				}
+			},
+			pageable: {
+				refresh: true,
+				pageSizes: true
+			},
+			columns: [{
+				field: "name",
+				title: "Not Achieved"
+			}]
+		});
+	}
 
+	function createWindow(type) {
+		var myWindow = $("#window-" + type),
+			undo = $("#undo-" + type);
+
+		undo.click(function () {
+			myWindow.data("kendoWindow").open();
+			undo.fadeOut();
+		});
+
+		function onClose() {
+			undo.fadeIn();
+		}
+
+		myWindow.kendoWindow({
+			width: "600px",
+			title: "About Alvar Aalto",
+			visible: false,
+			actions: [
+				"Pin",
+				"Minimize",
+				"Maximize",
+				"Close"
+			],
+			close: onClose
+		}).data("kendoWindow").center();
+	}
+
+	$(document).ready(create);
+	$(document).bind("kendo:skinChange", create);
+</script>
