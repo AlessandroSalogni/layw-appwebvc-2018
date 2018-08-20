@@ -1,8 +1,10 @@
 ﻿@model Doctor
-
+@using Microsoft.Extensions.Options
+@inject IOptions<LaywApplication.Configuration.ServerIP> ServerIP
 
 <ul class="sidebar-menu" data-widget="tree">
-    <li class="treeview active">
+    <li class="active"><a href="./"><i class="fa fa-home" style="color:orange"></i> <span>Homepage</span></a></li> <!--TODO schiaffato url, mettere in config-->
+    <li class="treeview">
         <a href="#">
             <i class="fa fa-heartbeat" style="color:red"></i> <span>Patients</span>
             <span class="pull-right-container">
@@ -10,20 +12,22 @@
             </span>
         </a>
         <ul class="treeview-menu">
-        @{
-            foreach (Patient p in Model.Patients.OrderBy(x => x.Name))
-            {
-                <li>
-                    <a href="~/dashboard/patients/@p.Id">
-                        @{
-                            if (p.Gender == Gender.MALE) { <i class="fa fa-mars" style="color:#0080FF"></i> }
-                            else { <i class="fa fa-venus" style="color:#FF40A0"></i> }
-                        }
-                        @p.Name
-                    </a>
-                </li>
+            @{
+                foreach (Patient p in Model.Patients.OrderBy(x => x.Name))
+                {
+                    <li>
+                        <a href="~/dashboard/patients/@p.Id">
+                            @{
+                                if (p.Gender == Gender.MALE)
+                                { <i class="fa fa-mars" style="color:#0080FF"></i> }
+                                else
+                                { <i class="fa fa-venus" style="color:#FF40A0"></i> }
+                            }
+                            @p.Name
+                        </a>
+                    </li>
+                }
             }
-        }
         </ul>
     </li>
 </ul>

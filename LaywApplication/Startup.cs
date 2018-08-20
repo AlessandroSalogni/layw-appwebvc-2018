@@ -32,6 +32,7 @@ namespace LaywApplication
             services.Configure<Kendo>(Configuration.GetSection("kendo"));
             services.Configure<Theme>(Configuration.GetSection("theme"));
             services.Configure<ServerIP>(Configuration.GetSection("server-ip"));
+            services.Configure<JsonStructure>(Configuration.GetSection("json-structure"));
 
             services.AddAuthentication(options =>
             {

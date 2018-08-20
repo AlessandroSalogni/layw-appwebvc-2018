@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LaywApplication.Models
 {
@@ -16,5 +17,7 @@ namespace LaywApplication.Models
         public string Name { get; }
         public Uri Image { get; }
         public IList<Patient> Patients { get; set; }
+        public Patient this[int index] { get { return (Patients as List<Patient>).FirstOrDefault(x => x.Id == index); } }
+
     }
 }
