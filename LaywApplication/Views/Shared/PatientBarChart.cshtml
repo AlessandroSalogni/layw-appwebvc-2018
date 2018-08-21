@@ -4,7 +4,7 @@
 </div>
 <script>
     function createChart() {
-            var baseUrl = "@Url.Content("~/dashboard/patients/" + @Model.Id + "/goalstepsdaily")";
+            var baseUrl = "@Url.Content("~/dashboard/patients/" + @Model.Id + "/barchartpatient")";
             $("#chart").kendoChart({
                 dataSource: {
                     transport: {

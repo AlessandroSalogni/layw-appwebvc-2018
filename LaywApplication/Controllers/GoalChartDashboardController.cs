@@ -42,10 +42,18 @@ namespace LaywApplication.Controllers
         }
 
         [HttpGet("notachieved")]
-        public async Task<ActionResult> ReadNotAchieved()
+        public async Task<IEnumerable<Patient>> ReadNotAchieved()
         {
             List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
-            return Json((from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) > 0 select x.Name).ToList());
+            List<Patient> patientList = new List<Patient>();
+            foreach (string name in from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) > 0 select x.Name)
+            {
+                Patient patient = new Patient();
+                patient.Name = name;
+                patientList.Add(patient);
+            }
+
+            return patientList;
         }
 
         [HttpGet("summary")]

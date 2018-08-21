@@ -43,7 +43,7 @@ namespace LaywApplication.Controllers
             {
                 BuildDoctor();
 
-                ViewBag.Id = id;
+                ViewBag.CurrentPatient = doctor.Patients[id];
                 return View("Patient", doctor);
             }
             else

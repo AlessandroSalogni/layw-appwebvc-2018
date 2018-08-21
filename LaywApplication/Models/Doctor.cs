@@ -11,13 +11,16 @@ namespace LaywApplication.Models
             this.EMail = EMail;
             this.Name = Name;
             this.Image = Image;
-            Patients = new List<Patient>();
+            Patients = new Patients();
         }
         public string EMail { get; }
         public string Name { get; }
         public Uri Image { get; }
-        public IList<Patient> Patients { get; set; }
-        public Patient this[int index] { get { return (Patients as List<Patient>).FirstOrDefault(x => x.Id == index); } }
+        public Patients Patients { get; set; }
+    }
 
+    public class Patients : List<Patient>
+    {
+        public new Patient this[int index] => this.FirstOrDefault(x => x.Id == index);
     }
 }
