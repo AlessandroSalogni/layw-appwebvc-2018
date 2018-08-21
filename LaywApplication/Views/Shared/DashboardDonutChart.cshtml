@@ -1,7 +1,7 @@
 ﻿@model Tuple<string, string, string>
 <div class="box box-default text-center">
 	<div class="box-header with-border">
-		<h3 class="box-title">@Model.Item1</h3>
+		<h3 class="box-title" style="font-weight: 700">@Model.Item1</h3>
 		<div class="box-tools pull-right">
 			<button type="button" class="btn btn-box-tool" data-widget="collapse">
 				<i class="fa fa-minus"></i>
@@ -14,28 +14,71 @@
 				<div class="chart" id="chart-@Model.Item3"></div>
 			</div>
 		</div>
-
+	
 		<div class="row">
 			<div class="col-sm-12">
 				<div id="window-@Model.Item3">
 					<div id="achieved-@Model.Item3" class="col-sm-6" style="padding:0; border:none;"></div>
 					<div id="notachieved-@Model.Item3" class="col-sm-6" style="padding:0; border:none;"></div>
 				</div>
-				<span id="undo-@Model.Item3" class="k-button hide-on-narrow">Click here to open the window.</span>
-				<div class="responsive-message"></div>
+				<span id="undo-@Model.Item3" class="k-button hide-on-narrow">Click here to see your patients</span>
 			</div>
 		</div>
 	</div>
 </div>
+
+<style>
+	#window-@Model.Item3 .k-grid-content {
+		text-align: center;
+	}
+	#achieved-@Model.Item3 .k-grid-content tr {
+		background-color: #e6ffe6;
+	}
+	#achieved-@Model.Item3 .k-grid-content .k-alt {
+		background-color: #f4fff4;
+	}
+	#notachieved-@Model.Item3 .k-grid-content tr {
+		background-color: #ffe6e6;
+	}
+	#notachieved-@Model.Item3 .k-grid-content .k-alt {
+		background-color: #fff4f4;
+	}
+	#window-@Model.Item3 .k-link {
+		font-weight: 700;
+		text-align: center;
+		margin-right: 0;
+		padding-right: 0;
+	}
+	#window-@Model.Item3 .k-grid-filter {
+		position: absolute;
+		right: 0;
+		top: 4px;
+		margin-right: 0.5px;
+	}
+	#achieved-@Model.Item3 .k-link {
+		color: green;
+	}
+	#notachieved-@Model.Item3 .k-link {
+		color: red;
+	}
+	#undo-@Model.Item3 {
+		border-color: #b3d9ff;
+		border-radius: 15px;
+		background-color: transparent;
+		padding: 5px 20px;
+		margin: 5px;
+		box-shadow: 0 6px 6px rgba(0,0,0,.2), 0 2px 3px rgba(0,0,0,.05);
+	}
+</style>
 
 <script>
 	function create() {
 		var baseUrl = "@Url.Content("~/dashboard/" + Model.Item2)";
 
 		createChart(baseUrl, "@Model.Item3");
-		createGrid(baseUrl, "achieved", "@Model.Item3");
-		createGrid(baseUrl, "notachieved", "@Model.Item3");
-		createWindow("@Model.Item3");
+		createGrid(baseUrl, "achieved", "Achieved", "@Model.Item3");
+		createGrid(baseUrl, "notachieved", "Not Achieved", "@Model.Item3");
+		createWindow("@Model.Item1", "@Model.Item3");
 	}
 
 	function createChart(baseUrl, type) {
@@ -64,7 +107,8 @@
 				visible: true,
 				format: "N0",
 				template: "#= category # - #= kendo.format('{0:P}', percentage)#"
-			}, chartArea: {
+			},
+			chartArea: {
 				margin: 1,
 				height: 300
 			},
@@ -75,7 +119,7 @@
 		});
     }
 
-	function createGrid(baseUrl, root, type) {
+	function createGrid(baseUrl, root, header, type) {
 		$("#" + root + "-" + type).kendoGrid({
 			dataSource: {
 				transport: {
@@ -85,7 +129,7 @@
 						type: "get"
 					}
 				},
-				pageSize: 10,
+				pageSize: 20,
 				schema: {
 					model: {
 						fields: {
@@ -94,18 +138,18 @@
 					}
 				}
 			},
-			pageable: {
-				refresh: true,
-				pageSizes: true
-			},
+			height: 350,
+			sortable: true,
+			filterable: true,
+			pageable: true,
 			columns: [{
 				field: "name",
-				title: "Not Achieved"
+				title: header
 			}]
 		});
 	}
 
-	function createWindow(type) {
+	function createWindow(title, type) {
 		var myWindow = $("#window-" + type),
 			undo = $("#undo-" + type);
 
@@ -119,13 +163,12 @@
 		}
 
 		myWindow.kendoWindow({
-			width: "600px",
-			title: "About Alvar Aalto",
+			width: "750px",
+			title: title,
 			visible: false,
 			actions: [
 				"Pin",
 				"Minimize",
-				"Maximize",
 				"Close"
 			],
 			close: onClose
