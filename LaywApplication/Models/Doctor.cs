@@ -21,6 +21,6 @@ namespace LaywApplication.Models
 
     public class Patients : List<Patient>
     {
-        public new Patient this[int index] => this.FirstOrDefault(x => x.Id == index);
+        public new Patient this[int patientId] => this.FirstOrDefault(x => x.Id == patientId);
     }
 }
