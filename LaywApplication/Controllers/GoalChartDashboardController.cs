@@ -110,7 +110,6 @@ namespace LaywApplication.Controllers
             ParametersConfig = configJSON.Value.Parameters;
         }
 
-
         protected override async Task<int> GetPatientGoalAsync(int patientId, string date)
         {
             JObject jsonGoals = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
@@ -121,7 +120,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<int> GetPatientSummaryAsync(int patientId, string date)
         {
-            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=22-06-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
             JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
 
             return jsonSummaryRoot.GetValue(SummaryConfig.Key).Value<int>();
@@ -148,7 +147,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
             JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
 
             return jsonSummaryRoot.GetValue(SummaryConfig.Key).Value<float>();
@@ -175,7 +174,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=22-06-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
             JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
             JObject jsonCaloriesCategory = (JObject)jsonSummaryRoot.GetValue((SummaryConfig as CaloriesSummary).Object);
 

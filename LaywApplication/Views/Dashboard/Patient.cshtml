@@ -1,26 +1,45 @@
 ﻿@model Doctor
 @{
-    ViewBag.PageHeader = "Patient";
+    ViewBag.PageHeader = "Patient: " + ((Patient)ViewBag.CurrentPatient).Name;
 }
 
-<h2>Patient</h2>
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            @{
-                ViewBag.Type = "StepsDaily";
-                ViewBag.Title = "Goal Steps Daily";
-                await Html.RenderPartialAsync("PatientBarChart", (Patient)ViewBag.CurrentPatient);
-            }
-        </div>
-        <div class="col-sm-4">
-        </div>
-        <div class="col-sm-4">
-
+<div id="example">
+    <div class="demo-section k-content">
+        <div id="tabstrip">
+            <ul>
+                <li class="k-state-active">
+                    Statistics
+                </li>
+                <li>
+                    Diet
+                </li>
+                <li>
+                    Training
+                </li>
+            </ul>
+            <div>
+                @Html.RenderPartialAsync("PatientStatistics");
+            </div>
+            <div>
+                @Html.RenderPartialAsync("PatientDiet");
+            </div>
+            <div>
+                @Html.RenderPartialAsync("PatientTraining");
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+        $(document).ready(function () {
+            $("#tabstrip").kendoTabStrip({
+                animation: {
+                    open: {
+                        effects: "fadeIn"
+                    }
+                }
+            });
+        });
+</script>
 
 

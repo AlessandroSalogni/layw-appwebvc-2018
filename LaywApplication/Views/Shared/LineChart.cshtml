@@ -4,7 +4,7 @@
 </div>
 <script>
     function createChart() {
-            var baseUrl = "@Url.Content("~/dashboard/patients/" + @Model.Id + "/" + ViewBag.Url)";
+            var baseUrl = "@Url.Content("~/dashboard/patients/" + @Model.Id + "/weightpatient")";
             $("#chart-@ViewBag.Type").kendoChart({
                 dataSource: {
                     transport: {
@@ -13,7 +13,7 @@
                             dataType: "json",
                             type: "get",
                             data: {
-                                beginDate: "16-07-2018", 
+                                beginDate: "16-07-2018",
                                 period: "1w"
                             }
                         }
@@ -30,48 +30,42 @@
                     position: "top"
                 },
                 seriesDefaults: {
-                    type: "column"
+                    type: "line"
                 },
-                series:
-                [{
+                series: [{
                     field: "value",
                     categoryField: "day",
-                    name: "@ViewBag.Title"
+                    name: ""
                 }],
                 categoryAxis: {
                     labels: {
                         rotation: -90
                     },
-                    majorGridLines: {
-                        visible: false
+                    crosshair: {
+                        visible: true
                     }
                 },
                 valueAxis: {
                     labels: {
                         format: "N0"
                     },
-                    majorUnit: 1000,
-                    plotBands: [{
-                        from: 0,
-                        to: 1000, //TODO Schiaffato, trovare il modo di prenderlo
-                        color: "#c00",
-                        opacity: 0.3
-                    }],
-                    line: {
-                        visible: false
-                    }
+                    majorUnit: 220,
+                    plotBands: [
+                        {
+                            from: 0,
+                            to: 60, //TODO Schiaffato, trovare il modo di prenderlo
+                            color: "#00FFFF",
+                            opacity: 0.3
+                        }],
                 },
                 tooltip: {
                     visible: true,
+                    shared: true,
                     format: "N0"
                 }
             });
-    }
+        }
 
-    $(window).bind("resize", function () {
-        $(".chart").data("kendoChart").refresh();
-    });
-
-    $(document).ready(createChart);
-    $(document).bind("kendo:skinChange", createChart);
+        $(document).ready(createChart);
+        $(document).bind("kendo:skinChange", createChart);
 </script>
