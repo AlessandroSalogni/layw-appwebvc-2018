@@ -3,36 +3,43 @@
     ViewBag.PageHeader = "Patient: " + ((Patient)ViewBag.CurrentPatient).Name;
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            @{
-                ViewBag.Type = "Weights";
-                ViewBag.Title = "Weight";
-                await Html.RenderPartialAsync("LineChart", (Patient)ViewBag.CurrentPatient);
-            }
-        </div>
-    </div>
-    
-    <div class="row" style="padding-top:20px">
-        <div class="col-sm-6">
-            @{
-                ViewBag.Type = "StepsDaily";
-                ViewBag.Title = "Goal Steps Daily";
-                ViewBag.Url = "stepspatient";
-                await Html.RenderPartialAsync("PatientBarChart", (Patient)ViewBag.CurrentPatient);
-            }
-        </div>
-        
-        <div class="col-sm-6">
-            @{
-                ViewBag.Type = "CaloriesDaily";
-                ViewBag.Title = "Goal Calories Daily";
-                ViewBag.Url = "caloriesoutpatient";
-                await Html.RenderPartialAsync("PatientBarChart", (Patient)ViewBag.CurrentPatient);
-            }
+<div id="example">
+    <div class="demo-section k-content">
+        <div id="tabstrip">
+            <ul>
+                <li class="k-state-active">
+                    Statistics
+                </li>
+                <li>
+                    Diet
+                </li>
+                <li>
+                    Training
+                </li>
+            </ul>
+            <div>
+                @Html.RenderPartialAsync("PatientStatistics");
+            </div>
+            <div>
+                @Html.RenderPartialAsync("PatientDiet");
+            </div>
+            <div>
+                @Html.RenderPartialAsync("PatientTraining");
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+        $(document).ready(function () {
+            $("#tabstrip").kendoTabStrip({
+                animation: {
+                    open: {
+                        effects: "fadeIn"
+                    }
+                }
+            });
+        });
+</script>
 
 
