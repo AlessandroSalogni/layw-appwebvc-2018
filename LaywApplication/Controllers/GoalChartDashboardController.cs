@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
-using LaywApplication.Controllers.APIUtils;
+using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
@@ -40,16 +37,10 @@ namespace LaywApplication.Controllers
         public async Task<IEnumerable<Patient>> ReadAchieved()
         {
             List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
+
             List<Patient> patientList = new List<Patient>();
             foreach (string name in from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) <= 0 select x.Name)
-            {
-                Patient patient = new Patient { Name = name };
-                patientList.Add(patient);
-            }
-
-            int i = 0;
-            while (i < 50)
-                patientList.Add(new Patient { Name = "pippo " + i++ });
+                patientList.Add(new Patient { Name = name });
 
             return patientList;
         }
@@ -58,12 +49,10 @@ namespace LaywApplication.Controllers
         public async Task<IEnumerable<Patient>> ReadNotAchieved()
         {
             List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
+
             List<Patient> patientList = new List<Patient>();
             foreach (string name in from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) > 0 select x.Name)
-            {
-                Patient patient = new Patient { Name = name };
-                patientList.Add(patient);
-            }
+                patientList.Add(new Patient { Name = name });
 
             return patientList;
         }
@@ -112,7 +101,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<int> GetPatientGoalAsync(int patientId, string date)
         {
-            JObject jsonGoals = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
+            JObject jsonGoals = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
             JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
 
             return jsonGoalsRoot.GetValue(GoalConfig.Key).Value<int>();
@@ -120,7 +109,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<int> GetPatientSummaryAsync(int patientId, string date)
         {
-            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=22-06-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
             JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
 
             return jsonSummaryRoot.GetValue(SummaryConfig.Key).Value<int>();
@@ -139,7 +128,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<float> GetPatientGoalAsync(int patientId, string date)
         {
-            JObject jsonGoals = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
+            JObject jsonGoals = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
             JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
 
             return jsonGoalsRoot.GetValue(GoalConfig.Key).Value<float>();
@@ -147,7 +136,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
             JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
 
             return jsonSummaryRoot.GetValue(SummaryConfig.Key).Value<float>();
@@ -166,7 +155,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<float> GetPatientGoalAsync(int patientId, string date)
         {
-            JObject jsonGoals = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
+            JObject jsonGoals = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + date);
             JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
 
             return jsonGoalsRoot.GetValue(GoalConfig.Key).Value<float>();
@@ -174,7 +163,7 @@ namespace LaywApplication.Controllers
 
         protected override async Task<float> GetPatientSummaryAsync(int patientId, string date)
         {
-            JObject jsonSummary = await Utils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=22-06-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
+            JObject jsonSummary = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + patientId + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=18-07-2018"); //todo + date.ToShortDateString().Replace('/', '-'));
             JObject jsonSummaryRoot = jsonSummary.GetValue(SummaryConfig.Root) as JObject;
             JObject jsonCaloriesCategory = (JObject)jsonSummaryRoot.GetValue((SummaryConfig as CaloriesSummary).Object);
 

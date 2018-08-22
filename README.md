@@ -1,8 +1,8 @@
 # LAYW - progetto web
 
 ## Link utili
-	https://www.telerik.com/kendo-ui/dropdownlist
-	https://github.com/dmantovani73/Health - link MVC
+	[Kendo](https://www.telerik.com/kendo-ui)
+	[MVC](https://github.com/dmantovani73/Health)
 	
 ## Struttura sito:
 	1) Pagina 1 -> login

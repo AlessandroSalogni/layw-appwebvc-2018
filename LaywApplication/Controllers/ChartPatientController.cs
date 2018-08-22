@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
-using LaywApplication.Controllers.APIUtils;
+using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +66,7 @@ namespace LaywApplication.Controllers
         public async override Task<List<HistoryElement>> GetHistory(int id, string beginDate, string period)
         {
             List<HistoryElement> history = new List<HistoryElement>();
-            JObject obj = await Utils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018&" + ParametersConfig.Period + "=" + period);//todo beginDate
+            JObject obj = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018&" + ParametersConfig.Period + "=" + period);//todo beginDate
             JArray array = (JArray)obj.GetValue(SummaryConfig.Root);
 
             foreach (JObject element in array)
@@ -103,7 +103,7 @@ namespace LaywApplication.Controllers
         public async override Task<List<HistoryElement>> GetHistory(int id, string beginDate, string period)
         {
             List<HistoryElement> history = new List<HistoryElement>();
-            JObject obj = await Utils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018&" + ParametersConfig.Period + "=" + period);//todo beginDate
+            JObject obj = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018&" + ParametersConfig.Period + "=" + period);//todo beginDate
             JArray array = (JArray)obj.GetValue(SummaryConfig.Root);
 
             foreach (JObject element in array)
@@ -139,7 +139,7 @@ namespace LaywApplication.Controllers
         public async override Task<List<HistoryElement>> GetHistory(int id, string beginDate, string period)
         {
             List<HistoryElement> history = new List<HistoryElement>();
-            JObject obj = await Utils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018&" + ParametersConfig.Period + "=" + period);//todo beginDate
+            JObject obj = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=27-06-2018&" + ParametersConfig.Period + "=" + period);//todo beginDate
             JArray array = (JArray)obj.GetValue(SummaryConfig.Root);
 
             foreach (JObject element in array)

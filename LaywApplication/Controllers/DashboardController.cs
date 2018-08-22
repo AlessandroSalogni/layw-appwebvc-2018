@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
-using LaywApplication.Controllers.APIUtils;
+using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -59,9 +59,9 @@ namespace LaywApplication.Controllers
 
             string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
 
-            Utils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
+            APIUtils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
 
-            JObject json = Utils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
+            JObject json = APIUtils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
             JArray jsonArray = (JArray)json.GetValue("users");
 
             foreach (JObject obj in jsonArray)

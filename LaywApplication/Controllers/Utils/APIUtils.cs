@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace LaywApplication.Controllers.APIUtils
+namespace LaywApplication.Controllers.Utils
 {
-    public static class Utils   
+    public static class APIUtils   
     {
         private static readonly HttpClient client = new HttpClient();
 
