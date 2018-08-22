@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LaywApplication.Controllers.APIUtils;
+using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
