@@ -40,16 +40,10 @@ namespace LaywApplication.Controllers
         public async Task<IEnumerable<Patient>> ReadAchieved()
         {
             List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
+
             List<Patient> patientList = new List<Patient>();
             foreach (string name in from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) <= 0 select x.Name)
-            {
-                Patient patient = new Patient { Name = name };
-                patientList.Add(patient);
-            }
-
-            int i = 0;
-            while (i < 50)
-                patientList.Add(new Patient { Name = "pippo " + i++ });
+                patientList.Add(new Patient { Name = name });
 
             return patientList;
         }
@@ -58,12 +52,10 @@ namespace LaywApplication.Controllers
         public async Task<IEnumerable<Patient>> ReadNotAchieved()
         {
             List<AchievedGoals> achievedGoalsList = await GetAchievedGoalsAsync(DateTime.Now.ToShortDateString().Replace('/', '-'));
+
             List<Patient> patientList = new List<Patient>();
             foreach (string name in from x in achievedGoalsList where x.Goal.CompareTo(x.Summary) > 0 select x.Name)
-            {
-                Patient patient = new Patient { Name = name };
-                patientList.Add(patient);
-            }
+                patientList.Add(new Patient { Name = name });
 
             return patientList;
         }
