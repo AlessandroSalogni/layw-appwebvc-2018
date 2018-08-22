@@ -14,6 +14,7 @@ namespace LaywApplication.Controllers
 {
     public abstract class GoalChartDashboardController<TType> : Controller where TType : IComparable<TType>
     {
+        public const string SessionKeyName = "_Doctor";
         protected Configuration.JsonData GoalConfig { get; set; }
         protected Configuration.JsonData SummaryConfig { get; set; }
         protected Configuration.Parameters ParametersConfig { get; set; }
@@ -75,7 +76,7 @@ namespace LaywApplication.Controllers
         {
             List<AchievedGoals> achievedGoalsList = new List<AchievedGoals>();
 
-            foreach (Patient patient in DashboardController.doctor.Patients)
+            foreach (Patient patient in HttpContext.Session.Get<Doctor>(SessionKeyName).Patients)
             {
                 AchievedGoals achievedGoals;
                 achievedGoals.Goal = await GetPatientGoalAsync(patient.Id, date);

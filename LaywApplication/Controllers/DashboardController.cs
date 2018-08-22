@@ -16,8 +16,8 @@ namespace LaywApplication.Controllers
 
     public class DashboardController : Controller
     {
+        public const string SessionKeyName = "_Doctor";
         private readonly IOptions<ServerIP> config;
-        public static Doctor doctor;
 
         public DashboardController(IOptions<ServerIP> config)
         {
@@ -29,7 +29,9 @@ namespace LaywApplication.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                BuildDoctor();
+                var doctor = BuildDoctor();
+                HttpContext.Session.Set(SessionKeyName, doctor);
+
                 return View(doctor);
             }
             else
@@ -41,7 +43,7 @@ namespace LaywApplication.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                BuildDoctor();
+                var doctor = BuildDoctor();
 
                 ViewBag.CurrentPatient = doctor.Patients[id];
                 return View("Patient", doctor);
@@ -50,9 +52,9 @@ namespace LaywApplication.Controllers
                 return Redirect("~/signin");
         }
 
-        private void BuildDoctor()
+        private Doctor BuildDoctor()
         {
-            doctor = new Doctor(
+            var doctor = new Doctor(
                 User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value,
                 User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value,
                 new Uri(User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri").Value));
@@ -66,6 +68,8 @@ namespace LaywApplication.Controllers
 
             foreach (JObject obj in jsonArray)
                 doctor.Patients.Add(JsonConvert.DeserializeObject<Patient>(obj.ToString()));
+
+            return doctor;
         }
 
     }
