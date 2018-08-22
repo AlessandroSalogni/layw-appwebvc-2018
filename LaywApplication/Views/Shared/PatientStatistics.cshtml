@@ -15,13 +15,13 @@
     </div>
 
     <div class="row" style="padding-top:20px">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             @{
                 await Html.RenderPartialAsync("PatientBarChart", Tuple.Create("StepsDaily", "Goal Steps Daily", "stepspatient", (Patient)ViewBag.CurrentPatient));
             }
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             @{
                 await Html.RenderPartialAsync("PatientBarChart", Tuple.Create("CaloriesDaily", "Goal Calories Daily", "caloriesoutpatient", (Patient)ViewBag.CurrentPatient));
             }

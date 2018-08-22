@@ -1,101 +1,44 @@
 ﻿@model Tuple<string, string, string, Patient>
-<div class="demo-section k-content wide">
-    <div id="chart-@Model.Item1"></div>
-    <input type="date" id="beginDate-@Model.Item1" value="2018-07-16">
-    <input type="text" id="period-@Model.Item1" value="1m" />
-    <button id="refresh-@Model.Item1">refresh</button>
+@{
+    string url = Url.Content("~/dashboard/patients/" + Model.Item4.Id + "/" + Model.Item3);
+    string divId = Model.Item1;
+    string title = Model.Item2;
+}
 
+<div class="demo-section k-content wide text-center">
+    <div id="chart-@Model.Item1" class="chartResize"></div>
+
+    <div class="demo-section k-content">
+        <input id="beginDate-@Model.Item1" title="datepicker"/>
+        
+        <ul id="period-@Model.Item1">
+            <li>1w</li>
+            <li>1m</li>
+        </ul>
+    </div>
 </div>
+
+<script src="~/js-charts/bar_chart_patient.js" type="text/javascript"></script>
+
 <script>
-    function formatNumberLength(num, length) {
-        var r = "" + num;
-        while (r.length < length)
-            r = "0" + r;
-        return r;
-    }
+    var period = "1w";
+    $(document).ready(createBarChart("@url", "@divId", "@title", $("beginDate-@Model.Item1").val() , period));
+    $(document).bind("kendo:skinChange", createBarChart("@url", "@divId", "@title", $("beginDate-@Model.Item1").val() , period));
 
-    function formatDate(date) {
-        var d = new Date(date);
-        var day = formatNumberLength(d.getDate(), 2);
-        var monthIndex = formatNumberLength(d.getMonth() + 1, 2);
-        var year = d.getFullYear();
-
-        return day + '-' + monthIndex + '-' + year;
-    }
-
-    function createChart() {
-        var baseUrl = "@Url.Content("~/dashboard/patients/" + @Model.Item4.Id + "/" + @Model.Item3)";
-            $("#chart-@Model.Item1").kendoChart({
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: baseUrl,
-                            dataType: "json",
-                            type: "get",
-                            data: {
-                                beginDate: $("#beginDate-@Model.Item1").val(),
-                                period: $("#period-@Model.Item1").val()
-                            },
-                        }
-                    },
-                    sort: {
-                        field: "day",
-                        dir: "asc"
-                    },
-                },
-                title: {
-                    text: "@Model.Item2"
-                },
-                legend: {
-                    position: "top"
-                },
-                seriesDefaults: {
-                    type: "column"
-                },
-                series:
-                [{
-                    field: "value",
-                    categoryField: "day",
-                    name: "@Model.Item2"
-                }],
-                categoryAxis: {
-                    labels: {
-                        rotation: -90
-                    },
-                    majorGridLines: {
-                        visible: false
-                    }
-                },
-                valueAxis: {
-                    labels: {
-                        format: "N0"
-                    },
-                    majorUnit: 1000,
-                    plotBands: [{
-                        from: 0,
-                        to: 1000, //TODO Schiaffato, trovare il modo di prenderlo
-                        color: "#c00",
-                        opacity: 0.3
-                    }],
-                    line: {
-                        visible: false
-                    }
-                },
-                tooltip: {
-                    visible: true,
-                    format: "N0"
-                }
-            });
-    }
-
-    $(window).bind("resize", function () {
-        $(".chart").data("kendoChart").refresh();
+    $("#refresh-@Model.Item1").change(function () {
+        $(document).ready(createBarChart("@url", "@divId", "@title", $("beginDate-@Model.Item1").val() , period));
     });
-    
-    $("#refresh-@Model.Item1").click(create);
 
-    function create() {
-        $(document).ready(createChart);
-        $(document).bind("kendo:skinChange", createChart);
-    }
+    $("#period-@Model.Item1").kendoButtonGroup({
+        select: function (e) {
+            period = $("#period-@Model.Item1").children().eq(e.indices).text();
+            $(document).ready(createBarChart("@url", "@divId", "@title",  $("beginDate-@Model.Item1").val(), period));
+        },
+        index: 0
+    });
+
+    $("#beginDate-@Model.Item1").kendoDatePicker({
+        value: "16-07-2018",
+        format: "dd-MM-yyyy"
+    });
 </script>
