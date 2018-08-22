@@ -8,23 +8,23 @@
         <div id="tabstrip">
             <ul>
                 <li class="k-state-active">
-                    Statistics
+                    Diet
                 </li>
                 <li>
-                    Diet
+                    Statistics
                 </li>
                 <li>
                     Training
                 </li>
             </ul>
             <div>
-                @Html.RenderPartialAsync("PatientStatistics");
+                @{await Html.RenderPartialAsync("PatientDiet"); }
             </div>
             <div>
-                @Html.RenderPartialAsync("PatientDiet");
+                @{await Html.RenderPartialAsync("PatientStatistics"); }
             </div>
             <div>
-                @Html.RenderPartialAsync("PatientTraining");
+                @{await Html.RenderPartialAsync("PatientTraining"); }
             </div>
         </div>
     </div>
