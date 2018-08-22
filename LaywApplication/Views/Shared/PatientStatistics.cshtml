@@ -17,19 +17,13 @@
     <div class="row" style="padding-top:20px">
         <div class="col-sm-6">
             @{
-                ViewBag.Type = "StepsDaily";
-                ViewBag.Title = "Goal Steps Daily";
-                ViewBag.Url = "stepspatient";
-                await Html.RenderPartialAsync("PatientBarChart", (Patient)ViewBag.CurrentPatient);
+                await Html.RenderPartialAsync("PatientBarChart", Tuple.Create("StepsDaily", "Goal Steps Daily", "stepspatient", (Patient)ViewBag.CurrentPatient));
             }
         </div>
 
         <div class="col-sm-6">
             @{
-                ViewBag.Type = "CaloriesDaily";
-                ViewBag.Title = "Goal Calories Daily";
-                ViewBag.Url = "caloriesoutpatient";
-                await Html.RenderPartialAsync("PatientBarChart", (Patient)ViewBag.CurrentPatient);
+                await Html.RenderPartialAsync("PatientBarChart", Tuple.Create("CaloriesDaily", "Goal Calories Daily", "caloriesoutpatient", (Patient)ViewBag.CurrentPatient));
             }
         </div>
     </div>
