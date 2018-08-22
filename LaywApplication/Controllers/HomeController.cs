@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using LaywApplication.Controllers.Utils;
-using LaywApplication.Models;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.Controllers
 {

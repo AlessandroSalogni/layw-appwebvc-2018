@@ -59,9 +59,9 @@ namespace LaywApplication.Controllers
 
             string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
 
-            Utils.APIUtils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
+            APIUtils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
 
-            JObject json = Utils.APIUtils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
+            JObject json = APIUtils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
             JArray jsonArray = (JArray)json.GetValue("users");
 
             foreach (JObject obj in jsonArray)
