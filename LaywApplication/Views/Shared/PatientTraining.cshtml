@@ -4,7 +4,7 @@
 }
 
 <div id="example">
-    <div id="grid"></div>
+    <div id="grid-training"></div>
     <script>
                     $(document).ready(function () {
                         var crudServiceBaseUrl = "@Url.Content("~/dashboard/training/")",
@@ -51,14 +51,14 @@
                                 }
                             });
 
-                        $("#grid").kendoGrid({
+                        $("#grid-training").kendoGrid({
                             dataSource: dataSource,
                             pageable: true,
                             height: 400,
                             columns: [
-                                { field:"day", title: "Day of week", width: "200px" },
+                                { field:"day", title: "Day of week", width: "20px" },
                                 { field: "exercise", title: "Exercise", width: "120px" },
-                                { command: ["edit"], title: "&nbsp;", width: "120px" }
+                                { command: ["edit"], title: "&nbsp;", width: "20px" }
                             ],
 							editable: "popup"
 							//,
