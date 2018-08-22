@@ -21,14 +21,18 @@
                                         dataType: "json",
                                         contentType: "application/json"
                                     },
-                                    //destroy: {
-                                    //    url: crudServiceBaseUrl + "/Products/Destroy",
-                                    //    dataType: "jsonp"
-                                    //},
-                                    //create: {
-                                    //    url: crudServiceBaseUrl + "/Products/Create",
-                                    //    dataType: "jsonp"
-                                    //},
+                                    destroy: {
+                                        url: crudServiceBaseUrl + "destroy",
+										type: "post",
+										dataType: "json",
+										contentType: "application/json"
+                                    },
+                                    create: {
+                                        url: crudServiceBaseUrl + "create",
+										type: "post",
+										dataType: "json",
+										contentType: "application/json"
+                                    },
                                     parameterMap: function (model, operation) {
                                         if (operation !== "read" && model) {
                                             return kendo.stringify(model);
@@ -57,21 +61,22 @@
                             pageable: true,
                             height: 400,
                             columns: [
-                                { field:"day", title: "DayOfWeek", width: "200px" },
+                                { field:"day", title: "Day of week", width: "200px" },
                                 { field: "breakfast", title:"Breakfast",  width: "120px" },
-                                { field: "morningSnack", title: "MorningSnack", width: "120px" },
+                                { field: "morningSnack", title: "Morning snack", width: "120px" },
                                 { field: "lunch", title: "Lunch", width: "120px" },
-                                { field: "afternoonSnack", title: "AfternoonSnack", width: "120px" },
+                                { field: "afternoonSnack", title: "Afternoon snack", width: "120px" },
                                 { field: "dinner", title: "Dinner", width: "120px" },
-                                { field: "eveningSnack", title: "EveningSnack", width: "120px" },
+                                { field: "eveningSnack", title: "Evening snack", width: "120px" },
                                 { command: ["edit"], title: "&nbsp;", width: "120px" }],
-                            editable: "popup",
-                            saveChanges: function (e) {
-                                // Refresh della grid per avere gli ID.
-                                e.sender.one("dataBound", function () {
-                                    e.sender.dataSource.read();
-                                });
-                            }
+							editable: "popup"
+							//,
+       //                     saveChanges: function (e) {
+       //                         // Refresh della grid per avere gli ID.
+       //                         e.sender.one("dataBound", function () {
+       //                             e.sender.dataSource.read();
+       //                         });
+       //                     }
                         });
             });
         </script>

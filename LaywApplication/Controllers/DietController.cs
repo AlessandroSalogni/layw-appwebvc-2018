@@ -11,7 +11,7 @@ namespace LaywApplication.Controllers
     {
         static readonly object Empty = new { };
 
-        [HttpGet ("~/dashboard/diet")]
+        [HttpGet("~/dashboard/diet")]
         public IEnumerable<Diet> Read()
         {
             List<Diet> dietList = new List<Diet>();
@@ -27,11 +27,21 @@ namespace LaywApplication.Controllers
             return dietList;
         }
 
-        [HttpPost ("~/dashboard/diet/update")]
+        [HttpPost("~/dashboard/diet/create")]
+        public object Create([FromBody]Diet item)
+        {
+            return Empty;
+        }
+
+        [HttpPost("~/dashboard/diet/update")]
         public object Update([FromBody]Diet item)
         {
-
             return Empty;
+        }
+
+        [HttpPost("~/dashboard/diet/delete")]
+        public void Delete([FromBody]Diet item)
+        {
         }
     }
 }
