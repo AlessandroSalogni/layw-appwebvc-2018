@@ -6,7 +6,8 @@
 <div id="example">
     <div id="grid-training"></div>
     <script>
-                    $(document).ready(function () {
+        $(document).ready(function () {
+            var tempSavedRecordsTraining = null;
                         var crudServiceBaseUrl = "@Url.Content("~/dashboard/training/")",
                             dataSource = new kendo.data.DataSource({
                                 transport: {
@@ -60,7 +61,22 @@
                                 { field: "exercise", title: "Exercise", width: "120px" },
                                 { command: ["edit"], title: "&nbsp;", width: "20px" }
                             ],
-							editable: "popup"
+                            editable: "popup",
+                            save: function (e) {
+                                updateTempRecordsTraining('#grid-training');
+                            },
+                            cancel: function (e) {
+                                if (tempSavedRecordsTraining != null) {
+                                    $('#grid-training').data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
+                                }
+                                else {
+                                    $('#grid-training').data('kendoGrid').dataSource.cancelChanges();
+                                }
+                            },
+                            remove: function (e) {
+                                $('#grid-training').data('kendoGrid').dataSource.remove(e.model)
+                                updateTempRecordsTraining('#grid-training');
+                            }
 							//,
        //                     saveChanges: function (e) {
        //                         // Refresh della grid per avere gli ID.
@@ -69,6 +85,10 @@
        //                         });
        //                     }
                         });
-            });
+        });
+        function updateTempRecordsTraining(id) {
+            tempSavedRecordsTraining = $(id).data('kendoGrid').dataSource.data();
+            tempSavedRecordsTraining = tempSavedRecordsTraining.toJSON();
+        }
     </script>
 </div>
