@@ -2,96 +2,94 @@
     ViewData["Title"] = "PatientTraining";
 }
 
-<div id="example">
-    <div id="grid-training"></div>
-    <script>
-        $(document).ready(function () {
-            var tempSavedRecordsTraining = null;
-                        var crudServiceBaseUrl = "@Url.Content("~/dashboard/training/")",
-                            dataSource = new kendo.data.DataSource({
-                                transport: {
-                                    read:  {
-                                        url: crudServiceBaseUrl,
-                                        dataType: "json",
-                                        type: "get"
-                                    },
-                                    update: {
-                                        url: crudServiceBaseUrl + "update",
-                                        type: "post",
-                                        dataType: "json",
-                                        contentType: "application/json"
-                                    },
-                                    destroy: {
-                                        url: crudServiceBaseUrl + "destroy",
-										type: "post",
-										dataType: "json",
-										contentType: "application/json"
-                                    },
-                                    create: {
-                                        url: crudServiceBaseUrl + "create",
-										type: "post",
-										dataType: "json",
-										contentType: "application/json"
-                                    },
-                                    parameterMap: function (model, operation) {
-                                        if (operation !== "read" && model) {
-                                            return kendo.stringify(model);
-                                        }
-                                    }
+<div id="grid-training"></div>
+<script>
+    $(document).ready(function () {
+        var tempSavedRecordsTraining = null;
+                    var crudServiceBaseUrl = "@Url.Content("~/dashboard/training/")",
+                        dataSource = new kendo.data.DataSource({
+                            transport: {
+                                read:  {
+                                    url: crudServiceBaseUrl,
+                                    dataType: "json",
+                                    type: "get"
                                 },
-                                batch: false,
-                                pageSize: 7,
-                                schema: {
-                                    model: {
-                                        fields: {
-                                            day: { type: "string", editable: false, nullable: false},
-                                            exercise1: { type: "string" },
-                                            exercise2: { type: "string" },
-                                            exercise3: { type: "string" }
-                                        }
+                                update: {
+                                    url: crudServiceBaseUrl + "update",
+                                    type: "post",
+                                    dataType: "json",
+                                    contentType: "application/json"
+                                },
+                                destroy: {
+                                    url: crudServiceBaseUrl + "destroy",
+									type: "post",
+									dataType: "json",
+									contentType: "application/json"
+                                },
+                                create: {
+                                    url: crudServiceBaseUrl + "create",
+									type: "post",
+									dataType: "json",
+									contentType: "application/json"
+                                },
+                                parameterMap: function (model, operation) {
+                                    if (operation !== "read" && model) {
+                                        return kendo.stringify(model);
                                     }
                                 }
-                            });
-
-            $("#grid-training").kendoGrid({
-                            dataSource: dataSource,
-                            pageable: true,
-                            height: 400,
-                            columns: [
-                                { field:"day", title: "Day of week", width: "40px" },
-                                { field: "exercise1", title: "Exercise 1", width: "100px" },
-                                { field: "exercise2", title: "Exercise 2", width: "100px" },
-                                { field: "exercise3", title: "Exercise 3", width: "100px" },
-                                { command: ["edit"], title: "&nbsp;", width: "30px" }
-                            ],
-                            editable: "popup",
-                            save: function (e) {
-                                updateTempRecordsTraining(gridId);
                             },
-                            cancel: function (e) {
-                                if (tempSavedRecordsTraining != null) {
-                                    $('#grid-training').data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
+                            batch: false,
+                            pageSize: 7,
+                            schema: {
+                                model: {
+                                    fields: {
+                                        day: { type: "string", editable: false, nullable: false},
+                                        exercise1: { type: "string" },
+                                        exercise2: { type: "string" },
+                                        exercise3: { type: "string" }
+                                    }
                                 }
-                                else {
-                                    $('#grid-training').data('kendoGrid').dataSource.cancelChanges();
-                                }
-                            },
-                            remove: function (e) {
-                                $('#grid-training').data('kendoGrid').dataSource.remove(e.model)
-                                updateTempRecordsTraining('#grid-training');
                             }
-							//,
-       //                     saveChanges: function (e) {
-       //                         // Refresh della grid per avere gli ID.
-       //                         e.sender.one("dataBound", function () {
-       //                             e.sender.dataSource.read();
-       //                         });
-       //                     }
                         });
-        });
-        function updateTempRecordsTraining(id) {
-            tempSavedRecordsTraining = $(id).data('kendoGrid').dataSource.data();
-            tempSavedRecordsTraining = tempSavedRecordsTraining.toJSON();
-        }
-    </script>
-</div>
+
+        $("#grid-training").kendoGrid({
+                        dataSource: dataSource,
+                        pageable: true,
+                        height: 400,
+                        columns: [
+                            { field:"day", title: "Day of week", width: "40px" },
+                            { field: "exercise1", title: "Exercise 1", width: "100px" },
+                            { field: "exercise2", title: "Exercise 2", width: "100px" },
+                            { field: "exercise3", title: "Exercise 3", width: "100px" },
+                            { command: ["edit"], title: "&nbsp;", width: "30px" }
+                        ],
+                        editable: "popup",
+                        save: function (e) {
+                            updateTempRecordsTraining(gridId);
+                        },
+                        cancel: function (e) {
+                            if (tempSavedRecordsTraining != null) {
+                                $('#grid-training').data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
+                            }
+                            else {
+                                $('#grid-training').data('kendoGrid').dataSource.cancelChanges();
+                            }
+                        },
+                        remove: function (e) {
+                            $('#grid-training').data('kendoGrid').dataSource.remove(e.model)
+                            updateTempRecordsTraining('#grid-training');
+                        }
+						//,
+    //                     saveChanges: function (e) {
+    //                         // Refresh della grid per avere gli ID.
+    //                         e.sender.one("dataBound", function () {
+    //                             e.sender.dataSource.read();
+    //                         });
+    //                     }
+                    });
+    });
+    function updateTempRecordsTraining(id) {
+        tempSavedRecordsTraining = $(id).data('kendoGrid').dataSource.data();
+        tempSavedRecordsTraining = tempSavedRecordsTraining.toJSON();
+    }
+</script>
