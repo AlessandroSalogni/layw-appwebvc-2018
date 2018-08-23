@@ -18,8 +18,8 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div id="window-@Model.Item3">
-					<div id="achieved-@Model.Item3" class="col-sm-6" style="padding:0; border:none;"></div>
-					<div id="notachieved-@Model.Item3" class="col-sm-6" style="padding:0; border:none;"></div>
+					<div id="achieved-@Model.Item3" class="col-sm-6 no-space"></div>
+					<div id="notachieved-@Model.Item3" class="col-sm-6 no-space"></div>
 				</div>
 				<span id="undo-@Model.Item3" class="k-button hide-on-narrow">Click here for more details</span>
 			</div>
@@ -69,6 +69,11 @@
 		margin: 5px;
 		box-shadow: 0 6px 6px rgba(0,0,0,.2), 0 2px 3px rgba(0,0,0,.05);
 	}
+
+    .no-space{
+        padding:0;
+        border:none;
+    }
 </style>
 
 <script>
