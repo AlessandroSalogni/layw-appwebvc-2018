@@ -32,9 +32,7 @@
     });
 
     $("#beginDate-@divId").kendoDatePicker({
-        value: "16-07-2018",
         format: "dd-MM-yyyy",
-        change: createBarChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000),
-        close: createBarChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000)
+        change: function () {createBarChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000)}
     });
 </script>
