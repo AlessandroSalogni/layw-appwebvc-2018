@@ -68,15 +68,16 @@ namespace LaywApplication.Controllers
             JObject obj = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate + "&" + ParametersConfig.Period + "=" + period);
             JArray array = (JArray)obj.GetValue(SummaryConfig.Root);
 
+            //todo controllare se il dato esiste. Se non esiste ancora gestire l'eccezione
             JObject jsonGoals = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate);
-            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
+            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject; 
             var goalJson = jsonGoalsRoot.GetValue(GoalConfig.Key).Value<int>();
 
             foreach (JObject element in array)
             {
                 HistoryElement historyElement = new HistoryElement
                 {
-                    goal = 1000,
+                    goal = goalJson,
                     value = element.GetValue(SummaryConfig.Key).Value<int>(),
                     day = element.GetValue("date").Value<string>()
                 };
