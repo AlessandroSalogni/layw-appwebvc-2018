@@ -1,14 +1,12 @@
-﻿@model Tuple<string>
-@{
+﻿@{
     ViewData["Title"] = "PatientTraining";
 }
 
 <div id="example">
-    <div id="grid-training-@Model.Item1"></div>
+    <div id="grid-training"></div>
     <script>
         $(document).ready(function () {
             var tempSavedRecordsTraining = null;
-            var gridId = "#grid-training-@Model.Item1";
                         var crudServiceBaseUrl = "@Url.Content("~/dashboard/training/")",
                             dataSource = new kendo.data.DataSource({
                                 transport: {
@@ -55,7 +53,7 @@
                                 }
                             });
 
-                          $(gridId).kendoGrid({
+            $("#grid-training").kendoGrid({
                             dataSource: dataSource,
                             pageable: true,
                             height: 400,
@@ -72,15 +70,15 @@
                             },
                             cancel: function (e) {
                                 if (tempSavedRecordsTraining != null) {
-                                    $(gridId).data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
+                                    $('#grid-training').data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
                                 }
                                 else {
-                                    $(gridId).data('kendoGrid').dataSource.cancelChanges();
+                                    $('#grid-training').data('kendoGrid').dataSource.cancelChanges();
                                 }
                             },
                             remove: function (e) {
-                                $gridId).data('kendoGrid').dataSource.remove(e.model)
-                                updateTempRecordsTraining(gridId);
+                                $('#grid-training').data('kendoGrid').dataSource.remove(e.model)
+                                updateTempRecordsTraining('#grid-training');
                             }
 							//,
        //                     saveChanges: function (e) {
