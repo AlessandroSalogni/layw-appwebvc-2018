@@ -215,6 +215,16 @@ function createWindow(divId, title) {
     }).data("kendoWindow").center();
 }
 
+function createTabStrip(divId) {
+    $("#tabstrip-" + divId).kendoTabStrip({
+        animation: {
+            open: {
+                effects: "fadeIn"
+            }
+        }
+    });
+}
+
 $(window).bind("resize", function () {
     $(".resize").data("kendoChart").refresh();
 });
