@@ -22,6 +22,7 @@ namespace LaywApplication.Controllers
         protected readonly IOptions<ServerIP> config;
         private readonly IsoDateTimeConverter dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
 
+        //todo mettere nel modello e togliere json dal metodo Read (stessa cosa per la dashboard) 
         public struct HistoryElement
         {
             public TType value;
