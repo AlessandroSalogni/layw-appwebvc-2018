@@ -1,13 +1,14 @@
-﻿
+﻿@model Tuple<string>
 @{
     ViewData["Title"] = "PatientTraining";
 }
 
 <div id="example">
-    <div id="grid-training"></div>
+    <div id="grid-training-@Model.Item1"></div>
     <script>
         $(document).ready(function () {
             var tempSavedRecordsTraining = null;
+            var gridId = "#grid-training-@Model.Item1";
                         var crudServiceBaseUrl = "@Url.Content("~/dashboard/training/")",
                             dataSource = new kendo.data.DataSource({
                                 transport: {
@@ -54,7 +55,7 @@
                                 }
                             });
 
-                        $("#grid-training").kendoGrid({
+                          $(gridId).kendoGrid({
                             dataSource: dataSource,
                             pageable: true,
                             height: 400,
@@ -67,19 +68,19 @@
                             ],
                             editable: "popup",
                             save: function (e) {
-                                updateTempRecordsTraining('#grid-training');
+                                updateTempRecordsTraining(gridId);
                             },
                             cancel: function (e) {
                                 if (tempSavedRecordsTraining != null) {
-                                    $('#grid-training').data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
+                                    $(gridId).data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
                                 }
                                 else {
-                                    $('#grid-training').data('kendoGrid').dataSource.cancelChanges();
+                                    $(gridId).data('kendoGrid').dataSource.cancelChanges();
                                 }
                             },
                             remove: function (e) {
-                                $('#grid-training').data('kendoGrid').dataSource.remove(e.model)
-                                updateTempRecordsTraining('#grid-training');
+                                $gridId).data('kendoGrid').dataSource.remove(e.model)
+                                updateTempRecordsTraining(gridId);
                             }
 							//,
        //                     saveChanges: function (e) {
