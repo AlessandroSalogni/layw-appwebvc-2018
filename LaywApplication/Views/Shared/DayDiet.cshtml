@@ -1,4 +1,4 @@
-﻿@model  Tuple<string>
+﻿@model Tuple<string>
 @{
     ViewData["Title"] = "DayDiet";
 }
@@ -61,10 +61,10 @@
                             height: 400,
                             columns: [
                                 { field:"meals", title: "Meals", width: "100px" },
-                                { field: "option1", title:"Option 1",  width: "130px" },
-                                { field: "option2", title: "Option 2", width: "130px" },
-                                { field: "option3", title: "Option 3", width: "130px" },
-                                { command: ["edit"], title: "&nbsp;", width: "50px" }],
+                                { field: "option1", title:"Option1",  width: "130px" },
+                                { field: "option2", title: "Option2", width: "130px" },
+                                { field: "option3", title: "Option3", width: "130px" },
+                                { command: ["edit"], title: "&nbsp;", width: "80px" }],
                             editable: "popup",
                             save: function (e) {
                                 updateTempRecordsDiet(gridId);
@@ -96,4 +96,3 @@
             }
     </script>
 </div>
-
