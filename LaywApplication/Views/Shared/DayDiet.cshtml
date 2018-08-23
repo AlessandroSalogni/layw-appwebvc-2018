@@ -1,0 +1,99 @@
+﻿@model  Tuple<string>
+@{
+    ViewData["Title"] = "DayDiet";
+}
+
+<div id="example">
+    <div id="grid-diet-@Model.Item1"></div>
+    <script>
+            $(document).ready(function () {
+                var tempSavedRecordsDiet = null;
+                var gridId = "#grid-diet-@Model.Item1";
+                        var crudServiceBaseUrl = "@Url.Content("~/dashboard/diet/")",
+                            dataSource = new kendo.data.DataSource({
+                                transport: {
+                                    read:  {
+                                        url: crudServiceBaseUrl,
+                                        dataType: "json",
+                                        type: "get"
+                                    },
+                                    update: {
+                                        url: crudServiceBaseUrl + "update",
+                                        type: "post",
+                                        dataType: "json",
+                                        contentType: "application/json"
+                                    },
+                                    destroy: {
+                                        url: crudServiceBaseUrl + "destroy",
+							            type: "post",
+							            dataType: "json",
+							            contentType: "application/json"
+                                    },
+                                    create: {
+                                        url: crudServiceBaseUrl + "create",
+							            type: "post",
+							            dataType: "json",
+							            contentType: "application/json"
+                                    },
+                                    parameterMap: function (model, operation) {
+                                        if (operation !== "read" && model) {
+                                            return kendo.stringify(model);
+                                        }
+                                    }
+                                },
+                                batch: false,
+                                pageSize: 7,
+                                schema: {
+                                    model: {
+                                        fields: {
+                                            meals: { type: "string", editable: false, nullable: false},
+                                            option1: { type: "string" },
+                                            option2: { type: "string" },
+                                            option3: { type: "string" }
+                                        }
+                                    }
+                                }
+                            });
+
+                        $(gridId).kendoGrid({
+                            dataSource: dataSource,
+                            pageable: true,
+                            height: 400,
+                            columns: [
+                                { field:"meals", title: "Meals", width: "100px" },
+                                { field: "option1", title:"Option1",  width: "130px" },
+                                { field: "option2", title: "Option2", width: "130px" },
+                                { field: "option3", title: "Option3", width: "130px" },
+                                { command: ["edit"], title: "&nbsp;", width: "80px" }],
+                            editable: "popup",
+                            save: function (e) {
+                                updateTempRecordsDiet(gridId);
+                            },
+                            cancel: function (e) {
+                                if (tempSavedRecordsDiet != null) {
+                                    $(gridId).data('kendoGrid').dataSource.data(tempSavedRecordsDiet);
+                                }
+                                else {
+                                    $(gridId).data('kendoGrid').dataSource.cancelChanges();
+                                }
+                            },
+                            remove: function (e) {
+                                $(gridId).data('kendoGrid').dataSource.remove(e.model)
+                                updateTempRecordsDiet(gridId);
+                            }
+				            //,
+            //                     saveChanges: function (e) {
+            //                         // Refresh della grid per avere gli ID.
+            //                         e.sender.one("dataBound", function () {
+            //                             e.sender.dataSource.read();
+            //                         });
+            //                     }
+                        });
+            });
+            function updateTempRecordsDiet(id) {
+                tempSavedRecordsDiet = $(id).data('kendoGrid').dataSource.data();
+                tempSavedRecordsDiet = tempSavedRecordsDiet.toJSON();
+            }
+    </script>
+</div>
+
