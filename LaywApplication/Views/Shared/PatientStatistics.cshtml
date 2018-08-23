@@ -7,9 +7,7 @@
     <div class="row">
         <div class="col-sm-12">
             @{
-                ViewBag.Type = "Weights";
-                ViewBag.Title = "Weight";
-                await Html.RenderPartialAsync("LineChart", (Patient)ViewBag.CurrentPatient);
+                await Html.RenderPartialAsync("LineChart", Tuple.Create("Weights", "Weight", "weightpatient", (Patient)ViewBag.CurrentPatient));
             }
         </div>
     </div>

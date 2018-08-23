@@ -1,71 +1,38 @@
-﻿@model Patient
-<div class="demo-section k-content wide">
-    <div id="chart-@ViewBag.Type"></div>
-</div>
-<script>
-    function createChart() {
-            var baseUrl = "@Url.Content("~/dashboard/patients/" + @Model.Id + "/weightpatient")";
-            $("#chart-@ViewBag.Type").kendoChart({
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: baseUrl,
-                            dataType: "json",
-                            type: "get",
-                            data: {
-                                beginDate: "16-07-2018",
-                                period: "1w"
-                            }
-                        }
-                    },
-                    sort: {
-                        field: "day",
-                        dir: "asc"
-                    }
-                },
-                title: {
-                    text: "@ViewBag.Title"
-                },
-                legend: {
-                    position: "top"
-                },
-                seriesDefaults: {
-                    type: "line"
-                },
-                series: [{
-                    field: "value",
-                    categoryField: "day",
-                    name: ""
-                }],
-                categoryAxis: {
-                    labels: {
-                        rotation: -90
-                    },
-                    crosshair: {
-                        visible: true
-                    }
-                },
-                valueAxis: {
-                    labels: {
-                        format: "N0"
-                    },
-                    majorUnit: 220,
-                    plotBands: [
-                        {
-                            from: 0,
-                            to: 60, //TODO Schiaffato, trovare il modo di prenderlo
-                            color: "#00FFFF",
-                            opacity: 0.3
-                        }],
-                },
-                tooltip: {
-                    visible: true,
-                    shared: true,
-                    format: "N0"
-                }
-            });
-        }
+﻿@model Tuple<string, string, string, Patient>
+@{
+    string url = Url.Content("~/dashboard/patients/" + Model.Item4.Id + "/" + Model.Item3);
+    string divId = Model.Item1;
+    string title = Model.Item2;
+}
 
-        $(document).ready(createChart);
-        $(document).bind("kendo:skinChange", createChart);
+<div class="demo-section k-content wide text-center">
+    <div id="chart-@divId"></div>
+
+    <div class="demo-section k-content">
+        <input id="beginDate-@divId" title="datepicker" />
+
+        <ul id="period-@divId">
+            <li>1w</li>
+            <li>1m</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    var period = "1w";
+    $(document).ready(createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val() , period, 1000));
+    $(document).bind("kendo:skinChange", createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000));
+
+    $("#period-@divId").kendoButtonGroup({
+        select: function (e) {
+            period = $("#period-@divId").children().eq(e.indices).text();
+            $(document).ready(createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000));
+        },
+        index: 0
+    });
+
+    $("#beginDate-@divId").kendoDatePicker({
+        value: "16-07-2018",
+        format: "dd-MM-yyyy"
+    });
 </script>

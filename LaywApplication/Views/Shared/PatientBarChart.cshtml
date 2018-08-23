@@ -9,35 +9,29 @@
     <div id="chart-@Model.Item1" class="chartResize"></div>
 
     <div class="demo-section k-content">
-        <input id="beginDate-@Model.Item1" title="datepicker"/>
+        <input id="beginDate-@divId" title="datepicker"/>
         
-        <ul id="period-@Model.Item1">
+        <ul id="period-@divId">
             <li>1w</li>
             <li>1m</li>
         </ul>
     </div>
 </div>
 
-<script src="~/js-charts/bar_chart_patient.js" type="text/javascript"></script>
-
 <script>
     var period = "1w";
-    $(document).ready(createBarChart("@url", "@divId", "@title", $("beginDate-@Model.Item1").val() , period));
-    $(document).bind("kendo:skinChange", createBarChart("@url", "@divId", "@title", $("beginDate-@Model.Item1").val() , period));
+    $(document).ready(createBarChart("@url", "@divId", "@title", $("#beginDate-@divId").val() , period, 1000));
+    $(document).bind("kendo:skinChange", createBarChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000));
 
-    $("#refresh-@Model.Item1").change(function () {
-        $(document).ready(createBarChart("@url", "@divId", "@title", $("beginDate-@Model.Item1").val() , period));
-    });
-
-    $("#period-@Model.Item1").kendoButtonGroup({
+    $("#period-@divId").kendoButtonGroup({
         select: function (e) {
-            period = $("#period-@Model.Item1").children().eq(e.indices).text();
-            $(document).ready(createBarChart("@url", "@divId", "@title",  $("beginDate-@Model.Item1").val(), period));
+            period = $("#period-@divId").children().eq(e.indices).text();
+            $(document).ready(createBarChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000));
         },
         index: 0
     });
 
-    $("#beginDate-@Model.Item1").kendoDatePicker({
+    $("#beginDate-@divId").kendoDatePicker({
         value: "16-07-2018",
         format: "dd-MM-yyyy"
     });
