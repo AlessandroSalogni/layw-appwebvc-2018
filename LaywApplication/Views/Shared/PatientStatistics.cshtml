@@ -3,7 +3,7 @@
     ViewData["Title"] = "PatientStatistics";
 }
 
-<div class="container">
+<div class="container container-inner">
     <div class="row">
         <div class="col-sm-12 no-space">
             @{
@@ -29,8 +29,13 @@
 
 
 <style>
-    .no-space{
-        padding:0;
-        border:none;
-    }
+	.no-space {
+		padding: 0;
+		border: none;
+	}
+	@@media (min-width: 1200px) {
+		.container-inner {
+			width: 1000px !important;
+		}
+	}
 </style>

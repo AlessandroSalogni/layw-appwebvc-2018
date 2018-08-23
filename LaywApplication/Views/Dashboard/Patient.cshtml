@@ -4,7 +4,7 @@
     var divId = "main";
 }
 
-<div id="example">
+<div class="container">
     <div class="demo-section k-content">
         <div id="tabstrip-@divId">
             <ul>
@@ -30,6 +30,14 @@
         </div>
     </div>
 </div>
+
+<style>
+	@@media (min-width: 1200px) {
+		.container {
+			width: 1090px;
+		}
+	}
+</style>
 
 <script>
     $(document).ready(createTabStrip("@divId"));
