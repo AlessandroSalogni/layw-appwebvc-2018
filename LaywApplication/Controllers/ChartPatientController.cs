@@ -76,7 +76,7 @@ namespace LaywApplication.Controllers
             {
                 HistoryElement historyElement = new HistoryElement
                 {
-                    goal = 1000,
+                    goal = goalJson,
                     value = element.GetValue(SummaryConfig.Key).Value<int>(),
                     day = element.GetValue("date").Value<string>()
                 };
