@@ -1,11 +1,11 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "PatientDiet";
+    var divId = "diet";
 }
 
 <div id="example">
     <div class="demo-section k-content">
-        <div id="tabstrip-day">
+        <div id="tabstrip-@divId">
             <ul>
                 <li class="k-state-active">Monday</li>
                 <li>Tuesday</li>
@@ -40,13 +40,5 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $("#tabstrip-day").kendoTabStrip({
-            animation: {
-                open: {
-                    effects: "fadeIn"
-                }
-            }
-        });
-    });
+    $(document).ready(createTabStrip("@divId"));
 </script>
