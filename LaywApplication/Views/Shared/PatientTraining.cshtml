@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "PatientTraining";
 }
 
@@ -54,7 +53,7 @@
                                 }
                             });
 
-                        $("#grid-training").kendoGrid({
+            $("#grid-training").kendoGrid({
                             dataSource: dataSource,
                             pageable: true,
                             height: 400,
@@ -67,7 +66,7 @@
                             ],
                             editable: "popup",
                             save: function (e) {
-                                updateTempRecordsTraining('#grid-training');
+                                updateTempRecordsTraining(gridId);
                             },
                             cancel: function (e) {
                                 if (tempSavedRecordsTraining != null) {

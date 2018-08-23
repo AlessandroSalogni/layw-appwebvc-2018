@@ -64,7 +64,7 @@
                                 { field: "option1", title:"Option1",  width: "130px" },
                                 { field: "option2", title: "Option2", width: "130px" },
                                 { field: "option3", title: "Option3", width: "130px" },
-                                { command: ["edit"], title: "&nbsp;", width: "50px" }],
+                                { command: ["edit"], title: "&nbsp;", width: "45px" }],
                             editable: "popup",
                             save: function (e) {
                                 updateTempRecordsDiet(gridId);
@@ -96,3 +96,19 @@
             }
     </script>
 </div>
+
+<style>
+    #grid-diet-@Model.Item1 table {
+        background-color: #e0ffff;
+    }
+    #grid-diet-@Model.Item1 td {
+        color: #404040;
+        font-weight: bold;
+    }
+    #grid-diet-@Model.Item1 tbody .k-button {
+        border-radius: 15px;
+    }
+    #grid-diet-@Model.Item1 .k-command-cell {
+        text-align: center;
+    }
+</style>
