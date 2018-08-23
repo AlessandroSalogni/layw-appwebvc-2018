@@ -35,6 +35,7 @@
 
     $("#beginDate-@divId").kendoDatePicker({
         format: "dd-MM-yyyy",
+        value: "@DateTime.Now.ToShortDateString().Replace('/','-')",
         change: function () {createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, "@dataTitle", @chartInterval)}
     });
 </script>
