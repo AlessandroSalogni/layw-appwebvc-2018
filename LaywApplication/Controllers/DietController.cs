@@ -14,17 +14,16 @@ namespace LaywApplication.Controllers
         [HttpGet("~/dashboard/diet")]
         public IEnumerable<Diet> Read()
         {
-            List<Diet> dietList = new List<Diet>();
+            List<Diet> mealsList = new List<Diet>();
 
-            dietList.Add(new Diet { Day = "Lunedì"});
-            dietList.Add(new Diet { Day = "Martedì" });
-            dietList.Add(new Diet { Day = "Mercoledì" });
-            dietList.Add(new Diet { Day = "Giovedì" });
-            dietList.Add(new Diet { Day = "Venerdì" });
-            dietList.Add(new Diet { Day = "Sabato" });
-            dietList.Add(new Diet { Day = "Domenica" });
+            mealsList.Add(new Diet { Meals = "Breakfast"});
+            mealsList.Add(new Diet { Meals = "MorningSnack" });
+            mealsList.Add(new Diet { Meals = "Lunch" });
+            mealsList.Add(new Diet { Meals = "AfternoonSnack" });
+            mealsList.Add(new Diet { Meals = "Dinner" });
+            mealsList.Add(new Diet { Meals = "EveningSnack" });
 
-            return dietList;
+            return mealsList;
         }
 
         [HttpPost("~/dashboard/diet/create")]
