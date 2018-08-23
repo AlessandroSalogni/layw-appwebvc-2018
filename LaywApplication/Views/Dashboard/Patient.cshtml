@@ -1,6 +1,6 @@
 ﻿@model Doctor
 @{
-    ViewBag.PageHeader = "Patient: " + ((Patient)ViewBag.CurrentPatient).Name;
+    ViewBag.PageHeader = ((Patient)ViewBag.CurrentPatient).Name;
     var divId = "main";
 }
 
