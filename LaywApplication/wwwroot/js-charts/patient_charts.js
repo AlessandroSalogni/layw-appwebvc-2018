@@ -125,6 +125,96 @@ function createLineChart(urlComplete, divId, title, beginDate, period, goal) {
     });
 }
 
+function createDonutChart(completeUrl, divId) {
+    $("#chart-" + divId).kendoChart({
+        dataSource: {
+            transport: {
+                read: {
+                    url: completeUrl,
+                    type: "get",
+                    dataType: "json"
+                }
+            },
+        },
+        legend: {
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "donut"
+        },
+        series: [{
+            field: "amount",
+            categoryField: "category",
+            padding: 15
+        }],
+        tooltip: {
+            visible: true,
+            format: "N0",
+            template: "#= category # - #= kendo.format('{0:P}', percentage)#"
+        },
+        chartArea: {
+            margin: 1,
+            height: 300
+        },
+    });
+}
+
+function createGrid(completeUrl, divId, title) {
+    $("#grid-" + divId).kendoGrid({
+        dataSource: {
+            transport: {
+                read: {
+                    dataType: "json",
+                    url: completeUrl,
+                    type: "get"
+                }
+            },
+            pageSize: 20,
+            schema: {
+                model: {
+                    fields: {
+                        name: { type: "string" }
+                    }
+                }
+            }
+        },
+        height: 350,
+        sortable: true,
+        filterable: true,
+        pageable: true,
+        columns: [{
+            field: "name",
+            title: title
+        }]
+    });
+}
+
+function createWindow(divId, title) {
+    var myWindow = $("#window-" + divId),
+        undo = $("#undo-" + divId);
+
+    undo.click(function () {
+        myWindow.data("kendoWindow").open();
+        undo.fadeOut();
+    });
+
+    function onClose() {
+        undo.fadeIn();
+    }
+
+    myWindow.kendoWindow({
+        width: "750px",
+        title: title,
+        visible: false,
+        actions: [
+            "Pin",
+            "Minimize",
+            "Close"
+        ],
+        close: onClose
+    }).data("kendoWindow").center();
+}
+
 $(window).bind("resize", function () {
     $(".resize").data("kendoChart").refresh();
 });
