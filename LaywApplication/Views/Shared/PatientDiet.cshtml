@@ -1,103 +1,51 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "PatientDiet";
 }
 
 <div id="example">
-        <div id="grid-diet"></div>
-        <script>
-            $(document).ready(function () {
-                var tempSavedRecordsDiet = null;
-                        var crudServiceBaseUrl = "@Url.Content("~/dashboard/diet/")",
-                            dataSource = new kendo.data.DataSource({
-                                transport: {
-                                    read:  {
-                                        url: crudServiceBaseUrl,
-                                        dataType: "json",
-                                        type: "get"
-                                    },
-                                    update: {
-                                        url: crudServiceBaseUrl + "update",
-                                        type: "post",
-                                        dataType: "json",
-                                        contentType: "application/json"
-                                    },
-                                    destroy: {
-                                        url: crudServiceBaseUrl + "destroy",
-										type: "post",
-										dataType: "json",
-										contentType: "application/json"
-                                    },
-                                    create: {
-                                        url: crudServiceBaseUrl + "create",
-										type: "post",
-										dataType: "json",
-										contentType: "application/json"
-                                    },
-                                    parameterMap: function (model, operation) {
-                                        if (operation !== "read" && model) {
-                                            return kendo.stringify(model);
-                                        }
-                                    }
-                                },
-                                batch: false,
-                                pageSize: 7,
-                                schema: {
-                                    model: {
-                                        fields: {
-                                            day: { type: "string", editable: false, nullable: false},
-                                            breakfast: { type: "string" },
-                                            morningSnack: { type: "string" },
-                                            lunch: { type: "string" },
-                                            afternoonSnack: { type: "string" },
-                                            dinner: { type: "string" },
-                                            eveningSnack: { type: "string" }
-                                        }
-                                    }
-                                }
-                            });
-
-                        $("#grid-diet").kendoGrid({
-                            dataSource: dataSource,
-                            pageable: true,
-                            height: 400,
-                            columns: [
-                                { field:"day", title: "Day of week", width: "100px" },
-                                { field: "breakfast", title:"Breakfast",  width: "130px" },
-                                { field: "morningSnack", title: "Morning snack", width: "130px" },
-                                { field: "lunch", title: "Lunch", width: "130px" },
-                                { field: "afternoonSnack", title: "Afternoon snack", width: "130px" },
-                                { field: "dinner", title: "Dinner", width: "130px" },
-                                { field: "eveningSnack", title: "Evening snack", width: "130px" },
-                                { command: ["edit"], title: "&nbsp;", width: "80px" }],
-                            editable: "popup",
-                            save: function (e) {
-                                updateTempRecordsDiet('#grid-diet');
-                            },
-                            cancel: function (e) {
-                                if (tempSavedRecordsDiet != null) {
-                                    $('#grid-diet').data('kendoGrid').dataSource.data(tempSavedRecordsDiet);
-                                }
-                                else {
-                                    $('#grid-diet').data('kendoGrid').dataSource.cancelChanges();
-                                }
-                            },
-                            remove: function (e) {
-                                $('#grid-diet').data('kendoGrid').dataSource.remove(e.model)
-                                updateTempRecordsDiet('#grid-diet');
-                            }
-							//,
-       //                     saveChanges: function (e) {
-       //                         // Refresh della grid per avere gli ID.
-       //                         e.sender.one("dataBound", function () {
-       //                             e.sender.dataSource.read();
-       //                         });
-       //                     }
-                        });
-            });
-            function updateTempRecordsDiet(id) {
-                tempSavedRecordsDiet = $(id).data('kendoGrid').dataSource.data();
-                tempSavedRecordsDiet = tempSavedRecordsDiet.toJSON();
-            }
-        </script>
+    <div class="demo-section k-content">
+        <div id="tabstrip-day">
+            <ul>
+                <li class="k-state-active">Monday</li>
+                <li>Tuesday</li>
+                <li>Wednesday</li>
+                <li>Thursday</li>
+                <li>Friday</li>
+                <li>Saturday</li>
+                <li>Sunday</li>
+            </ul>
+            <div>
+                @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("monday")); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("tuesday")); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("wednesday")); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("thursday")); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("friday")); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("saturday")); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("sunday")); }
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#tabstrip-day").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            }
+        });
+    });
+</script>
