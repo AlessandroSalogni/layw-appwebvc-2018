@@ -33,6 +33,6 @@
 
     $("#beginDate-@divId").kendoDatePicker({
         format: "dd-MM-yyyy",
-        change: function () {createBarChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000)}
+        change: function () {createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, 1000)}
     });
 </script>
