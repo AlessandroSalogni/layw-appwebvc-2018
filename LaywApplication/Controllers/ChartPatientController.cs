@@ -16,6 +16,7 @@ namespace LaywApplication.Controllers
 {
     public abstract class ChartPatientController<TType> : Controller where TType : IComparable<TType>
     {
+        protected Configuration.JsonData GoalConfig { get; set; }
         protected Configuration.JsonData SummaryConfig { get; set; }
         protected Configuration.Parameters ParametersConfig { get; set; }
 
@@ -26,6 +27,7 @@ namespace LaywApplication.Controllers
         public struct HistoryElement
         {
             public TType value;
+            public TType goal;
             public string day;
         }
 
@@ -39,12 +41,7 @@ namespace LaywApplication.Controllers
         public async Task<ActionResult> GetJsonResult(int id, HttpRequest request)
         {
             List<HistoryElement> history = await GetHistory(id, request.Query["beginDate"], request.Query["period"]);
-            List<object> result = new List<object>();
-
-            foreach (HistoryElement historyElement in history)
-                result.Add(new { historyElement.value, historyElement.day });
-
-            return Json(result);
+            return Json(history);
         }
     }
 
@@ -54,6 +51,7 @@ namespace LaywApplication.Controllers
         
         public StepsPatientController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> jsonStructure) : base(IPconfig)
         {
+            GoalConfig = jsonStructure.Value.GoalsStepsDaily;
             SummaryConfig = jsonStructure.Value.StepsSummary;
             ParametersConfig = jsonStructure.Value.Parameters;
         }
@@ -70,10 +68,15 @@ namespace LaywApplication.Controllers
             JObject obj = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate + "&" + ParametersConfig.Period + "=" + period);
             JArray array = (JArray)obj.GetValue(SummaryConfig.Root);
 
+            JObject jsonGoals = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate);
+            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
+            var goalJson = jsonGoalsRoot.GetValue(GoalConfig.Key).Value<int>();
+
             foreach (JObject element in array)
             {
                 HistoryElement historyElement = new HistoryElement
                 {
+                    goal = 1000,
                     value = element.GetValue(SummaryConfig.Key).Value<int>(),
                     day = element.GetValue("date").Value<string>()
                 };
@@ -91,6 +94,7 @@ namespace LaywApplication.Controllers
 
         public WeightPatientController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> jsonStructure) : base(IPconfig)
         {
+            GoalConfig = jsonStructure.Value.GoalsWeight;
             SummaryConfig = jsonStructure.Value.WeightSummary;
             ParametersConfig = jsonStructure.Value.Parameters;
         }
@@ -107,10 +111,15 @@ namespace LaywApplication.Controllers
             JObject obj = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate + "&" + ParametersConfig.Period + "=" + period);
             JArray array = (JArray)obj.GetValue(SummaryConfig.Root);
 
+            JObject jsonGoals = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate);
+            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
+            var goalJson = jsonGoalsRoot.GetValue(GoalConfig.Key).Value<int>();
+
             foreach (JObject element in array)
             {
                 HistoryElement historyElement = new HistoryElement
                 {
+                    goal = goalJson,
                     value = element.GetValue(SummaryConfig.Key).Value<int>(),
                     day = element.GetValue("date").Value<string>()
                 };
@@ -127,6 +136,7 @@ namespace LaywApplication.Controllers
 
         public CaloriesOutPatientController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> jsonStructure) : base(IPconfig)
         {
+            GoalConfig = jsonStructure.Value.GoalsCaloriesOut;
             SummaryConfig = jsonStructure.Value.CaloriesSummary;
             ParametersConfig = jsonStructure.Value.Parameters;
         }
@@ -143,10 +153,15 @@ namespace LaywApplication.Controllers
             JObject obj = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + SummaryConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate + "&" + ParametersConfig.Period + "=" + period);
             JArray array = (JArray)obj.GetValue(SummaryConfig.Root);
 
+            JObject jsonGoals = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/" + GoalConfig.Url + "?" + ParametersConfig.Date + "=" + beginDate);
+            JObject jsonGoalsRoot = jsonGoals.GetValue(GoalConfig.Root) as JObject;
+            var goalJson = jsonGoalsRoot.GetValue(GoalConfig.Key).Value<int>();
+
             foreach (JObject element in array)
             {
                 HistoryElement historyElement = new HistoryElement
                 {
+                    goal = goalJson,
                     value = (element.GetValue(((CaloriesSummary)SummaryConfig).Object) as JObject).GetValue(SummaryConfig.Key).Value<int>(),
                     day = element.GetValue("date").Value<string>()
                 };
