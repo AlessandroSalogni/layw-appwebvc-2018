@@ -18,7 +18,7 @@
 	<div class="box-body">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="resize" id="chart-@divId"></div>
+				<div id="chart-@divId"></div>
 			</div>
 		</div>
 	
@@ -94,4 +94,8 @@
     
     $(document).ready(createDashboard);
     $(document).bind("kendo:skinChange", createDashboard);
+
+    $(window).bind("resize", function () {
+        $("#chart-@divId").data("kendoChart").refresh();
+    });
 </script>

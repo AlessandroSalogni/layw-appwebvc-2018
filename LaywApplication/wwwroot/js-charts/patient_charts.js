@@ -269,7 +269,3 @@ function createTabStrip(divId) {
         }
     });
 }
-
-$(window).bind("resize", function () {
-    $(".resize").data("kendoChart").refresh();
-});
