@@ -32,22 +32,38 @@
 </div>
 
 <style>
-	#patient > .k-content {
+	#patient .k-content {
 		background-color: transparent;
 	}
-	#patient > .k-content .k-header {
+	#patient .k-content .k-tabstrip {
 		background-color: transparent;
 		border: none;
 	}
-	#patient > .k-content .k-header .k-item {
+	#patient .k-content .k-tabstrip:focus {
+		box-shadow: none;
+	}
+	#patient .k-content .k-tabstrip > .k-state-active,
+	#patient .k-content .k-tabstrip > .k-state-active:hover,
+	#patient .k-content .k-tabstrip > .k-content {
+		background-color: transparent;
+		border: none;
+	}
+	#patient .k-content .k-tabstrip > .k-tabstrip-items {
+		border: none;
+	}
+	#patient .k-content .k-tabstrip .k-item {
 		border-top-right-radius: 10px;
 		border-top-left-radius: 10px;
 		background-color: transparent;
 		border-width: 1px;
+		border-bottom: none;
 		border-color: cornflowerblue;
 		color: black;
 	}
-	#patient > .k-content .k-header .k-item > .k-link{
+	#patient .k-content .k-tabstrip > .k-tabstrip-items .k-item > .k-complete {
+		border: none;
+	}
+	#patient .k-content .k-header .k-item > .k-link {
 		color: black;
 	}
 	@@media (min-width: 1200px) {
