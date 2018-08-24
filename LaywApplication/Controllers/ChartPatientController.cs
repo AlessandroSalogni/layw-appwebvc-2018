@@ -87,8 +87,7 @@ namespace LaywApplication.Controllers
             return history;
         }
     }
-
-
+    
     public class WeightPatientController : ChartPatientController<int>
     {
         private IsoDateTimeConverter DateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };

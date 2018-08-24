@@ -1,0 +1,20 @@
+﻿@model Tuple<string, string, string, string,  Patient>
+@{
+    string url = Url.Content("~/dashboard/patients/" + Model.Item5.Id + "/" + Model.Item4 + "/" + Model.Item3);
+    string divId = Model.Item1;
+    string title = Model.Item2;
+}
+
+<div class="demo-section k-content wide text-center">
+    <div id="chart-@divId"></div>
+</div>
+
+<script>
+    var age = @Model.Item5.Age;
+    
+    var down = parseInt(65 / 100 * (220 - age));
+    var up = parseInt(85 / 100 * (220 - age));
+    console.log(down + " " + up);
+    $(document).ready(createLineChartActivity("@url", "@divId", "@title", down, up));
+    $(document).bind("kendo:skinChange", createLineChartActivity("@url", "@divId", "@title", down, up));
+</script>

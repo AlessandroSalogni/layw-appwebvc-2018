@@ -22,7 +22,7 @@
                 @{await Html.RenderPartialAsync("PatientDiet"); }
             </div>
             <div>
-                @{await Html.RenderPartialAsync("PatientStatistics"); }
+                @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient).Id); }
             </div>
             <div>
                 @{await Html.RenderPartialAsync("PatientTraining"); }

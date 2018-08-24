@@ -1,5 +1,10 @@
-﻿
+﻿@using LaywApplication.Controllers.Utils;
+@using Newtonsoft.Json.Converters;
+@using Newtonsoft.Json.Linq;
+
+@model int
 @{
+
     ViewData["Title"] = "PatientStatistics";
 }
 
@@ -21,16 +26,55 @@
 
         <div class="col-sm-6 no-space">
             @{
-				await Html.RenderPartialAsync("LineChart", Tuple.Create("CaloriesDaily", "Goal Calories Daily", "caloriesoutpatient", "Calories", 500, (Patient)ViewBag.CurrentPatient));
+                await Html.RenderPartialAsync("LineChart", Tuple.Create("CaloriesDaily", "Goal Calories Daily", "caloriesoutpatient", "Calories", 500, (Patient)ViewBag.CurrentPatient));
             }
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-12 no-space">
+            <div class="demo-section k-content">
+                <div id="tabstrip-k">
+                    <ul>
+                        @{
+                            JObject obj = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.ToString() + "/activities");
+                            JArray array = (JArray)obj.GetValue("activities");
+
+                            foreach (JObject element in array)
+                            {
+                                <li>@element.GetValue("id"). @element.GetValue("name")</li>
+                            }
+                        }
+                    </ul>
+
+
+                    @{
+                        foreach (JObject element in array)
+                        {
+                            <div>
+                                @{ 
+                                    var id = element.GetValue("id");
+                                    var name = element.GetValue("name");
+                                    await Html.RenderPartialAsync("PatientActivity", Tuple.Create("activity" + @id, name.ToString(), id.ToString(), "activities", (Patient)ViewBag.CurrentPatient));
+                                }
+                            </div>
+                        }
+                     }
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
 <style>
-    .no-space{
-        padding:0;
-        border:none;
+    .no-space {
+        padding: 0;
+        border: none;
     }
 </style>
+
+<script>
+    $(document).ready(createTabStrip("k"));
+</script>
