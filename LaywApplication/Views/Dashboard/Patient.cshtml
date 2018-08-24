@@ -4,7 +4,7 @@
     var divId = "main";
 }
 
-<div class="container">
+<div id="patient" class="container">
     <div class="demo-section k-content">
         <div id="tabstrip-@divId">
             <ul>
@@ -32,6 +32,24 @@
 </div>
 
 <style>
+	#patient > .k-content {
+		background-color: transparent;
+	}
+	#patient > .k-content .k-header {
+		background-color: transparent;
+		border: none;
+	}
+	#patient > .k-content .k-header .k-item {
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		background-color: transparent;
+		border-width: 1px;
+		border-color: cornflowerblue;
+		color: black;
+	}
+	#patient > .k-content .k-header .k-item > .k-link{
+		color: black;
+	}
 	@@media (min-width: 1200px) {
 		.container {
 			width: 1090px;
