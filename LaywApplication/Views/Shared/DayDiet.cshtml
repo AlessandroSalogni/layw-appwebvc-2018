@@ -57,8 +57,7 @@
 
                         $(gridId).kendoGrid({
                             dataSource: dataSource,
-                            pageable: true,
-                            height: 400,
+                            scrollable: false,
                             columns: [
                                 { field:"meals", title: "Meals", width: "100px" },
                                 { field: "option1", title:"Option1",  width: "130px" },
@@ -99,16 +98,21 @@
 
 <style>
     #grid-diet-@Model.Item1 table {
-        background-color: #e0ffff;
+        background-color: rgba(238,242,250,0.9);
     }
     #grid-diet-@Model.Item1 td {
         color: #404040;
-        font-weight: bold;
     }
     #grid-diet-@Model.Item1 tbody .k-button {
         border-radius: 15px;
     }
-    #grid-diet-@Model.Item1 .k-command-cell {
+    #grid-diet-@Model.Item1 .k-filter-row th, .k-grid-header th.k-header {
         text-align: center;
+        color: white;
+        font-weight: bold;
+        background-color: transparent;
+    }
+    #grid-diet-@Model.Item1 table > thead > tr {
+        background-color: #007acc !important;
     }
 </style>

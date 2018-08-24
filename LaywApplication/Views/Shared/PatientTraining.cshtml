@@ -53,9 +53,7 @@
                         });
                         $("#grid-training").kendoGrid({
                         dataSource: dataSource,
-                        pageable: true,
                         scrollable: false,
-                        height: 400,
                         columns: [
                             { field:"day", title: "Day of week", width: "40px" },
                             { field: "exercise1", title: "Exercise 1" },
@@ -97,7 +95,6 @@
 <style>
     #grid-training table {
         background-color: rgba(238,242,250,0.9);
-        text-align: center;
     }
     #grid-training td {
         color: #404040;
@@ -105,12 +102,14 @@
     #grid-training tbody .k-button {
         border-radius: 15px;
     }
-    #grid-training .k-filter-row th, .k-grid-header th.k-header {
+    #grid-training .k-filter-row th, 
+    #grid-training .k-grid-header th.k-header {
         text-align: center;
         color: white;
         font-weight: bold;
+        background-color: transparent;
     }
     #grid-training table > thead > tr {
-        background-color: #007acc !important;
+        background-color: #007acc;
     }
 </style>
