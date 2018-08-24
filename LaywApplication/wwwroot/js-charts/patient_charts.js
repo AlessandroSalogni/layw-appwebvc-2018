@@ -118,6 +118,58 @@ function createLineChart(urlComplete, divId, title, beginDate, period, dataTitle
     });
 }
 
+function createLineChartActivity(urlComplete, divId, title, downRange, upRange) {
+    $("#chart-" + divId).kendoChart({
+        dataSource: {
+            transport: {
+                read: {
+                    url: urlComplete,
+                    dataType: "json",
+                    type: "get",
+                }
+            },
+            sort: {
+                field: "day",
+                dir: "asc"
+            }
+        },
+        title: {
+            text: title
+        },
+        legend: {
+            position: "top"
+        },
+        series: [{
+            type: "line",
+            field: "value",
+            categoryField: "heartRateTime",
+            name: title
+        }],
+        categoryAxis: {
+            labels: {
+                rotation: -90
+            }
+        },
+        valueAxis: {
+            labels: {
+                format: "N0"
+            },
+            majorUnit: 220,
+            plotBands: [{
+                from: downRange,
+                to: upRange,
+                color: "green",
+                opacity: 0.3
+            }]
+        },
+        tooltip: {
+            visible: true,
+            shared: true,
+            format: "N0"
+        }
+    });
+}
+
 function createDonutChart(completeUrl, divId) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
