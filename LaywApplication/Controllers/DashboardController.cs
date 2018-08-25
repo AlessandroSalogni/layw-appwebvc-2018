@@ -45,7 +45,7 @@ namespace LaywApplication.Controllers
             {
                 var doctor = BuildDoctor();
 
-                ViewBag.CurrentPatient = doctor.Patients[id];
+                ViewBag.CurrentPatient = doctor.Patients[id-1];
                 return View("Patient", doctor);
             }
             else
@@ -64,10 +64,7 @@ namespace LaywApplication.Controllers
             APIUtils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
 
             JObject json = APIUtils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
-            JArray jsonArray = (JArray)json.GetValue("users");
-
-            foreach (JObject obj in jsonArray)
-                doctor.Patients.Add(JsonConvert.DeserializeObject<Patient>(obj.ToString()));
+            doctor.Patients = ((JArray)json.GetValue("users")).GetList<Patient>();
 
             return doctor;
         }
