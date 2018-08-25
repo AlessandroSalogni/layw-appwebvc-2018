@@ -11,16 +11,11 @@ namespace LaywApplication.Models
             this.EMail = EMail;
             this.Name = Name;
             this.Image = Image;
-            Patients = new Patients();
+            Patients = new List<Patient>();
         }
         public string EMail { get; }
         public string Name { get; }
         public Uri Image { get; }
-        public Patients Patients { get; set; }
-    }
-
-    public class Patients : List<Patient>
-    {
-        public new Patient this[int patientId] => this.FirstOrDefault(x => x.Id == patientId);
+        public List<Patient> Patients { get; set; } //todo creo un'altra lista nel controller!!!!
     }
 }
