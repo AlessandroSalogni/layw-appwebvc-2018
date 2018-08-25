@@ -118,57 +118,6 @@ function createLineChart(urlComplete, divId, title, beginDate, period, dataTitle
     });
 }
 
-function createLineChartActivity(urlComplete, divId, title, downRange, upRange) {
-    $("#chart-" + divId).kendoChart({
-        dataSource: {
-            transport: {
-                read: {
-                    url: urlComplete,
-                    dataType: "json",
-                    type: "get",
-                }
-            },
-            sort: {
-                field: "day",
-                dir: "asc"
-            }
-        },
-        title: {
-            text: title
-        },
-        legend: {
-            position: "top"
-        },
-        series: [{
-            type: "line",
-            field: "value",
-            categoryField: "heartRateTime",
-            name: title
-        }],
-        categoryAxis: {
-            labels: {
-                rotation: -90
-            }
-        },
-        valueAxis: {
-            labels: {
-                format: "N0"
-            },
-            majorUnit: 220,
-            plotBands: [{
-                from: downRange,
-                to: upRange,
-                color: "green",
-                opacity: 0.3
-            }]
-        },
-        tooltip: {
-            visible: true,
-            shared: true,
-            format: "N0"
-        }
-    });
-}
 
 function createDonutChart(completeUrl, divId) {
     $("#chart-" + divId).kendoChart({
@@ -266,6 +215,72 @@ function createTabStrip(divId) {
             open: {
                 effects: "fadeIn"
             }
+        }
+    });
+}
+
+
+function createHeartBeatChart(divId, title, arrayValues, arrayCategories, down, up) {
+    $("#chart-" + divId).kendoChart({
+        title: {
+            text: title
+        },
+        legend: {
+            position: "top"
+        },
+        chartArea: {
+            background: ""
+        },
+        seriesDefaults: {
+            type: "line"
+        },
+        series: [{
+            name: "beat",
+            data: arrayValues
+        }],
+        valueAxis: {
+            labels: {
+                format: "{0}"
+            },
+            line: {
+                visible: false
+            },
+            plotBands: [{
+                from: down,
+                to: up,
+                color: "green",
+                opacity: 0.3
+            },
+            {
+                from: up,
+                to: 220,
+                color: "red",
+                opacity: 0.3
+            },
+            {
+                from: 0,
+                to: down,
+                color: "red",
+                opacity: 0.3
+            }
+            ],
+            axisCrossingValue: -10
+        },
+        categoryAxis: {
+            categories: arrayTimes,
+            majorGridLines: {
+                visible: true
+            },
+            labels: {
+                rotation: "auto"
+            },
+            line: {
+                visibile: false
+            }
+        },
+        tooltip: {
+            visible: true,
+            template: "#= category # #= value #"
         }
     });
 }

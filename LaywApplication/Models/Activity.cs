@@ -7,14 +7,15 @@ namespace LaywApplication.Models
 {
     public class Activity
     {
-        List<HeartBeat> HeartBeats { get; set; }
-        string ActivityName { get; set; }
-        DateTime Date { get; set; }
+        public List<HeartBeat> HeartBeats { get; set; }
+        public string ActivityName { get; set; }
+        public DateTime Date { get; set; }
+        public long Duration { get; set; }
     }
 
-    internal class HeartBeat
+    public class HeartBeat
     {
-        DateTime HeartRateTime { get; set; }
-        int Value { get; set; }
+        public string HeartRateTime { get; set; }
+        public int Value { get; set; }
     }
 }   
