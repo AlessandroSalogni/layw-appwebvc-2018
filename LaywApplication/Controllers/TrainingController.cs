@@ -24,41 +24,11 @@ namespace LaywApplication.Controllers
 
         [HttpGet("~/dashboard/training")]
         public IEnumerable<Training> Read()
-        {//todo passare id in qualche modo
-            var jsonTraining = APIUtils.Get(config.Value.GetTotalUrlUser() + "1/trainings"); //todo mettere path nel config
-            JArray jsonTrainingDayArray = (JArray)jsonTraining.GetValue("training-days");
-            List<Training> trainingList = new List<Training>();
-
-            foreach (JObject jsonTrainingDay in jsonTrainingDayArray)
-            {
-                Training training = new Training { DayName = (string)jsonTrainingDay.GetValue("dayName") };
-                JArray jsonTrainingExerciseArray = (JArray)jsonTrainingDay.GetValue("trainings");
-
-                if(jsonTrainingExerciseArray != null)
-                {
-                    int i = 0;
-                    foreach (JObject jsonTrainingExercise in jsonTrainingExerciseArray)
-                    {
-                        var description = (string)jsonTrainingExercise.GetValue("description");
-                        if (i == 0)
-                            training.Exercise1 = description;
-                        else if (i == 1)
-                            training.Exercise2 = description;
-                        else if (i == 2)
-                            training.Exercise3 = description;
-                        else if (i >= 3)
-                            break;
-
-                        i++;
-                    }
-                }
-
-                trainingList.Add(training);
-            }
-
-            return trainingList;
+        {   //todo passare id in qualche modo
+            JObject jsonTraining = APIUtils.Get(config.Value.GetTotalUrlUser() + "1/trainings"); //todo mettere path nel config
+            return ((JArray)jsonTraining.GetValue("training-days")).GetList<Training>();
         }
-        
+
         [HttpPost("~/dashboard/training/create")]
         public object Create([FromBody]Training item)
         {
