@@ -17,7 +17,7 @@
                 @{await Html.RenderPartialAsync("PatientDiet"); }
             </div>
             <div>
-                @{await Html.RenderPartialAsync("PatientTraining"); }
+                @{await Html.RenderPartialAsync("PatientTraining", ((Patient)ViewBag.CurrentPatient)); }
             </div>
             <div>
                 @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient)); }

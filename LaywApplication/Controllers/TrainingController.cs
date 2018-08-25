@@ -22,10 +22,10 @@ namespace LaywApplication.Controllers
             this.config = config;
         }
 
-        [HttpGet("~/dashboard/training")]
-        public IEnumerable<Training> Read()
-        {   //todo passare id in qualche modo
-            JObject jsonTraining = APIUtils.Get(config.Value.GetTotalUrlUser() + "1/trainings"); //todo mettere path nel config
+        [HttpGet("~/dashboard/patients/{id}/[controller]")]
+        public async Task<IEnumerable<Training>> Read(int id)
+        {   
+            JObject jsonTraining = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/trainings"); //todo mettere path nel config
             return ((JArray)jsonTraining.GetValue("training-days")).GetList<Training>();
         }
 
