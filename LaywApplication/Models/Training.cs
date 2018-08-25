@@ -7,7 +7,9 @@ namespace LaywApplication.Models
 {
     public class Training
     {
-        public String Day { get; set; }
-        public String Exercise { get; set; }
+        public string DayName { get; set; }
+        public string Exercise1 { get; set; }
+        public string Exercise2 { get; set; }
+        public string Exercise3 { get; set; }
     }
 }
