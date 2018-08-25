@@ -26,18 +26,6 @@ namespace LaywApplication.Controllers.Utils
                 return JObject.Parse(await client.DownloadStringTaskAsync(uri));
         }
 
-        public async static Task<List<TModelClass>> GetModelListAsync<TModelClass>(string uri, string root) 
-        {
-            JObject jObject = await GetAsync(uri);
-            return JsonConvert.DeserializeObject<List<TModelClass>>(((JArray)(jObject.GetValue(root))).ToString(), DateTimeConverter);
-        }
-
-        public async static Task<TModelClass> GetModelElementAsync<TModelClass>(string uri, string root)
-        {
-            JObject jObject = await GetAsync(uri);
-            return JsonConvert.DeserializeObject<TModelClass>(((JObject)(jObject.GetValue(root))).ToString(), DateTimeConverter);
-        }
-
         public static JObject Post(string uri, string body)
         {
             using (var client = new WebClient())
