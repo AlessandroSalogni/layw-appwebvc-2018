@@ -43,7 +43,7 @@
                             schema: {
                                 model: {
                                     fields: {
-                                        day: { type: "string", editable: false, nullable: false},
+                                        dayName: { type: "string", editable: false, nullable: false},
                                         exercise1: { type: "string" },
                                         exercise2: { type: "string" },
                                         exercise3: { type: "string" }
@@ -55,7 +55,7 @@
                         dataSource: dataSource,
                         scrollable: false,
                         columns: [
-                            { field:"day", title: "Day of week", width: "40px" },
+                            { field:"dayName", title: "Day of week", width: "40px" },
                             { field: "exercise1", title: "Exercise 1" },
                             { field: "exercise2", title: "Exercise 2" },
                             { field: "exercise3", title: "Exercise 3" },
