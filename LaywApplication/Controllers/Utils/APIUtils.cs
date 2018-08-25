@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Controllers.Utils
 {
-    public static class APIUtils   
+    public static class APIUtils
     {
+        private static IsoDateTimeConverter DateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
         private static readonly HttpClient client = new HttpClient();
 
         public static JObject Get(string uri)
@@ -22,6 +24,18 @@ namespace LaywApplication.Controllers.Utils
         {
             using (var client = new WebClient())
                 return JObject.Parse(await client.DownloadStringTaskAsync(uri));
+        }
+
+        public async static Task<List<TModelClass>> GetModelListAsync<TModelClass>(string uri, string root) 
+        {
+            JObject jObject = await GetAsync(uri);
+            return JsonConvert.DeserializeObject<List<TModelClass>>(((JArray)(jObject.GetValue(root))).ToString(), DateTimeConverter);
+        }
+
+        public async static Task<TModelClass> GetModelElementAsync<TModelClass>(string uri, string root)
+        {
+            JObject jObject = await GetAsync(uri);
+            return JsonConvert.DeserializeObject<TModelClass>(((JObject)(jObject.GetValue(root))).ToString(), DateTimeConverter);
         }
 
         public static JObject Post(string uri, string body)

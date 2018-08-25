@@ -8,24 +8,22 @@
     <div class="demo-section k-content">
         <div id="tabstrip-@divId">
             <ul>
-                <li class="k-state-active">
-                    Diet
-                </li>
-                <li>
-                    Statistics
-                </li>
-                <li>
-                    Training
-                </li>
+                <li class="k-state-active"> Diet </li>
+                <li> Training </li>
+                <li> Goals </li>
+                <li> Activities </li>
             </ul>
             <div>
                 @{await Html.RenderPartialAsync("PatientDiet"); }
             </div>
             <div>
-                @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient).Id); }
+                @{await Html.RenderPartialAsync("PatientTraining"); }
             </div>
             <div>
-                @{await Html.RenderPartialAsync("PatientTraining"); }
+                @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient)); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("Activities", ((Patient)ViewBag.CurrentPatient)); }
             </div>
         </div>
     </div>

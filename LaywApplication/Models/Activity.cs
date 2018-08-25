@@ -11,11 +11,19 @@ namespace LaywApplication.Models
         public string ActivityName { get; set; }
         public DateTime Date { get; set; }
         public long Duration { get; set; }
+        public int Calories { get; set; }
+        public List<HeartRateZone> HeartRateZonesList { get; set; }
     }
 
     public class HeartBeat
     {
         public string HeartRateTime { get; set; }
         public int Value { get; set; }
+    }
+
+    public class HeartRateZone
+    {
+        public string Name { get; set; }
+        public int Minutes { get; set; }
     }
 }   

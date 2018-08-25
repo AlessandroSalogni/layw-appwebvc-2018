@@ -3,28 +3,45 @@
 <div class="demo-section k-content wide text-center">
     <div id="chart-@Model.Item1"></div>
 </div>
+<br />
+<div class="demo-section k-content wide">
+    <div id="line-chart-@Model.Item1"></div>
+</div>
 
 <script>
-    var arrayVal = [];
-    var arrayTimes = [];
+    var beats = [];
+    var zones = [];
     
     @{
         foreach (HeartBeat hb in Model.Item3.HeartBeats)
         {
             <text>
-                arrayVal.push(@hb.Value);
-                arrayTimes.push("@hb.HeartRateTime");
-            </text>   
+                beats.push({ "value": @hb.Value, "time": "@hb.HeartRateTime" });
+            </text>
+        }
+
+        foreach (HeartRateZone hrz in Model.Item3.HeartRateZonesList)
+        {
+            <text>
+                zones.push({ "minutes": @hrz.Minutes, "name": "@hrz.Name" });
+            </text>
         }
     }
-
+    
     var down = @AerobicFunction.CalculateRange(Model.Item4).Item1;
     var up = @AerobicFunction.CalculateRange(Model.Item4).Item2;
 
-    $(document).ready(createHeartBeatChart("@Model.Item1",
-        "\nStart: " + arrayTimes[0] + " - End: " + arrayTimes[arrayTimes.length - 1] + "\nDuration: " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Hours + " hours, " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Minutes + " minutes, " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Hours + " seconds.",
-        arrayVal, arrayTimes, down, up));
-    $(document).bind("kendo:skinChange", createHeartBeatChart("@Model.Item1",
-        "\nStart: " + arrayTimes[0] + " - End: " + arrayTimes[arrayTimes.length - 1] + "\nDuration: " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Hours + " hours, " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Minutes + " minutes, " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Hours + " seconds.",
-        arrayVal, arrayTimes, down, up));
+    $(document).ready(function () {
+        createHeartBeatChart("@Model.Item1", beats, down, up);
+        createLineZonesChart("@Model.Item1", zones);
+    });
+    $(document).bind("kendo:skinChange", function () {
+        createHeartBeatChart("@Model.Item1", beats, down, up);
+        createLineZonesChart("@Model.Item1", zones);
+    });
+
+
+    @*"\nStart: " + dataSource[0].time + " - End: " + dataSource[dataSource.length - 1].time + "\nDuration: "
+        + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Hours + " hours, " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Minutes
+        + " minutes, " + @TimeSpan.FromMilliseconds(Model.Item3.Duration).Hours + " seconds."*@
 </script>

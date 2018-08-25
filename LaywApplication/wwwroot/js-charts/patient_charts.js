@@ -118,7 +118,6 @@ function createLineChart(urlComplete, divId, title, beginDate, period, dataTitle
     });
 }
 
-
 function createDonutChart(completeUrl, divId) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
@@ -219,24 +218,25 @@ function createTabStrip(divId) {
     });
 }
 
-
-function createHeartBeatChart(divId, title, arrayValues, arrayCategories, down, up) {
+function createHeartBeatChart(divId, source, down, up) {
+    var s = JSON.parse(JSON.stringify(source));
     $("#chart-" + divId).kendoChart({
+        dataSource: {
+            data: s
+        },
         title: {
-            text: title
+            text: ""
         },
         legend: {
             position: "top"
-        },
-        chartArea: {
-            background: ""
         },
         seriesDefaults: {
             type: "line"
         },
         series: [{
-            name: "beat",
-            data: arrayValues
+            field: "value",
+            categoryField: "time",
+            title: "ac"
         }],
         valueAxis: {
             labels: {
@@ -267,7 +267,6 @@ function createHeartBeatChart(divId, title, arrayValues, arrayCategories, down, 
             axisCrossingValue: -10
         },
         categoryAxis: {
-            categories: arrayTimes,
             majorGridLines: {
                 visible: true
             },
@@ -281,6 +280,48 @@ function createHeartBeatChart(divId, title, arrayValues, arrayCategories, down, 
         tooltip: {
             visible: true,
             template: "#= category # #= value #"
+        }
+    });
+}
+
+function createLineZonesChart(divId, source) {
+    var s = JSON.parse(JSON.stringify(source));
+    $("#line-chart-" + divId).kendoChart({
+        dataSource: {
+            data: s
+        },
+        title: {
+            //align: "left",
+            //text: "Comments per day"
+        },
+        legend: {
+            visible: false
+        },
+        seriesDefaults: {
+            type: "column",
+            labels: {
+                visible: true,
+                background: "transparent"
+            }
+        },
+        series: [{
+            field: "minutes",
+            categoryField: "name"
+        }],
+        valueAxis: {
+            max: 28,
+            majorGridLines: {
+                visible: false
+            },
+            visible: false
+        },
+        categoryAxis: {
+            majorGridLines: {
+                visible: false
+            },
+            line: {
+                visible: false
+            }
         }
     });
 }
