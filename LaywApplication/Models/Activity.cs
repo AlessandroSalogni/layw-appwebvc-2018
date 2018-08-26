@@ -13,6 +13,9 @@ namespace LaywApplication.Models
         public long Duration { get; set; }
         public int Calories { get; set; }
         public List<HeartRateZone> HeartRateZonesList { get; set; }
+        public int AverageHeartRate { get; set; }
+        public int Steps { get; set; }
+        public int Speed { get; set; }
     }
 
     public class HeartBeat
