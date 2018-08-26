@@ -12,6 +12,7 @@
                 <li> Training </li>
                 <li> Goals </li>
                 <li> Activities </li>
+                <li> Personal data </li>
             </ul>
             <div>
                 @{await Html.RenderPartialAsync("PatientDiet"); }
@@ -24,6 +25,9 @@
             </div>
             <div>
                 @{await Html.RenderPartialAsync("Activities", ((Patient)ViewBag.CurrentPatient)); }
+            </div>
+            <div>
+                @{await Html.RenderPartialAsync("PatientPersonalData", ((Patient)ViewBag.CurrentPatient)); }
             </div>
         </div>
     </div>

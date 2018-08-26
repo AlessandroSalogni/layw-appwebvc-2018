@@ -52,7 +52,7 @@ namespace LaywApplication.Controllers
                 return Redirect("~/signin");
         }
 
-        private Doctor BuildDoctor()
+        private Doctor BuildDoctor() //todo ancora da sistmare
         {
             var doctor = new Doctor(
                 User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value,
