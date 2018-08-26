@@ -1,68 +1,4 @@
-﻿
-//function createBarChart(urlComplete, divId, title, beginDate, period, goal) {
-//    $("#chart-" + divId).kendoChart({
-//        dataSource: {
-//            transport: {
-//                read: {
-//                    url: urlComplete,
-//                    dataType: "json",
-//                    type: "get",
-//                    data: {
-//                        beginDate: beginDate,
-//                        period: period
-//                    },
-//                }
-//            },
-//            sort: {
-//                field: "day",
-//                dir: "asc"
-//            },
-//        },
-//        title: {
-//            text: title
-//        },
-//        legend: {
-//            position: "top"
-//        },
-//        seriesDefaults: {
-//            type: "column"
-//        },
-//        series: [{
-//            field: "value",
-//            categoryField: "day",
-//            name: title
-//        }],
-//        categoryAxis: {
-//            labels: {
-//                rotation: -90
-//            },
-//            majorGridLines: {
-//                visible: false
-//            }
-//        },
-//        valueAxis: {
-//            labels: {
-//            format: "N0"
-//        },
-//        majorUnit: 1000,
-//        plotBands: [{
-//            from: 0,
-//            to: goal, 
-//            color: "#c00",
-//            opacity: 0.3
-//        }],
-//        line: {
-//            visible: false
-//        }
-//    },
-//    tooltip: {
-//        visible: true,
-//        format: "N0"
-//        }
-//    });
-//}
-
-function createLineChart(urlComplete, divId, title, beginDate, period, dataTitle, interval) {
+﻿function createLineChart(urlComplete, divId, title, beginDate, period, dataTitle, interval) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
             transport: {
@@ -218,13 +154,13 @@ function createTabStrip(divId) {
     });
 }
 
-function createHeartBeatChart(divId, source, down, up) {
+function createHeartBeatChart(divId, source, down, up, stepX) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
             data: JSON.parse(source)
         },
         title: {
-            text: ""
+            text: "Heartbeats history"
         },
         legend: {
             position: "top"
@@ -266,10 +202,11 @@ function createHeartBeatChart(divId, source, down, up) {
         },
         categoryAxis: {
             majorGridLines: {
-                visible: true
+                visible: false
             },
             labels: {
-                rotation: "auto"
+                rotation: "auto",
+                step: stepX
             },
             line: {
                 visibile: false
@@ -288,8 +225,7 @@ function createLineZonesChart(divId, source) {
             data: JSON.parse(source)
         },
         title: {
-            //align: "left",
-            //text: "Comments per day"
+            text: "Heartrate zones"
         },
         legend: {
             visible: false
@@ -303,10 +239,10 @@ function createLineZonesChart(divId, source) {
         },
         series: [{
             field: "minutes",
-            categoryField: "name"
+            categoryField: "name",
+            color: "yellow" //todo magari mettere colore 
         }],
         valueAxis: {
-            max: 28,
             majorGridLines: {
                 visible: false
             },
@@ -319,6 +255,37 @@ function createLineZonesChart(divId, source) {
             line: {
                 visible: false
             }
+        },
+        chartArea: {
+            height: 300
         }
+    });
+}
+
+function createPieChart(divId, source) {
+    $("#pie-chart-" + divId).kendoChart({
+        dataSource: {
+            data: JSON.parse(source)
+        },
+        title: {
+            text: "Heartrate Zones"
+        },
+        legend: {
+            position: "top"
+        },
+        seriesDefaults: {
+            type: "donut",
+            labels: {
+                template: "#= category # - #= kendo.format('{0:P}', percentage)#",
+                position: "outsideEnd",
+                visible: true,
+                background: "transparent"
+            }
+        },
+        series: [{
+            field: "minutes",
+            categoryField: "name"
+        }],
+        seriesColors: ["#03a9f4", "#ff9800", "#fad84a", "#4caf50"]
     });
 }

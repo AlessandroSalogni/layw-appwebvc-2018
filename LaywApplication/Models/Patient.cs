@@ -12,5 +12,8 @@ namespace LaywApplication.Models
         public int Age { get; set; }
         public String Country { get; set; }
         public int Id { get; set; }
+        public Double StrideLengthRunning { get; set; }
+        public Double StrideLengthWalking { get; set; }
+        public Double AverageDailySteps { get; set; }
     }
 }

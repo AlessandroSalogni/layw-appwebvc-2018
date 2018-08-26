@@ -14,10 +14,10 @@
 				JObject jsonActivities = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/activities");
 				List<Activity> activities = ((JArray)jsonActivities.GetValue("activities")).GetList<Activity>();
 
-				<li class="k-state-active">0.@activities[0].ActivityName</li>
-					for (int i = 1; i < activities.Count; i++)
+				@*<li class="k-state-active">0.@activities[0].ActivityName</li>*@
+					for (int i = 0; i < activities.Count; i++)
 					{
-						<li>@i.@activities[i].ActivityName</li>
+                        <li class="mnu-activity" data-id="@i">@activities[i].ActivityName @i</li>
 					}
 			}
 		</ul>
@@ -33,5 +33,36 @@
 </div>
 
 <script>
-	$(document).ready(createTabStrip("activities"));
+    $(document).ready(createTabStrip("activities"));
+</script>
+
+
+
+<script>
+    var a = 0;
+    
+    $(".mnu-activity").click(animateCounter);
+
+
+    function animateCounter() {
+        var divId = "#counter-activity" + $(this).attr('data-id');
+        $(divId + ' .counter-value').each(function () {
+            var $this = $(this), countTo = $this.attr('data-count'), speed = $this.attr('data-speed');
+            $({
+                countNum: $this.text()
+            }).animate({
+                countNum: countTo
+            }, {
+                    duration: 2500,
+                    easing: 'swing',
+                    step: function () {
+                        $this.text(Math.floor(this.countNum));
+                    },
+                    complete: function () {
+                        $this.text(this.countNum);
+                    }
+                });
+        });
+        a = 1;
+    }
 </script>

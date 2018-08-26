@@ -1,33 +1,97 @@
 ﻿@model Tuple<string, string, Activity, Patient>
 
-<div class="demo-section k-content wide text-center">
-    <div class="row">
-        <div class="col-sm-12">
-            <div id="chart-@Model.Item1"></div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-            <div id="line-chart-@Model.Item1"></div>
-        </div>
-
-        <div class="col-sm-6">
-            <div id=""></div>
-        </div>
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <h2>@Model.Item3.ActivityName</h2>
+        <h4><i class="fas fa-flag-checkered"></i> Start: @Model.Item3.HeartBeats.First().HeartRateTime - <i class="fas fa-flag-checkered"></i> Finish: @Model.Item3.HeartBeats.Last().HeartRateTime</h4>
     </div>
 </div>
 
+<div class="row" id="counter-@Model.Item1">
+    <div class="col-sm-3 no-space">
+        <i class="fas fa-fire fa-2x"></i>
+        <h2 class="timer count-title count-number counter-value" data-count="@Model.Item3.Calories">0</h2>
+        <p class="count-text ">Calories</p>
+    </div>
+    <div class="col-sm-3 no-space">
+        <i class="fas fa-heartbeat fa-2x"></i>
+        <h2 class="timer count-title count-number counter-value" data-count="@Model.Item3.AverageHeartRate">0</h2>
+        <p class="count-text ">Average heart rate</p>
+    </div>
+    <div class="col-sm-3 no-space">
+        <i class="fas fa-shoe-prints fa-2x"></i>
+        <h2 class="timer count-title count-number counter-value" data-count="@Model.Item3.Steps">0</h2>
+        <p class="count-text ">Steps</p>
+    </div>
+    <div class="col-sm-3 no-space">
+        <i class="fas fa-clock-o fa-2x"></i>
+        <h2 class="timer count-title count-number counter-value" data-count="@((int)TimeSpan.FromMilliseconds(Model.Item3.Duration).TotalMinutes)">0</h2>
+        <p class="count-text ">Duration (minutes)</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 no-space">
+        <div id="chart-@Model.Item1"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-sm-push-3 no-space">
+        <div id="pie-chart-@Model.Item1"></div>
+    </div>
+</div>
+
+
 <script>
-    function patientActivities()
-    {
-        var down = @AerobicFunction.CalculateRange(Model.Item4).Item1;
-        var up = @AerobicFunction.CalculateRange(Model.Item4).Item2;
+function patientActivities()
+{
+    var down = @AerobicFunction.CalculateRange(Model.Item4).Item1;
+    var up = @AerobicFunction.CalculateRange(Model.Item4).Item2;
+
+    @{
+        int size = (Model.Item3.HeartBeats.Count)/40 + 1;
+    }
+    createHeartBeatChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartBeats)', down, up, @size);
+    console.log('@Json.Serialize(Model.Item3.HeartRateZonesList)');
         
-        createHeartBeatChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartBeats)', down, up);
-        createLineZonesChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartRateZonesList)');
+    createPieChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartRateZonesList)');
+}
+
+$(document).ready(patientActivities);
+$(document).bind("kendo:skinChange", patientActivities);
+</script>
+
+<style>
+    .no-space {
+        padding: 0;
+        border: none;
     }
 
-    $(document).ready(patientActivities);
-    $(document).bind("kendo:skinChange", patientActivities);
-</script>
+    .row {
+        padding-top: 20px;
+    }
+
+    .count-title {
+        font-size: 40px;
+        font-weight: normal;
+        margin-top: 10px;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .count-text {
+        font-size: 13px;
+        font-weight: normal;
+        margin-top: 10px;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .fa-2x {
+        margin: 0 auto;
+        float: none;
+        display: table;
+        color: #4ad1e5;
+    }
+</style>
