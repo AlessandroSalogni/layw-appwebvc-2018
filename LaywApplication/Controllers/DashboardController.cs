@@ -45,7 +45,7 @@ namespace LaywApplication.Controllers
             {
                 var doctor = BuildDoctor();
 
-                ViewBag.CurrentPatient = doctor.Patients[id-1];
+                ViewBag.CurrentPatient = doctor.Patients.FirstOrDefault(x => x.Id == id);
                 return View("Patient", doctor);
             }
             else

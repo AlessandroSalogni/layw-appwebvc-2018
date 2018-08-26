@@ -17,5 +17,10 @@ namespace LaywApplication.Models
         public string Name { get; }
         public Uri Image { get; }
         public List<Patient> Patients { get; set; } //todo creo un'altra lista nel controller!!!!
+
+        //public Patient GetPatientWithId(int id)
+        //{
+        //    return Patients.FirstOrDefault(x => x.Id == id);
+        //}
     }
 }
