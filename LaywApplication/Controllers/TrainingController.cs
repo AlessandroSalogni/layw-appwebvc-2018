@@ -33,14 +33,8 @@ namespace LaywApplication.Controllers
             return trainingsKendo;
         }
 
-        [HttpPost("~/dashboard/patients/{id}/[controller]/create")]
-        public object Create(int id, [FromBody]TrainingKendo item)
-        {
-            return Empty;
-        }
-
         [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
-        public object Update(int id, [FromBody]TrainingKendo item)
+        public async Task<object> Update(int id, [FromBody]TrainingKendo item)
         {
             var serializerSettings = new JsonSerializerSettings
             {
@@ -55,13 +49,9 @@ namespace LaywApplication.Controllers
                 { "training-days", new JArray() { jsonDayTrainings } }
             };
 
-            APIUtils.Post(config.Value.GetTotalUrlUser() + id + "/trainings", jsonTrainings.ToString());
-            return Empty;
-        }
+            await APIUtils.PostAsync(config.Value.GetTotalUrlUser() + id + "/trainings", jsonTrainings.ToString());
 
-        [HttpPost("~/dashboard/patients/{id}/[controller]/delete")]
-        public void Delete(int id)
-        {
+            return Empty;
         }
     }
 }

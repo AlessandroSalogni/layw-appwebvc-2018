@@ -21,18 +21,6 @@
                     dataType: "json",
                     contentType: "application/json"
                 },
-                destroy: {
-                    url: crudServiceBaseUrl + "delete",
-					type: "post",
-					dataType: "json",
-					contentType: "application/json"
-                },
-                create: {
-                    url: crudServiceBaseUrl + "create",
-					type: "post",
-					dataType: "json",
-					contentType: "application/json"
-                },
                 parameterMap: function (model, operation) {
                     if (operation !== "read" && model) {
                         return kendo.stringify(model);
