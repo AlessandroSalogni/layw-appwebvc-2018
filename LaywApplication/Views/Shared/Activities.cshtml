@@ -10,6 +10,7 @@
 	<div id="tabstrip-activities">
 		<ul>
 			@{
+                //TODO pensare se fare qui una chiamata ajax oppure riempire il modello
 				JObject jsonActivities = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/activities");
 				List<Activity> activities = ((JArray)jsonActivities.GetValue("activities")).GetList<Activity>();
 

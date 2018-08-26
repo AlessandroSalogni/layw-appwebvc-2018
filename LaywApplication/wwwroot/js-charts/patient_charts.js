@@ -219,10 +219,9 @@ function createTabStrip(divId) {
 }
 
 function createHeartBeatChart(divId, source, down, up) {
-    var s = JSON.parse(JSON.stringify(source));
     $("#chart-" + divId).kendoChart({
         dataSource: {
-            data: s
+            data: JSON.parse(source)
         },
         title: {
             text: ""
@@ -235,8 +234,7 @@ function createHeartBeatChart(divId, source, down, up) {
         },
         series: [{
             field: "value",
-            categoryField: "time",
-            title: "ac"
+            categoryField: "heartRateTime"
         }],
         valueAxis: {
             labels: {
@@ -285,10 +283,9 @@ function createHeartBeatChart(divId, source, down, up) {
 }
 
 function createLineZonesChart(divId, source) {
-    var s = JSON.parse(JSON.stringify(source));
     $("#line-chart-" + divId).kendoChart({
         dataSource: {
-            data: s
+            data: JSON.parse(source)
         },
         title: {
             //align: "left",
