@@ -22,7 +22,7 @@
                     contentType: "application/json"
                 },
                 destroy: {
-                    url: crudServiceBaseUrl + "destroy",
+                    url: crudServiceBaseUrl + "delete",
 					type: "post",
 					dataType: "json",
 					contentType: "application/json"
@@ -42,9 +42,10 @@
             batch: false,
             pageSize: 7,
             schema: {
-                model: {
+				model: {
+					id: "dayName",
                     fields: {
-                        dayName: { type: "string", editable: false, nullable: false},
+						dayName: { type: "string", editable: false, nullable: false },
                         exercise1: { type: "string" },
                         exercise2: { type: "string" },
                         exercise3: { type: "string" }
@@ -64,7 +65,7 @@
 			],
 			editable: "popup",
 			save: function (e) {
-				updateTempRecordsTraining(gridId);
+				updateTempRecordsTraining('#grid-training');
 			},
 			cancel: function (e) {
 				if (tempSavedRecordsTraining != null) {
@@ -79,16 +80,16 @@
 				updateTempRecordsTraining('#grid-training');
 			}
 						//,
-    //                     saveChanges: function (e) {
-    //                         // Refresh della grid per avere gli ID.
-    //                         e.sender.one("dataBound", function () {
-    //                             e.sender.dataSource.read();
-    //                         });
-    //                     }
+      //                   saveChanges: function (e) {
+      //                       // Refresh della grid per avere gli ID.
+      //                       e.sender.one("dataBound", function () {
+      //                           e.sender.dataSource.read();
+      //                       });
+      //                   }
         });
     });
     function updateTempRecordsTraining(id) {
-        tempSavedRecordsTraining = $(id).data('kendoGrid').dataSource.data();
+		tempSavedRecordsTraining = $(id).data('kendoGrid').dataSource.data();
         tempSavedRecordsTraining = tempSavedRecordsTraining.toJSON();
     }
 </script>

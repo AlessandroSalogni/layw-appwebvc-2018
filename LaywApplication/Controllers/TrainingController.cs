@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
@@ -9,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace LaywApplication.Controllers
 {
@@ -23,26 +22,45 @@ namespace LaywApplication.Controllers
         }
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<IEnumerable<Training>> Read(int id)
+        public async Task<IEnumerable<TrainingKendo>> Read(int id)
         {   
             JObject jsonTraining = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/trainings"); //todo mettere path nel config
-            return ((JArray)jsonTraining.GetValue("training-days")).GetList<Training>();
+            List<Training> trainings = ((JArray)jsonTraining.GetValue("training-days")).GetList<Training>();
+
+            List<TrainingKendo> trainingsKendo = new List<TrainingKendo>();
+            trainings.ForEach(x => trainingsKendo.Add(TrainingKendo.CreateFromTraining(x)));
+
+            return trainingsKendo;
         }
 
-        [HttpPost("~/dashboard/training/create")]
-        public object Create([FromBody]Training item)
+        [HttpPost("~/dashboard/patients/{id}/[controller]/create")]
+        public object Create(int id, [FromBody]TrainingKendo item)
         {
             return Empty;
         }
 
-        [HttpPost("~/dashboard/training/update")]
-        public object Update([FromBody]Training item)
+        [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
+        public object Update(int id, [FromBody]TrainingKendo item)
         {
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            Training training = Training.CreateFromTrainingKendo(item);
+            JObject jsonDayTrainings = JObject.Parse(JsonConvert.SerializeObject(training, serializerSettings));
+
+            var jsonTrainings = new JObject
+            {
+                { "training-days", new JArray() { jsonDayTrainings } }
+            };
+
+            APIUtils.Post(config.Value.GetTotalUrlUser() + id + "/trainings", jsonTrainings.ToString());
             return Empty;
         }
 
-        [HttpPost("~/dashboard/training/delete")]
-        public void Delete([FromBody]Training item)
+        [HttpPost("~/dashboard/patients/{id}/[controller]/delete")]
+        public void Delete(int id)
         {
         }
     }
