@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LaywApplication.Models.Abstract
@@ -7,7 +8,9 @@ namespace LaywApplication.Models.Abstract
         where TFirst : OptionList<TFirst, TSecond>, new()
         where TSecond : OptionKendoList<TSecond, TFirst>, new()
     {
+        [JsonIgnore]
         public string Name { get; set; }
+        [JsonIgnore]
         public List<Alternative> Options { get; set; }
 
         public static TFirst CreateFromOptionKendoList(OptionKendoList<TSecond, TFirst> optionKendoList) =>
@@ -33,6 +36,7 @@ namespace LaywApplication.Models.Abstract
 
         private static bool HasDescription(string description) => description != null && description != "";
 
+        public bool ShouldSerializeEnvelope() => false;
 
         public class Alternative
         {
