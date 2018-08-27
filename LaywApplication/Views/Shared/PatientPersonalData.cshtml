@@ -5,6 +5,13 @@
 @using LaywApplication.Models;
 @using Newtonsoft.Json.Linq;
 
+@{
+    JObject json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1m");
+    PatientPersonalData dataMonth = json.GetObject<PatientPersonalData>();
+    json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1w");
+    PatientPersonalData dataWeek = json.GetObject<PatientPersonalData>();
+}
+
 <div class="container container-inner">
     <div class="row">
         <div class="col-sm-2 no-space">
@@ -49,86 +56,112 @@
             <p class="count-text">cm</p>
         </div>
         <!--
-    <div class="col-sm-1 no-space">
-        <h2 class="personal-title">Steps</h2>
-        <i class="fas fa-shoe-prints fa-2x"></i>
-        <h2 class="personal-data">@Model.AverageDailySteps</h2>
-        <p class="count-text">Per day</p>
-    </div>
-    <div class="col-sm-1 no-space">
-        <h2 class="personal-title">Stride</h2>
-        <i class="fas fa-shoe-prints fa-2x"></i>
-        <h2 class="personal-data">@Model.StrideLengthRunning</h2>
-        <p class="count-text">cm by running</p>
-    </div>
-    <div class="col-sm-1 no-space">
-        <h2 class="personal-title">Stride</h2>
-        <i class="fas fa-shoe-prints fa-2x"></i>
-        <h2 class="personal-data">@Model.StrideLengthWalking</h2>
-        <p class="count-text">cm by walking</p>
-    </div>-->
-    </div>
-
-@{
-    JObject json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1m");
-    PatientPersonalData data = json.GetObject<PatientPersonalData>();
-}
-
-<div id="counter-personal-data-@Model.Name">
-    <div class="row">
-        <div class="col-sm-5 col-sm-offset-1 no-space">
-            <h2 class="personal-weight-title text-center">Yesterday weight</h2>
-            <h2 class="personal-weight-data personal-data" data-count="@data.LastTwoWeights[1].Weight">0</h2>
-            <p class="count-text">kg</p>
-        </div>
-        <div class="col-sm-5 no-space">
-            <h2 class="personal-weight-title text-center">Today weight</h2>
-            <h2 class="personal-weight-data personal-data" data-count="@data.LastTwoWeights[0].Weight">0</h2>
-            <p class="count-text">kg</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4 col-sm-push-4 no-space">
-            @{
-                var percent = Math.Round(((float)data.LastTwoWeights[0].Weight - (float)data.LastTwoWeights[1].Weight) * 100f / (float)data.LastTwoWeights[1].Weight, 2);
-                if (percent < 0)
-                {
-                    <h2 class="percent" style="color:green">@(percent)%</h2>
-                }
-                else if (percent > 0)
-                {
-                    <h2 class="percent" style="color:green">+@(percent)%</h2>
-                }
-                else
-                {
-                    <h2 class="percent" style="color:blue">@(percent)%</h2>
-                }
-            }
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-4 no-space">
-            <h2 class="personal-title">Total steps</h2>
+        <div class="col-sm-1 no-space">
+            <h2 class="personal-title">Steps</h2>
             <i class="fas fa-shoe-prints fa-2x"></i>
-            <h2 class="personal-data" data-count="@data.TotalSteps">0</h2>
-            <p class="count-text">total steps/current month</p>
+            <h2 class="personal-data">@Model.AverageDailySteps</h2>
+            <p class="count-text">Per day</p>
         </div>
-        <div class="col-sm-4 no-space">
-            <h2 class="personal-title">Total calories</h2>
-            <i class="fas fa-fire fa-2x"></i>
-            <h2 class="personal-data" data-count="@data.TotalCalories">0</h2>
-            <p class="count-text">total calories/current month</p>
+        <div class="col-sm-1 no-space">
+            <h2 class="personal-title">Stride</h2>
+            <i class="fas fa-shoe-prints fa-2x"></i>
+            <h2 class="personal-data">@Model.StrideLengthRunning</h2>
+            <p class="count-text">cm by running</p>
         </div>
-        <div class="col-sm-4 no-space">
-            <h2 class="personal-title">Floors</h2>
-            <i class="fas fa-home fa-2x"></i>
-            <h2 class="personal-data" data-count="@(Math.Round(data.AverageFloors, 0))">0</h2>
-            <p class="count-text">average floors/current month</p>
+        <div class="col-sm-1 no-space">
+            <h2 class="personal-title">Stride</h2>
+            <i class="fas fa-shoe-prints fa-2x"></i>
+            <h2 class="personal-data">@Model.StrideLengthWalking</h2>
+            <p class="count-text">cm by walking</p>
+        </div>-->
+    </div>
+
+    <div id="counter-personal-data-@Model.Name">
+        <div class="row">
+            <div class="col-sm-5 col-sm-offset-1 no-space">
+                <h2 class="personal-weight-title text-center">Yesterday weight</h2>
+                <h2 class="personal-weight-data personal-data" data-count="@dataMonth.LastTwoWeights[1].Weight">0</h2>
+                <p class="count-text">kg</p>
+            </div>
+            <div class="col-sm-5 no-space">
+                <h2 class="personal-weight-title text-center">Today weight</h2>
+                <h2 class="personal-weight-data personal-data" data-count="@dataMonth.LastTwoWeights[0].Weight">0</h2>
+
+                @{
+                    var percent = Math.Round(((float)dataMonth.LastTwoWeights[0].Weight - (float)dataMonth.LastTwoWeights[1].Weight) * 100f / (float)dataMonth.LastTwoWeights[1].Weight, 2);
+                    if (percent < 0)
+                    {
+                        <h2 class="percent  " style="color:green">@(percent)%</h2>
+                    }
+                    else if (percent > 0)
+                    {
+                        <h2 class="percent" style="color:red">+@(percent)%</h2>
+                    }
+                    else
+                    {
+                        <h2 class="percent" style="color:blue">@(percent)%</h2>
+                    }
+                }
+
+            </div>
         </div>
+
+        <div class="row">
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Total steps/<span style="color:green">week</span></h2>
+                <i class="fas fa-shoe-prints fa-2x"></i>
+                <h2 class="personal-data" data-count="@dataWeek.TotalSteps">0</h2>
+            </div>
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Total calories/<span style="color:green">week</span></h2>
+                <i class="fas fa-fire fa-2x"></i>
+                <h2 class="personal-data" data-count="@dataWeek.TotalCalories">0</h2>
+            </div>
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Floors/<span style="color:green">week</span></h2>
+                <i class="fas fa-home fa-2x"></i>
+                <h2 class="personal-data" data-count="@(Math.Round(dataWeek.AverageFloors, 0))">0</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Total steps/<span style="color:purple">month</span></h2>
+                <i class="fas fa-shoe-prints fa-2x"></i>
+                <h2 class="personal-data" data-count="@dataMonth.TotalSteps">0</h2>
+            </div>
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Total calories/<span style="color:purple">month</span></h2>
+                <i class="fas fa-fire fa-2x"></i>
+                <h2 class="personal-data" data-count="@dataMonth.TotalCalories">0</h2>
+            </div>
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Floors/<span style="color:purple">month</span></h2>
+                <i class="fas fa-home fa-2x"></i>
+                <h2 class="personal-data" data-count="@(Math.Round(dataMonth.AverageFloors, 0))">0</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Stride lenght Running</h2>
+                <i class="fas fa-walking fa-2x"></i>
+                <h2 class="personal-data">@Model.StrideLengthRunning</h2>
+            </div>
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Average steps/<span style="color:purple">day</span></h2>
+                <i class="fas fa-shoe-prints fa-2x"></i>
+                <h2 class="personal-data" data-count="@Model.AverageDailySteps">0</h2>
+            </div>
+            <div class="col-sm-4 no-space">
+                <h2 class="personal-title">Stride lenght Walking</h2>
+                <i class="fas fa-walking fa-2x"></i>
+                <h2 class="personal-data">@Model.StrideLengthWalking</h2>
+            </div>
+        </div>
+
     </div>
 </div>
-    </div>
 
 <style>
     @@media (min-width: 1200px) {
@@ -144,6 +177,7 @@
 
     .row {
         padding-top: 20px;
+        padding-bottom: 20px;
         margin: 0px;
     }
 
@@ -166,12 +200,13 @@
     }
 
     .percent {
-        font-size: 40px;
+        font-size: 20px;
         font-weight: bold;
         margin-top: 10px;
         margin-bottom: 0;
         text-align: center;
     }
+
     .personal-data {
         font-size: 20px;
         font-weight: normal;

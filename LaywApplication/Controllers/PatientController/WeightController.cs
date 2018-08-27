@@ -15,9 +15,11 @@ namespace LaywApplication.Controllers.PatientController
         public WeightController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> parameters) : base(IPconfig, parameters) {}
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<IActionResult> Read(int id)
+        public async Task<IActionResult> Read(int id, string date)
         {
-            JObject obj = await APIUtils.GetAsync(IPconfig.GetTotalUrlUser() + id + "/weights?" + ParametersConfig.Date + "=23-06-2018"); //Request.Query["date"] //period
+            string dateParam = Request?.Query["date"] ?? date;
+
+            JObject obj = await APIUtils.GetAsync(IPconfig.GetTotalUrlUser() + id + "/weights?" + ParametersConfig.Date + "=23-06-2018"/* + dateParam*/); // dateParam Request.Query["date"] //period
             JObject weights = (JObject)obj.GetValue("weights");
             return Json(weights);
         }
