@@ -7,80 +7,63 @@ using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace LaywApplication.Controllers
 {
     public class DietController : Controller
     {
         private static readonly object Empty = new { };
-
         private readonly IOptions<ServerIP> config;
+
         public DietController(IOptions<ServerIP> config)
         {
             this.config = config;
         }
 
-        [HttpGet("~/dashboard/diet")]
-        public IEnumerable<Diet> Read()
-        {//todo passare id in qualche modo
-            var jsonDiet = APIUtils.Get(config.Value.GetTotalUrlUser() + "1/diets"); //todo mettere path nel config
-            JArray jsonDietDayArray = (JArray)jsonDiet.GetValue("diet-days");
-            List<Diet> dietList = new List<Diet>();
+        [HttpGet("~/dashboard/patients/{id}/[controller]/{day}")]
+        public async Task<IEnumerable<MealKendo>> Read(int id, string day)
+        {
+            JObject jsonDiet = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/diets"); //todo mettere path nel config
+            JObject jsonDietDay = (JObject)jsonDiet["diet-days"].FirstOrDefault(x => x["dayName"].ToString() == day);
+            List<Meal> meals = ((JArray)jsonDietDay["meals"]).GetList<Meal>();
 
-            foreach (JObject jsonDietDay in jsonDietDayArray)
+            List<MealKendo> mealsKendo = new List<MealKendo>();
+            meals.ForEach(x => mealsKendo.Add(MealKendo.CreateFromOptionList(x)));
+
+            return mealsKendo;
+        }
+
+        [HttpPost("~/dashboard/patients/{id}/[controller]/{day}/update")]
+        public async Task<object> Update(int id, string day, [FromBody]MealKendo item)
+        {
+            var serializerSettings = new JsonSerializerSettings
             {
-                Diet diet = new Diet { Day = (string)jsonDietDay.GetValue("dayName") };
-                JArray jsonDietMealsArray = (JArray)jsonDietDay.GetValue("meals");
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            };
 
-                if (jsonDietMealsArray != null)
-                {
-                    foreach (JObject jsonDietMeals in jsonDietMealsArray)
-                    {
-                        var mealName = (string)jsonDietMeals.GetValue("mealName");
-                        JArray jsonDietDescription = (JArray)jsonDietMeals.GetValue("diets");
-                        
-                        if (jsonDietDescription != null)
-                        {
-                            int i = 0;
-                            foreach (JObject jsonDietMealsDescription in jsonDietDescription)
-                            {
-                                var description = (string)jsonDietMealsDescription.GetValue("description");
-                                if (i == 0)
-                                    diet.Option1 = description;
-                                else if (i == 1)
-                                    diet.Option2 = description;
-                                else if (i == 2)
-                                    diet.Option3 = description;
-                                else if (i >= 3)
-                                    break;
-                                i++;
-                            }
-                        }
-                    }
-                }
+            Meal meal = Meal.CreateFromOptionKendoList(item);
+            JObject jsonMeal = JObject.Parse(JsonConvert.SerializeObject(meal, serializerSettings));
 
-                dietList.Add(diet);
-            }
+            var jsonMealDay = new JObject
+            {
+                { "dayName", day },
+                { "meals", new JArray() { jsonMeal } }
+            };
+            var jsonMealDays = new JArray
+            {
+                jsonMealDay
+            };
+            var jsonDiet = new JObject
+            {
+                { "diet-days", jsonMealDays }
+            };
 
-            return dietList;
-        }
+            await APIUtils.PostAsync(config.Value.GetTotalUrlUser() + id + "/diets", jsonDiet.ToString());
 
-        [HttpPost("~/dashboard/diet/create")]
-        public object Create([FromBody]Diet item)
-        {
             return Empty;
-        }
-
-        [HttpPost("~/dashboard/diet/update")]
-        public object Update([FromBody]Diet item)
-        {
-            return Empty;
-        }
-
-        [HttpPost("~/dashboard/diet/delete")]
-        public void Delete([FromBody]Diet item)
-        {
         }
     }
 }

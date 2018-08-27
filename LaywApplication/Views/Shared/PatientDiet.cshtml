@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Patient
+@{
     ViewData["Title"] = "PatientDiet";
     var divId = "diet";
 }
@@ -15,25 +16,25 @@
             <li>Sunday</li>
         </ul>
         <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("monday")); }
+            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Monday", Model)); }
         </div>
         <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("tuesday")); }
+            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Tuesday", Model)); }
         </div>
         <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("wednesday")); }
+            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Wednesday", Model)); }
         </div>
         <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("thursday")); }
+            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Thursday", Model)); }
         </div>
         <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("friday")); }
+            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Friday", Model)); }
         </div>
         <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("saturday")); }
+            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Saturday", Model)); }
         </div>
         <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("sunday")); }
+            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Sunday", Model)); }
         </div>
     </div>
 </div>

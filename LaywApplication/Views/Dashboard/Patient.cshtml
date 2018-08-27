@@ -15,7 +15,7 @@
                 <li> Personal data </li>
             </ul>
             <div>
-                @{await Html.RenderPartialAsync("PatientDiet"); }
+                @{await Html.RenderPartialAsync("PatientDiet", ((Patient)ViewBag.CurrentPatient)); }
             </div>
             <div>
                 @{await Html.RenderPartialAsync("PatientTraining", ((Patient)ViewBag.CurrentPatient)); }

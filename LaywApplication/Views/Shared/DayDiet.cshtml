@@ -1,118 +1,109 @@
-﻿@model Tuple<string>
+﻿@model Tuple<string, Patient>
 @{
-    ViewData["Title"] = "DayDiet";
+	ViewData["Title"] = "DayDiet";
+	string day = Model.Item1;
+	Patient patient = Model.Item2;
 }
 
 <div id="example">
-    <div id="grid-diet-@Model.Item1"></div>
+    <div id="grid-diet-@day"></div>
     <script>
-            $(document).ready(function () {
-                var tempSavedRecordsDiet = null;
-                var gridId = "#grid-diet-@Model.Item1";
-                        var crudServiceBaseUrl = "@Url.Content("~/dashboard/diet/")",
-                            dataSource = new kendo.data.DataSource({
-                                transport: {
-                                    read:  {
-                                        url: crudServiceBaseUrl,
-                                        dataType: "json",
-                                        type: "get"
-                                    },
-                                    update: {
-                                        url: crudServiceBaseUrl + "update",
-                                        type: "post",
-                                        dataType: "json",
-                                        contentType: "application/json"
-                                    },
-                                    destroy: {
-                                        url: crudServiceBaseUrl + "destroy",
-							            type: "post",
-							            dataType: "json",
-							            contentType: "application/json"
-                                    },
-                                    create: {
-                                        url: crudServiceBaseUrl + "create",
-							            type: "post",
-							            dataType: "json",
-							            contentType: "application/json"
-                                    },
-                                    parameterMap: function (model, operation) {
-                                        if (operation !== "read" && model) {
-                                            return kendo.stringify(model);
-                                        }
-                                    }
-                                },
-                                batch: false,
-                                pageSize: 7,
-                                schema: {
-                                    model: {
-                                        fields: {
-                                            meals: { type: "string", editable: false, nullable: false},
-                                            option1: { type: "string" },
-                                            option2: { type: "string" },
-                                            option3: { type: "string" }
-                                        }
-                                    }
-                                }
-                            });
+        $(document).ready(function () {
+			var tempSavedRecordsDiet = null;
+			var gridId = "#grid-diet-@day";
+			var crudServiceBaseUrl = "@Url.Content("~/dashboard/patients/" + patient.Id + "/diet/" + day + "/")",
+				dataSource = new kendo.data.DataSource({
+					transport: {
+						read:  {
+							url: crudServiceBaseUrl,
+							dataType: "json",
+							type: "get"
+						},
+						update: {
+							url: crudServiceBaseUrl + "update",
+							type: "post",
+							dataType: "json",
+							contentType: "application/json"
+						},
+						parameterMap: function (model, operation) {
+							if (operation !== "read" && model) {
+								return kendo.stringify(model);
+							}
+						}
+					},
+					batch: false,
+					pageSize: 7,
+					schema: {
+						model: {
+							id: "mealName",
+							fields: {
+								mealName: { type: "string", editable: false, nullable: false},
+								option1: { type: "string" },
+								option2: { type: "string" },
+								option3: { type: "string" }
+							}
+						}
+					}
+				});
 
-                        $(gridId).kendoGrid({
-                            dataSource: dataSource,
-                            scrollable: false,
-                            columns: [
-                                { field:"meals", title: "Meals", width: "50px" },
-                                { field: "option1", title:"Option1" },
-                                { field: "option2", title: "Option2" },
-                                { field: "option3", title: "Option3" },
-                                { command: ["edit"], title: "&nbsp;", width: "20px" }],
-                            editable: "popup",
-                            save: function (e) {
-                                updateTempRecordsDiet(gridId);
-                            },
-                            cancel: function (e) {
-                                if (tempSavedRecordsDiet != null) {
-                                    $(gridId).data('kendoGrid').dataSource.data(tempSavedRecordsDiet);
-                                }
-                                else {
-                                    $(gridId).data('kendoGrid').dataSource.cancelChanges();
-                                }
-                            },
-                            remove: function (e) {
-                                $(gridId).data('kendoGrid').dataSource.remove(e.model)
-                                updateTempRecordsDiet(gridId);
-                            }
-				            //,
-            //                     saveChanges: function (e) {
-            //                         // Refresh della grid per avere gli ID.
-            //                         e.sender.one("dataBound", function () {
-            //                             e.sender.dataSource.read();
-            //                         });
-            //                     }
-                        });
+			$(gridId).kendoGrid({
+				dataSource: dataSource,
+				scrollable: false,
+				columns: [
+					{ field:"mealName", title: "Meals", width: "130px" },
+					{ field: "option1", title:"Option1" },
+					{ field: "option2", title: "Option2" },
+					{ field: "option3", title: "Option3" },
+					{ command: ["edit"], title: "&nbsp;", width: "20px" }],
+				editable: "popup",
+				save: function (e) {
+					updateTempRecordsDiet(gridId);
+				},
+				cancel: function (e) {
+					if (tempSavedRecordsDiet != null) {
+						$(gridId).data('kendoGrid').dataSource.data(tempSavedRecordsDiet);
+					}
+					else {
+						$(gridId).data('kendoGrid').dataSource.cancelChanges();
+					}
+				},
+				remove: function (e) {
+					$(gridId).data('kendoGrid').dataSource.remove(e.model)
+					updateTempRecordsDiet(gridId);
+				}
+							//,
+        //                     saveChanges: function (e) {
+        //                         // Refresh della grid per avere gli ID.
+        //                         e.sender.one("dataBound", function () {
+        //                             e.sender.dataSource.read();
+        //                         });
+        //                     }
             });
-            function updateTempRecordsDiet(id) {
-                tempSavedRecordsDiet = $(id).data('kendoGrid').dataSource.data();
-                tempSavedRecordsDiet = tempSavedRecordsDiet.toJSON();
-            }
+        });
+        function updateTempRecordsDiet(id) {
+            tempSavedRecordsDiet = $(id).data('kendoGrid').dataSource.data();
+            tempSavedRecordsDiet = tempSavedRecordsDiet.toJSON();
+        }
     </script>
 </div>
 
 <style>
-    #grid-diet-@Model.Item1 table {
+    #grid-diet-@day table {
         background-color: rgba(238,242,250,0.9);
     }
-    #grid-diet-@Model.Item1 td {
+    #grid-diet-@day td {
         color: #404040;
     }
-    #grid-diet-@Model.Item1 tbody .k-button {
+    #grid-diet-@day tbody .k-button {
         border-radius: 15px;
     }
-    #grid-diet-@Model.Item1 .k-filter-row th, .k-grid-header th.k-header {
+    #grid-diet-@day .k-filter-row th, .k-grid-header th.k-header {
         text-align: center;
         color: white;
         font-weight: bold;
         background-color: transparent;
     }
-    #grid-diet-@Model.Item1 table > thead > tr {
+    #grid-diet-@day table > thead > tr {
         background-color: #007acc !important;
     }
 </style>
