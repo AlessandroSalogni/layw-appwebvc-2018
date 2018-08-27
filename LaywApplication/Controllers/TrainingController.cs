@@ -25,10 +25,10 @@ namespace LaywApplication.Controllers
         public async Task<IEnumerable<TrainingKendo>> Read(int id)
         {   
             JObject jsonTraining = await APIUtils.GetAsync(config.Value.GetTotalUrlUser() + id + "/trainings"); //todo mettere path nel config
-            List<Training> trainings = ((JArray)jsonTraining.GetValue("training-days")).GetList<Training>();
+            List<Training> trainings = ((JArray)jsonTraining["training-days"]).GetList<Training>();
 
             List<TrainingKendo> trainingsKendo = new List<TrainingKendo>();
-            trainings.ForEach(x => trainingsKendo.Add(TrainingKendo.CreateFromTraining(x)));
+            trainings.ForEach(x => trainingsKendo.Add(TrainingKendo.CreateFromOptionList(x)));
 
             return trainingsKendo;
         }
@@ -38,10 +38,10 @@ namespace LaywApplication.Controllers
         {
             var serializerSettings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
             };
 
-            Training training = Training.CreateFromTrainingKendo(item);
+            Training training = Training.CreateFromOptionKendoList(item);
             JObject jsonDayTrainings = JObject.Parse(JsonConvert.SerializeObject(training, serializerSettings));
 
             var jsonTrainings = new JObject
