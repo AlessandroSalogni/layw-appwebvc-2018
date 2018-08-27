@@ -52,9 +52,7 @@ function patientActivities()
     @{
         int size = (Model.Item3.HeartBeats.Count)/40 + 1;
     }
-    createHeartBeatChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartBeats)', down, up, @size);
-    console.log('@Json.Serialize(Model.Item3.HeartRateZonesList)');
-        
+    createHeartBeatChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartBeats)', down, up, @size);        
     createPieChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartRateZonesList)');
 }
 

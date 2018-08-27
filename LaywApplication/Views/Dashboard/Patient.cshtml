@@ -12,7 +12,7 @@
                 <li> Training </li>
                 <li> Goals </li>
                 <li> Activities </li>
-                <li> Personal data </li>
+                <li id="personal-data-id"> Personal data </li>
             </ul>
             <div>
                 @{await Html.RenderPartialAsync("PatientDiet", ((Patient)ViewBag.CurrentPatient)); }
@@ -32,6 +32,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 <style>
 	#patient .k-content {
@@ -82,4 +85,30 @@
     $(document).ready(createTabStrip("@divId"));
 </script>
 
+<script>
+    var a = 0;
+
+    $("#personal-data-id").click(animatePersonalCounter);
+
+    function animatePersonalCounter() {
+        $("#counter-personal-data-@(((Patient)ViewBag.CurrentPatient).Name) .personal-data").each(function () {
+            var $this = $(this), countTo = $this.attr('data-count');
+            $({
+                countNum: $this.text()
+            }).animate({
+                countNum: countTo
+            }, {
+                    duration: 2500,
+                    easing: 'swing',
+                    step: function () {
+                        $this.text(Math.floor(this.countNum));
+                    },
+                    complete: function () {
+                        $this.text(this.countNum);
+                    }
+                });
+        });
+        a = 1;
+    }
+</script>
 
