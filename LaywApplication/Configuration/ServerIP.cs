@@ -15,11 +15,11 @@ namespace LaywApplication.Configuration
 
         public string GetTotalUrl()
         {
-            return "http://" + IP + ":" + Port + Url;
+            return IP + Url;
         }
         public string GetTotalUrlUser()
         {
-            return "http://" + IP + ":" + Port + Url + UserPath;
+            return IP + Url + UserPath;
         }
     }
 }
