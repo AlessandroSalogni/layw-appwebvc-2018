@@ -38,12 +38,13 @@ namespace LaywApplication.Controllers
             data.TotalCalories = (from s in summaries select s.CaloriesCategory.OutCalories).Sum();
             data.AverageFloors = (from s in summaries select s.Floors).Average();
 
-            JsonResult resWeight = (JsonResult)await new WeightController(IPConfig, Parameters).Read(id);
+            
+            JsonResult resWeight = (JsonResult)await new WeightController(IPConfig, Parameters).Read(id, DateTime.Now.ToShortDateString());
             Weights weightToday = JObject.Parse(resWeight.Value.ToString()).GetObject<Weights>();
 
-            resWeight = (JsonResult)await new WeightController(IPConfig, Parameters).Read(id);
+            resWeight = (JsonResult)await new WeightController(IPConfig, Parameters).Read(id, DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
             Weights weightYesterday = JObject.Parse(resWeight.Value.ToString()).GetObject<Weights>();
-            weightToday.Weight = 65;
+            weightToday.Weight = 73;
             data.LastTwoWeights = new Weights[]{ weightToday, weightYesterday };
 
             return Json(data);
