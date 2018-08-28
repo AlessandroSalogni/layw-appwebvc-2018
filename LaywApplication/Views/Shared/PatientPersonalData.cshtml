@@ -8,7 +8,7 @@
     JObject json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1m");
     PatientPersonalData dataMonth = json.GetObject<PatientPersonalData>();
     json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1w");
-    PatientPersonalData dataWeek = json.GetObject<PatientPersonalData>();
+    PatientPersonalData dataWeek = json.GetObject<PatientPersonalData>(); //todo controllare che sia null, se null non è ancora settato per cui comportarsi di conseguenza
 }
 
 <div class="container container-inner">
@@ -54,25 +54,6 @@
             <h2 class="personal-data">@Model.Height</h2>
             <p class="count-text">cm</p>
         </div>
-        <!--
-        <div class="col-sm-1 no-space">
-            <h2 class="personal-title">Steps</h2>
-            <i class="fas fa-shoe-prints fa-2x"></i>
-            <h2 class="personal-data">@Model.AverageDailySteps</h2>
-            <p class="count-text">Per day</p>
-        </div>
-        <div class="col-sm-1 no-space">
-            <h2 class="personal-title">Stride</h2>
-            <i class="fas fa-shoe-prints fa-2x"></i>
-            <h2 class="personal-data">@Model.StrideLengthRunning</h2>
-            <p class="count-text">cm by running</p>
-        </div>
-        <div class="col-sm-1 no-space">
-            <h2 class="personal-title">Stride</h2>
-            <i class="fas fa-shoe-prints fa-2x"></i>
-            <h2 class="personal-data">@Model.StrideLengthWalking</h2>
-            <p class="count-text">cm by walking</p>
-        </div>-->
     </div>
 
     <div id="counter-personal-data-@Model.Name">

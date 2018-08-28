@@ -10,10 +10,11 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace LaywApplication.Controllers
 {
-
     public class DashboardController : Controller
     {
         public const string SessionKeyName = "_Doctor";
@@ -30,6 +31,9 @@ namespace LaywApplication.Controllers
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 var doctor = BuildDoctor();
+
+                MQTT.Listen("server/" + doctor.EMail, null);
+
                 HttpContext.Session.Set(SessionKeyName, doctor);
 
                 return View(doctor);

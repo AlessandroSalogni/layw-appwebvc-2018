@@ -5,17 +5,17 @@
 <div class="container container-inner">
     <div class="row">
         <div class="col-sm-12 no-space">
-            @{await Html.RenderPartialAsync("LineChart", Tuple.Create("Weights", "Weight", "weightpatient", "Weight", 40, Model));}
+            @{await Html.RenderPartialAsync("LineChart", Tuple.Create("Weights", "Weight", "weightpatient", "Weight", 40, Model, "goalsweight"));}
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-6 no-space">
-            @{await Html.RenderPartialAsync("LineChart", Tuple.Create("StepsDaily", "Goal Steps Daily", "stepspatient", "Steps", 1000, Model));}
+            @{await Html.RenderPartialAsync("LineChart", Tuple.Create("StepsDaily", "Goal Steps Daily", "stepspatient", "Steps", 1000, Model, "goalstepsdaily"));}
         </div>
 
         <div class="col-sm-6 no-space">
-            @{await Html.RenderPartialAsync("LineChart", Tuple.Create("CaloriesDaily", "Goal Calories Daily", "caloriesoutpatient", "Calories", 500, Model));}
+            @{await Html.RenderPartialAsync("LineChart", Tuple.Create("CaloriesDaily", "Goal Calories Daily", "caloriesoutpatient", "Calories", 500, Model, "goalcaloriesout"));}
         </div>
     </div>
 </div>
