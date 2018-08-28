@@ -9,6 +9,7 @@ namespace LaywApplication.Models
     {
         public DateTime Date { get; set; }
         public int Steps { get; set; }
+        public int Floors { get; set; }
         public CaloriesCategory CaloriesCategory { get; set; }
     }
 }
