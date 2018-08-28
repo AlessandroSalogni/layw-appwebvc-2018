@@ -21,7 +21,7 @@ namespace LaywApplication.Controllers.PatientController
 
             JObject obj = await APIUtils.GetAsync(IPconfig.GetTotalUrlUser() + id + "/weights?" + ParametersConfig.Date + "=23-06-2018"/* + dateParam*/); // dateParam Request.Query["date"] //period
             JObject weights = (JObject)obj.GetValue("weights");
-            return Json(weights);
+            return Json(weights); //todo cambiare ritornando l'oggetto
         }
     }
 }

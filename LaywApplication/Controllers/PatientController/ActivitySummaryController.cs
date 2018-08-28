@@ -15,7 +15,7 @@ namespace LaywApplication.Controllers.PatientController
         public ActivitySummaryController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> parameters) : base(IPconfig, parameters) {}
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<IActionResult> GetSummaries(int id, string date, string period)
+        public async Task<IActionResult> Read(int id, string date, string period)
         {
             string periodParam = Request?.Query["period"] ?? period;
             string dateParam = Request?.Query["date"] ?? date;

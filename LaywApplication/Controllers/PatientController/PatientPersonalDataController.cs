@@ -24,20 +24,19 @@ namespace LaywApplication.Controllers
         }
         
         [HttpGet("~/dashboard/patients/{id}/personal-data")]
-        public async Task<IActionResult> Read(int id)
+        public async Task<PatientPersonalData> Read(int id)
         {
             var period = Request.Query["period"];
             var date = Request.Query["date"];
 
             PatientPersonalData data = new PatientPersonalData();
 
-            JsonResult res = (JsonResult)await new ActivitySummaryController(IPConfig, Parameters).GetSummaries(id, date, period);
+            JsonResult res = (JsonResult)await new ActivitySummaryController(IPConfig, Parameters).Read(id, date, period);
             List<ActivitySummary> summaries = JArray.Parse(res.Value.ToString()).GetList<ActivitySummary>();
             
             data.TotalSteps = (from s in summaries select s.Steps).Sum();
             data.TotalCalories = (from s in summaries select s.CaloriesCategory.OutCalories).Sum();
             data.AverageFloors = (from s in summaries select s.Floors).Average();
-
             
             JsonResult resWeight = (JsonResult)await new WeightController(IPConfig, Parameters).Read(id, DateTime.Now.ToShortDateString());
             Weights weightToday = JObject.Parse(resWeight.Value.ToString()).GetObject<Weights>();
@@ -47,7 +46,7 @@ namespace LaywApplication.Controllers
             weightToday.Weight = 73;
             data.LastTwoWeights = new Weights[]{ weightToday, weightYesterday };
 
-            return Json(data);
+            return data;
         }
     }
 }

@@ -19,15 +19,14 @@ namespace LaywApplication.Controllers.PatientController
         {}
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<IActionResult> GetGoal(int id)
+        public async Task<Models.GoalsStepsDaily> Read(int id)
         {
             JObject obj = await APIUtils.GetAsync(IPconfig.GetTotalUrlUser() + id + "/goals-steps-daily/current"); //Request.Query["date"] //period
-            JObject goal = (JObject)obj.GetValue("goals-steps-daily");
-            return Json(goal);
+            return ((JObject)obj.GetValue("goals-steps-daily")).GetObject<Models.GoalsStepsDaily>();
         }
 
-        [HttpPost("~/dashboard/patients/{id}/[controller]/create")]
-        public async Task<object> PostGoal(int id, [FromBody]Models.GoalsStepsDaily item)
+        [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
+        public async Task<object> Update(int id, [FromBody]Models.GoalsStepsDaily item)
         {
             var serializerSettings = new JsonSerializerSettings
             {
