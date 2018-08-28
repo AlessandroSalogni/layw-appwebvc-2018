@@ -14,8 +14,8 @@ namespace LaywApplication.Controllers
 {
     public class PatientPersonalDataController : BasePatientController
     {
-        IOptions<ServerIP> IPConfig;
-        IOptions<JsonStructure> Parameters;
+        private IOptions<ServerIP> IPConfig;
+        private IOptions<JsonStructure> Parameters;
 
         public PatientPersonalDataController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> parameters) : base(IPconfig, parameters)
         {
