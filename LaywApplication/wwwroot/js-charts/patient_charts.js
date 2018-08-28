@@ -326,14 +326,48 @@ function createGridTrainingDietDataSource(crudServiceBaseUrl, pageSize) {
     });
 }
 
-function createGrid(divId, scrollable, dataSource, columns) {
+function createGridGoalsDataSource(crudServiceBaseUrl, pageSize) {
+    return dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: crudServiceBaseUrl,
+                dataType: "json",
+                type: "get"
+            },
+            update: {
+                url: crudServiceBaseUrl + "/update",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json"
+            },
+            parameterMap: function (model, operation) {
+                if (operation !== "read" && model) {
+                    return kendo.stringify(model);
+                }
+            }
+        },
+        batch: false,
+        pageSize: pageSize,
+        schema: {
+            model: {
+                id: "date",
+                fields: {
+                    goal: { type: "number", editable: true, nullable: false },
+                    date: { type: "date", editable: true, nullable: false }
+                }
+            }
+        }
+    });
+}
+
+function createGrid(divId, scrollable, editableType, dataSource, columns) {
     var tempSavedRecordsTraining = null;
 
     $("#grid-" + divId).kendoGrid({
         dataSource: dataSource,
         scrollable: scrollable,
         columns: JSON.parse(columns),
-        editable: "popup",
+        editable: editableType,
         save: function (e) {
             updateTempRecordsTraining('#grid-' + divId);
         },

@@ -9,7 +9,7 @@
 }
 
 <div class="demo-section k-content wide text-center">
-    <div id="grid-post-@divId"></div>
+    <div id="grid-current-@divId"></div>
 
     <div id="chart-@divId" class="resize"></div>
 
@@ -29,6 +29,14 @@
 
 	$("#tab-item-goals").click(function () {
 		createLineChart("@url", "@divId", "@title", date, period, "@dataTitle", @chartInterval)
+
+		var dataSource = createGridGoalsDataSource("@urlGoal", 1);
+		var columns = [];
+		columns.push({ "field": "goal", "title": "Today @title" });
+		columns.push({ "command": "edit", "title": "Set today goal", "width": "50px" });
+		console.log(dataSource);
+		console.log(columns);
+		createGrid("current-@divId", false, "inline", dataSource, JSON.stringify(columns));
 	});
 
     $("#period-@divId").kendoButtonGroup({
@@ -48,68 +56,13 @@
 		}
 	});
 </script>
-    $("#beginDate-@divId").kendoDatePicker({
-        format: "dd-MM-yyyy",
-        value: "@DateTime.Now.ToShortDateString().Replace('/','-')",
-        change: function () {createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, "@dataTitle", @chartInterval)}
-    });
-</script>
-
-
-
-<script>
-    $(document).ready(function () {
-        var tempSavedRecordsTraining = null;
-        var dataSource = new kendo.data.DataSource({
-            transport: {
-                read:  {
-                    url: "@urlGoal",
-                    dataType: "json",
-                    type: "get"
-                },
-                update: {
-                    url: "@urlGoal" + "/create",
-                    type: "post",
-                    dataType: "json",
-                    contentType: "application/json"
-                },
-                parameterMap: function (model, operation) {
-                    if (operation !== "read" && model) {
-                        return kendo.stringify(model);
-                    }
-                }
-            },
-            batch: false,
-            pageSize: 1,
-            schema: {
-                model: {
-                    id: "date",
-                    fields: {
-                        goal: { type: "number", editable: true, nullable: false },
-                        date: { type: "date", editable: true, nullable: false }
-                    }
-                }
-            }
-        });
-        $("#grid-post-@divId").kendoGrid({
-			dataSource: dataSource,
-            scrollable: false,
-			columns: [
-                { field: "goal", title: "Today @title"},
-                { command: "edit", title: "Set today goal", width: "50px" }
-			],  
-            editable: "inline"
-            
-        });
-    });
-</script>
 
 <style>
-    #grid-post-@divId table {
+    #grid-current-@divId table {
         background-color: rgba(238,242,250,0.9);
     }
 
-    #grid-post-@divId td {
+    #grid-current-@divId td {
         color: #404040;
     }
 
@@ -117,15 +70,15 @@
         border-radius: 15px;
     }
 
-    #grid-post-@divId .k-filter-row th,
-    #grid-post-@divId .k-grid-header th.k-header {
+    #grid-current-@divId .k-filter-row th,
+    #grid-current-@divId .k-grid-header th.k-header {
         text-align: center;
         color: white;
         font-weight: bold;
         background-color: transparent;
     }
 
-    #grid-post-@divId table > thead > tr {
+    #grid-current-@divId table > thead > tr {
         background-color: #007acc;
     }
 </style>
