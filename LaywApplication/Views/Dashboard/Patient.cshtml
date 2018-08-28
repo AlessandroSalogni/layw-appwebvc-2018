@@ -8,11 +8,11 @@
     <div class="demo-section k-content">
         <div id="tabstrip-@divId">
             <ul>
-                <li class="k-state-active"> Diet </li>
-                <li> Training </li>
-                <li> Goals </li>
-                <li> Activities </li>
-                <li id="personal-data-id"> Personal data </li>
+                <li id="tab-item-diet" class="k-state-active"> Diet </li>
+                <li id="tab-item-training"> Training </li>
+                <li id="tab-item-goals"> Goals </li>
+                <li id="tab-item-activities"> Activities </li>
+                <li id="tab-item-personal-data"> Personal data </li>
             </ul>
             <div>
                 @{await Html.RenderPartialAsync("PatientDiet", ((Patient)ViewBag.CurrentPatient)); }
@@ -32,9 +32,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 <style>
 	#patient .k-content {
@@ -82,33 +79,6 @@
 </style>
 
 <script>
-    $(document).ready(createTabStrip("@divId"));
-</script>
-
-<script>
-    var a = 0;
-
-    $("#personal-data-id").click(animatePersonalCounter);
-
-    function animatePersonalCounter() {
-        $("#counter-personal-data-@(((Patient)ViewBag.CurrentPatient).Name) .personal-data").each(function () {
-            var $this = $(this), countTo = $this.attr('data-count');
-            $({
-                countNum: $this.text()
-            }).animate({
-                countNum: countTo
-            }, {
-                    duration: 2500,
-                    easing: 'swing',
-                    step: function () {
-                        $this.text(Math.floor(this.countNum));
-                    },
-                    complete: function () {
-                        $this.text(this.countNum);
-                    }
-                });
-        });
-        a = 1;
-    }
+	$(document).ready(createTabStrip("@divId"));
 </script>
 

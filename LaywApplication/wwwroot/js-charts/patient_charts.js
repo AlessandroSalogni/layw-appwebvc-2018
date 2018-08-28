@@ -289,3 +289,91 @@ function createPieChart(divId, source) {
         seriesColors: ["#03a9f4", "#ff9800", "#fad84a", "#4caf50"]
     });
 }
+
+function createGridTrainingDietDataSource(crudServiceBaseUrl, pageSize) {
+    return new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: crudServiceBaseUrl,
+                dataType: "json",
+                type: "get"
+            },
+            update: {
+                url: crudServiceBaseUrl + "update",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json"
+            },
+            parameterMap: function (model, operation) {
+                if (operation !== "read" && model) {
+                    return kendo.stringify(model);
+                }
+            }
+        },
+        batch: false,
+        pageSize: pageSize,
+        schema: {
+            model: {
+                id: "name",
+                fields: {
+                    name: { type: "string", editable: false, nullable: false },
+                    option1: { type: "string" },
+                    option2: { type: "string" },
+                    option3: { type: "string" }
+                }
+            }
+        }
+    });
+}
+
+function createGrid(divId, scrollable, dataSource, columns) {
+    var tempSavedRecordsTraining = null;
+
+    $("#grid-" + divId).kendoGrid({
+        dataSource: dataSource,
+        scrollable: scrollable,
+        columns: JSON.parse(columns),
+        editable: "popup",
+        save: function (e) {
+            updateTempRecordsTraining('#grid-' + divId);
+        },
+        cancel: function (e) {
+            if (tempSavedRecordsTraining != null) {
+                $('#grid-' + divId).data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
+            }
+            else {
+                $('#grid-' + divId).data('kendoGrid').dataSource.cancelChanges();
+            }
+        },
+        remove: function (e) {
+            $('#grid-' + divId).data('kendoGrid').dataSource.remove(e.model)
+            updateTempRecordsTraining('#grid-' + divId);
+        }
+    });
+}
+
+function updateTempRecordsTraining(id) {
+    tempSavedRecordsTraining = $(id).data('kendoGrid').dataSource.data();
+    tempSavedRecordsTraining = tempSavedRecordsTraining.toJSON();
+}
+
+function counter(divId) {
+    var a = 0;
+    $(divId).each(function () {
+        var $this = $(this), countTo = $this.attr('data-count');
+        $({
+            countNum: $this.text()
+        }).animate({
+            countNum: countTo
+        }, {
+                duration: 2500,
+                easing: 'swing',
+                step: function () {
+                    $this.text(Math.floor(this.countNum));
+                },
+                complete: function () {
+                    $this.text(this.countNum);
+                }
+            });
+    });
+}

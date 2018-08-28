@@ -1,4 +1,4 @@
-﻿@model Tuple<string, string, Activity, Patient>
+﻿@model Tuple<string, string, Activity, Patient, int>
 
 <div class="row">
     <div class="col-sm-12 text-center">
@@ -44,20 +44,16 @@
 
 
 <script>
-function patientActivities()
-{
-    var down = @AerobicFunction.CalculateRange(Model.Item4).Item1;
-    var up = @AerobicFunction.CalculateRange(Model.Item4).Item2;
+	$("#tab-item-activity-@Model.Item5").click(function () {
+		var down = @AerobicFunction.CalculateRange(Model.Item4).Item1;
+		var up = @AerobicFunction.CalculateRange(Model.Item4).Item2;
 
-    @{
-        int size = (Model.Item3.HeartBeats.Count)/40 + 1;
-    }
-    createHeartBeatChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartBeats)', down, up, @size);        
-    createPieChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartRateZonesList)');
-}
-
-$(document).ready(patientActivities);
-$(document).bind("kendo:skinChange", patientActivities);
+		@{
+			int size = (Model.Item3.HeartBeats.Count)/40 + 1;
+		}
+		createHeartBeatChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartBeats)', down, up, @size);
+		createPieChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartRateZonesList)');
+	});
 </script>
 
 <style>

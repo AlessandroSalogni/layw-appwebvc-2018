@@ -17,7 +17,7 @@
 				@*<li class="k-state-active">0.@activities[0].ActivityName</li>*@
 					for (int i = 0; i < activities.Count; i++)
 					{
-                        <li class="mnu-activity" data-id="@i">@activities[i].ActivityName @i</li>
+                        <li id="tab-item-activity-@i"class="mnu-activity" data-id="@i">@activities[i].ActivityName @i</li>
 					}
 			}
 		</ul>
@@ -25,7 +25,7 @@
 			for (int i = 0; i < activities.Count; i++)
 			{
 				<div>
-					@{await Html.RenderPartialAsync("PatientActivity", Tuple.Create("activity" + i, "activities", activities[i], Model));}
+					@{await Html.RenderPartialAsync("PatientActivity", Tuple.Create("activity" + i, "activities", activities[i], Model, i));}
 				</div>
 			}
 		}
@@ -39,30 +39,11 @@
 
 
 <script>
-    var a = 0;
-    
-    $(".mnu-activity").click(animateCounter);
+	$("#tab-item-activities").click(function () {
+		$("#tab-item-activity-0").trigger("click");
+	})
 
-
-    function animateCounter() {
-        var divId = "#counter-activity" + $(this).attr('data-id');
-        $(divId + ' .counter-value').each(function () {
-            var $this = $(this), countTo = $this.attr('data-count'), speed = $this.attr('data-speed');
-            $({
-                countNum: $this.text()
-            }).animate({
-                countNum: countTo
-            }, {
-                    duration: 2500,
-                    easing: 'swing',
-                    step: function () {
-                        $this.text(Math.floor(this.countNum));
-                    },
-                    complete: function () {
-                        $this.text(this.countNum);
-                    }
-                });
-        });
-        a = 1;
-    }
+	$(".mnu-activity").click(function () {
+		counter("#counter-activity" + $(this).attr('data-id') + " .counter-value");
+	});
 </script>

@@ -21,21 +21,27 @@
 </div>
 
 <script>
-    var period = "1w";
-    $(document).ready(createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val() , period, "@dataTitle", @chartInterval));
-    $(document).bind("kendo:skinChange", createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, "@dataTitle", @chartInterval));
+	var period = "1w";
+	var date = "@DateTime.Now.ToShortDateString().Replace('/','-')";
+
+	$("#tab-item-goals").click(function () {
+		createLineChart("@url", "@divId", "@title", date, period, "@dataTitle", @chartInterval)
+	});
 
     $("#period-@divId").kendoButtonGroup({
         select: function (e) {
-            period = $("#period-@divId").children().eq(e.indices).text();
-            $(document).ready(createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, "@dataTitle", @chartInterval));
+			period = $("#period-@divId").children().eq(e.indices).text();
+			$("#tab-item-goals").trigger("click");
         },
         index: 0
     });
 
-    $("#beginDate-@divId").kendoDatePicker({
-        format: "dd-MM-yyyy",
-        value: "@DateTime.Now.ToShortDateString().Replace('/','-')",
-        change: function () {createLineChart("@url", "@divId", "@title", $("#beginDate-@divId").val(), period, "@dataTitle", @chartInterval)}
-    });
+	$("#beginDate-@divId").kendoDatePicker({
+		format: "dd-MM-yyyy",
+		value: date,
+		change: function () {
+			date = $("#beginDate-@divId").val();
+			$("#tab-item-goals").trigger("click");
+		}
+	});
 </script>

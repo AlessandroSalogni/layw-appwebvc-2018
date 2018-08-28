@@ -1,6 +1,5 @@
 ﻿@model Patient
 @using System;
-@using System.Collections.Generic;
 @using LaywApplication.Controllers.Utils;
 @using LaywApplication.Models;
 @using Newtonsoft.Json.Linq;
@@ -162,6 +161,12 @@
 
     </div>
 </div>
+
+<script>
+	$("#tab-item-personal-data").click(function () {
+		counter("#counter-personal-data-@(((Patient)ViewBag.CurrentPatient).Name) .personal-data");
+	});
+</script>
 
 <style>
     @@media (min-width: 1200px) {

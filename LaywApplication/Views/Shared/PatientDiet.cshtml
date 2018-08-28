@@ -7,13 +7,13 @@
 <div class="demo-section k-content">
     <div id="tabstrip-@divId">
         <ul>
-            <li class="k-state-active">Monday</li>
-            <li>Tuesday</li>
-            <li>Wednesday</li>
-            <li>Thursday</li>
-            <li>Friday</li>
-            <li>Saturday</li>
-            <li>Sunday</li>
+            <li id="tab-item-diet-Monday" class="k-state-active">Monday</li>
+            <li id="tab-item-diet-Tuesday">Tuesday</li>
+            <li id="tab-item-diet-Wednesday">Wednesday</li>
+            <li id="tab-item-diet-Thursday">Thursday</li>
+            <li id="tab-item-diet-Friday">Friday</li>
+            <li id="tab-item-diet-Saturday">Saturday</li>
+            <li id="tab-item-diet-Sunday">Sunday</li>
         </ul>
         <div>
             @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Monday", Model)); }
@@ -40,5 +40,13 @@
 </div>
 
 <script>
-    $(document).ready(createTabStrip("@divId"));
+	$(document).ready(function() {
+		createTabStrip("@divId");
+		$("#tab-item-diet-Monday").trigger("click");
+	});
+
+	$("#tab-item-diet").click(function () {
+		$("#tab-item-diet-Monday").trigger("click")
+	})
+
 </script>
