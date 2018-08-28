@@ -45,6 +45,7 @@ namespace LaywApplication.Controllers
         [HttpGet("~/dashboard/patients/{id}")]
         public IActionResult Patient(int id)
         {
+            //TODO oltre a verificare l'autenticazione, verificare che il paziente appartenga veramente al medico. in caso contrario non restituire la view
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 var doctor = BuildDoctor();
