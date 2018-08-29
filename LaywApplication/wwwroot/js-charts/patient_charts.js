@@ -63,7 +63,7 @@ function createDonutChart(completeUrl, divId) {
                     type: "get",
                     dataType: "json"
                 }
-            },
+            }
         },
         legend: {
             position: "top"
@@ -84,11 +84,11 @@ function createDonutChart(completeUrl, divId) {
         chartArea: {
             margin: 1,
             height: 300
-        },
+        }
     });
 }
 
-function createGrid(completeUrl, divId, title) {
+function createGridTotalGoal(completeUrl, divId, title) {
     $("#grid-" + divId).kendoGrid({
         dataSource: {
             transport: {
@@ -372,7 +372,7 @@ function createGrid(divId, scrollable, editableType, dataSource, columns) {
             updateTempRecordsTraining('#grid-' + divId);
         },
         cancel: function (e) {
-            if (tempSavedRecordsTraining != null) {
+            if (tempSavedRecordsTraining !== null) {
                 $('#grid-' + divId).data('kendoGrid').dataSource.data(tempSavedRecordsTraining);
             }
             else {
@@ -380,7 +380,7 @@ function createGrid(divId, scrollable, editableType, dataSource, columns) {
             }
         },
         remove: function (e) {
-            $('#grid-' + divId).data('kendoGrid').dataSource.remove(e.model)
+            $('#grid-' + divId).data('kendoGrid').dataSource.remove(e.model);
             updateTempRecordsTraining('#grid-' + divId);
         }
     });

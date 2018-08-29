@@ -87,8 +87,8 @@
 	function createDashboard() {
 		var baseUrl = "@Url.Content("~/dashboard/" + lastUrl)";
         createDonutChart(baseUrl + "/summary", "@divId");
-		createGrid(baseUrl + "/achieved", "@divId-achieved", "Achieved");
-		createGrid(baseUrl + "/notachieved", "@divId-notachieved", "Not Achieved");
+		createGridTotalGoal(baseUrl + "/achieved", "@divId-achieved", "Achieved");
+		createGridTotalGoal(baseUrl + "/notachieved", "@divId-notachieved", "Not Achieved");
         createWindow("@divId", "@title");
 	}
     
