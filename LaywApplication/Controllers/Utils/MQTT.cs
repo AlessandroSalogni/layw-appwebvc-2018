@@ -1,8 +1,6 @@
-﻿using LaywApplication.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
@@ -23,9 +21,39 @@ namespace LaywApplication.Controllers.Utils
         }
         public static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            //var message = System.Text.Encoding.Default.GetString(e.Message);
-            //System.Console.WriteLine("Message received: " + message);
-            Console.WriteLine(Encoding.UTF8.GetString(e.Message));
+            APIUtils.Get("https://localhost:44333/dashboard/mqtt");
+        }
+    }
+
+    public class MqttController : Controller
+    {
+        private readonly IHubContext<MqttHub> _hubContext;
+
+        public MqttController(IHubContext<MqttHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
+        [HttpGet("~/dashboard/mqtt")]
+        public async Task<IActionResult> SendNotification()
+        {
+            await _hubContext.Clients.All.SendAsync("ciao", "ok");
+            return Json(new { });
+        }
+    }
+
+    public class MqttHub : Hub
+    {
+        public IHubContext<MqttHub> _context;
+
+        public MqttHub(IHubContext<MqttHub> context)
+        {
+            _context = context;
+        }
+
+        public async Task SendMessage(string topic, string message)
+        {
+            await _context.Clients.All.SendAsync("ciao", message);
         }
     }
 }

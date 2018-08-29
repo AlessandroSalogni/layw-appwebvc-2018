@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -88,6 +89,8 @@ namespace LaywApplication
                 options.Cookie.Name = ".Layw.Session";
             });
 
+            services.AddSignalR();
+
             services.AddMvc();
         }
 
@@ -110,6 +113,20 @@ namespace LaywApplication
             app.UseAuthentication();
             app.UseSession();
             //app.UseMvc();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<MqttHub>("/mqttHub");
+            });
+
+            //app.Use(next => (context) =>
+            //{
+            //    var hubContext = (IHubContext<MqttHub>)context
+            //                        .RequestServices
+            //                        .GetServices<IHubContext<MqttHub>>();
+            //    //...
+            //});
+
             app.UseMvcWithDefaultRoute();
 
             app.Run(async (context) =>

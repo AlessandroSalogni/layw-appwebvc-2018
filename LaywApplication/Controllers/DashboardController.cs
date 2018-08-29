@@ -6,6 +6,7 @@ using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -18,11 +19,13 @@ namespace LaywApplication.Controllers
     public class DashboardController : Controller
     {
         public const string SessionKeyName = "_Doctor";
-        private readonly IOptions<ServerIP> config;
+        private readonly IOptions<ServerIP> _config;
+        private readonly IHubContext<MqttHub> _hubContext;
 
-        public DashboardController(IOptions<ServerIP> config)
+        public DashboardController(IOptions<ServerIP> config, IHubContext<MqttHub> hubContext)
         {
-            this.config = config;
+            _config = config;
+            _hubContext = hubContext;
         }
 
         [HttpGet("~/dashboard")]
@@ -66,9 +69,9 @@ namespace LaywApplication.Controllers
 
             string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
 
-            APIUtils.Post(config.Value.GetTotalUrl() + "doctors", jsonResult);
+            APIUtils.Post(_config.Value.GetTotalUrl() + "doctors", jsonResult);
 
-            JObject json = APIUtils.Get(config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
+            JObject json = APIUtils.Get(_config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
             doctor.Patients = ((JArray)json.GetValue("users")).GetList<Patient>();
 
             return doctor;
