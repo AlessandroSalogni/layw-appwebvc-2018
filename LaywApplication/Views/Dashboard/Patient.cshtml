@@ -37,39 +37,51 @@
 	#patient .k-content {
 		background-color: transparent;
 	}
-	#patient .k-content .k-tabstrip {
+	#patient .k-tabstrip {
 		background-color: transparent;
 		border: none;
 	}
-	#patient .k-content .k-tabstrip:focus {
+	#patient .k-tabstrip:focus {
 		box-shadow: none;
 	}
-	#patient .k-content .k-tabstrip > .k-state-active,
-	#patient .k-content .k-tabstrip > .k-state-active:hover,
-	#patient .k-content .k-tabstrip > .k-content {
+	#patient .k-tabstrip > .k-state-active,
+	#patient .k-tabstrip > .k-state-active:hover,
+	#patient .k-tabstrip > .k-content {
 		background-color: transparent;
 		border: none;
 	}
-	#patient .k-content .k-tabstrip > .k-tabstrip-items {
+	#patient .k-tabstrip > .k-tabstrip-items {
 		border: none;
 		text-align: center;
-        position: relative;
-        height: 19px;
+		position: relative;
+		height: 19px;
 	}
-	#patient .k-content .k-tabstrip .k-item {
-		border-top-right-radius: 10px;
-		border-top-left-radius: 10px;
+	#patient .k-tabstrip .k-item {
+		border-radius: 16px;
 		background-color: transparent;
 		border-width: 1px;
+		border-top: none;
 		border-bottom: none;
-		border-color: cornflowerblue;
+		border-color: rgba(8,26,40,1);
 		color: black;
 	}
-	#patient .k-content .k-tabstrip > .k-tabstrip-items .k-item > .k-complete {
+	#patient .k-tabstrip .k-item:hover {
+		border-width: 1px;
+		border-top-style: solid;
+		border-bottom-style: solid;
+	}
+	#patient .k-header .k-item > .k-link {
+		color: rgba(8,26,40,1);
+		font-weight: 700;
+	}
+	#patient .k-tabstrip > .k-tabstrip-items > .k-state-active {
+		background-color: rgba(8,26,40,1);
+	}
+	#patient .k-tabstrip > .k-tabstrip-items > .k-state-active > .k-link {
+		color: white;
+	}
+	#patient .k-tabstrip > .k-tabstrip-items .k-item > .k-complete {
 		border: none;
-	}
-	#patient .k-content .k-header .k-item > .k-link {
-		color: black;
 	}
 	@@media (min-width: 1200px) {
 		.container {
