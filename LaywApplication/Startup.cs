@@ -32,8 +32,12 @@ namespace LaywApplication
         {
             services.Configure<Kendo>(Configuration.GetSection("kendo"));
             services.Configure<Theme>(Configuration.GetSection("theme"));
-            services.Configure<ServerIP>(Configuration.GetSection("server-ip"));
-            services.Configure<JsonStructure>(Configuration.GetSection("json-structure"));
+
+            var settingsServerIP = Configuration.GetSection("server-ip").Get<ServerIP>();
+            services.AddSingleton(settingsServerIP);
+
+            var settingsJsonStructure = Configuration.GetSection("json-structure").Get<JsonStructure>();
+            services.AddSingleton(settingsJsonStructure);
 
             services.AddAuthentication(options =>
             {
@@ -116,16 +120,8 @@ namespace LaywApplication
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<MqttHub>("/mqttHub");
+                routes.MapHub<MQTTHub>("/mqttHub");
             });
-
-            //app.Use(next => (context) =>
-            //{
-            //    var hubContext = (IHubContext<MqttHub>)context
-            //                        .RequestServices
-            //                        .GetServices<IHubContext<MqttHub>>();
-            //    //...
-            //});
 
             app.UseMvcWithDefaultRoute();
 
