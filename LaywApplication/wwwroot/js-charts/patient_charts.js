@@ -392,7 +392,6 @@ function updateTempRecordsTraining(id) {
 }
 
 function counter(divId) {
-    var a = 0;
     $(divId).each(function () {
         var $this = $(this), countTo = $this.attr('data-count');
         $({
