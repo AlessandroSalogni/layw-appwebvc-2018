@@ -7,7 +7,7 @@ namespace LaywApplication.Configuration
 {
     public class JsonStructure
     {
-        public Parameters Parameters { get; set; }
+        public QueryParams QueryParams { get; set; }
         public AdditionalPath AdditionalPath { get; set; }
         public GoalsStepsDaily GoalsStepsDaily { get; set; }
         public GoalsWeight GoalsWeight { get; set; }
@@ -17,7 +17,7 @@ namespace LaywApplication.Configuration
         public CaloriesSummary CaloriesSummary { get; set; }
     }
 
-    public class Parameters
+    public class QueryParams
     {
         public string Period { get; set; }
         public string Date { get; set; }
