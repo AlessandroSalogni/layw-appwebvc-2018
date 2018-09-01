@@ -12,10 +12,11 @@
 	PatientPersonalData dataWeek = json.GetObject<PatientPersonalData>(); //todo controllare che sia null, se null non è ancora settato per cui comportarsi di conseguenza
 
 	string country = new RegionInfo(Model.Country).EnglishName;
+	var percent = Math.Round(((float)dataMonth.LastTwoWeights[0].Weight - (float)dataMonth.LastTwoWeights[1].Weight) * 100f / (float)dataMonth.LastTwoWeights[1].Weight, 2);
 }
 
-<div class="row" style="margin:0;">
-	<div id="patient-info-card" class="col-sm-4">
+<div id="personal-data-@Model.Name" class="row" style="margin:0;">
+	<div id="patient-info-card" class="col-sm-4 card">
 		<div class="box">
 			@if (Model.Gender == Gender.MALE)
 			{
@@ -34,27 +35,27 @@
 				<span>@Model.Age years old&nbsp;&nbsp;-&nbsp;&nbsp;@Model.DateOfBirth.ToShortDateString()</span><br />
 				<span>@country</span>
 			</h2>
-			<div class="row" style="padding-top:0;">
+			<div class="row">
 				<div class="col-sm-4 info no-space">
-					<h2 class="personal-title">Stride lenght Running</h2>
+					<h2>Stride lenght Running</h2>
 					<i class="fas fa-walking fa-2x"></i>
-					<p class="personal-data">
+					<p>
 						@Model.StrideLengthRunning<br />
 						<span class="unit-measure">cm</span>
 					</p>
 				</div>
 				<div class="col-sm-4 info no-space">
-					<h2 class="personal-title">Height</h2>
+					<h2>Height</h2>
 					<i class="fas fa-ruler fa-2x" style="margin-top:30px;"></i>
-					<p class="personal-data">
+					<p>
 						@Model.StrideLengthRunning<br />
 						<span class="unit-measure">cm</span>
 					</p>
 				</div>
 				<div class="col-sm-4 info no-space">
-					<h2 class="personal-title">Stride lenght Walking</h2>
+					<h2>Stride lenght Walking</h2>
 					<i class="fas fa-walking fa-2x"></i>
-					<p class="personal-data">
+					<p>
 						@Model.StrideLengthWalking<br />
 						<span class="unit-measure">cm</span>
 					</p>
@@ -62,23 +63,54 @@
 			</div>
 		</div>
 	</div>
-	<div id="patient-data-card" class="col-sm-7 col-sm-offset-1">
+	<div id="patient-data-card" class="col-sm-7 col-sm-offset-1 card">
 		<div class="box">
-			<h2>Weight</h2>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-1 info no-space">
+					<h2>Yesterday</h2>
+					<p>
+						@dataMonth.LastTwoWeights[1].Weight.ToString("0.0")<br />
+						<span class="unit-measure">kg</span>
+					</p>
+				</div>
+				<div class="col-sm-2 info">
+					<i class="fas fa-weight fa-3x"></i>
+					@{
+						if (percent < 0)
+						{
+							<p class="percent" style="color:green">
+								-&nbsp;@(Math.Abs(percent))
+								<span>%</span><br />
+								<i class="fas fa-angle-down fa-1x" style="margin-top:5px;"></i>
+							</p>
+						}
+						else if (percent > 0)
+						{
+							<p class="percent" style="color:red;">
+								<i class="fas fa-angle-up fa-1x" style="margin-bottom:5px;"></i><br />
+								+&nbsp;@(percent)
+								<span>%</span>
+							</p>
+						}
+						else
+						{
+							<p class="equal">=</p>
+						}
+					}
+				</div>
+				<div class="col-sm-4 info no-space">
+					<h2>Today</h2>
+					<p>
+						@dataMonth.LastTwoWeights[0].Weight.ToString("0.0")<br />
+						<span class="unit-measure">kg</span>
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <!--
 <div class="container container-inner">
-    <div class="row">
-        <div class="col-sm-2 no-space">
-            <h2 class="personal-title">Height</h2>
-            <i class="fas fa-angle-up fa-2x"></i>
-            <h2 class="personal-data">@Model.Height</h2>
-            <p class="count-text">cm</p>
-        </div>
-    </div>
-
     <div id="counter-personal-data-@Model.Name">
         <div class="row">
             <div class="col-sm-5 col-sm-offset-1 no-space">
@@ -91,7 +123,7 @@
                 <h2 class="personal-weight-data personal-data" data-count="@dataMonth.LastTwoWeights[0].Weight">0</h2>
 
                 @{
-                    var percent = Math.Round(((float)dataMonth.LastTwoWeights[0].Weight - (float)dataMonth.LastTwoWeights[1].Weight) * 100f / (float)dataMonth.LastTwoWeights[1].Weight, 2);
+                    var percent2 = Math.Round(((float)dataMonth.LastTwoWeights[0].Weight - (float)dataMonth.LastTwoWeights[1].Weight) * 100f / (float)dataMonth.LastTwoWeights[1].Weight, 2);
                     if (percent < 0)
                     {
                         <h2 class="percent  " style="color:green">@(percent)%</h2>
@@ -169,7 +201,7 @@
 
 <script>
 	$("#tab-item-personal-data").click(function () {
-		counter("#counter-personal-data-@(((Patient)ViewBag.CurrentPatient).Name) .personal-data");
+		counter("#personal-data-@Model.Name .counter");
 	});
 </script>
 
@@ -179,43 +211,7 @@
         border: none;
     }
 
-    .personal-weight-title {
-        font-size: 40px;
-        font-weight: bold;
-        color: #4ad1e5;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        text-align: center;
-    }
-
-    .percent {
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 10px;
-        margin-bottom: 0;
-        text-align: center;
-    }
-
-    .personal-weight-data {
-        font-size: 35px;
-        font-weight: normal;
-        margin-top: 10px;
-        margin-bottom: 0;
-        text-align: center;
-    }
-
-    .counter-text {
-        font-size: 13px;
-        font-weight: normal;
-        margin-top: 10px;
-        margin-bottom: 0;
-        text-align: center;
-    }
-
-
-	/*card*/
-	#patient-info-card,
-	#patient-data-card {
+	.card {
 		padding: 0;
 		background: #fff;
 		box-shadow: 0 20px 50px rgba(0,0,0,.1);
@@ -223,8 +219,7 @@
 		transition: 0.5s;
 		color: rgba(8,26,40,1);
 	}
-	#patient-info-card > .box,
-	#patient-data-card > .box {
+	.card > .box {
 		text-align: center;
 		padding: 5px 25px;
 		box-sizing: border-box;
@@ -234,6 +229,19 @@
 		margin: 20px 0;
 		box-shadow: none;
 		background-color: inherit;
+	}
+	.card > .box .row {
+		padding-top: 0;
+	}
+	.card > .box .info > h2 {
+		margin-top: 15px;
+		font-weight: 700;
+	}
+	.card > .box .info > .fas {
+		color: #4ad1e5;
+	}
+	.card > .box .info > p {
+		font-style: italic;
 	}
 	#patient-info-card > .box .img {
 		width: 120px;
@@ -258,26 +266,51 @@
 		color: rgba(8,26,40,1);
 		font-weight: 400;
 	}
-	#patient-info-card > .box .info > h2 {
-		font-size: 14px;
-		margin-top: 15px;
-		font-weight: 700;
-	}
 	#patient-info-card > .box .info > .fas {
 		margin: 15px auto 0;
-		color: #4ad1e5;
+	}
+	#patient-info-card > .box .info > h2 {
+		font-size: 14px;
 	}
 	#patient-info-card > .box .info > p {
-		font-size: 14px;
 		font-weight: 400;
+		font-size: 14px;
 		margin-top: 15px;
 		margin-bottom: 0;
 		line-height: 13px;
-		font-style: italic;
 	}
 	#patient-info-card > .box .info > p > .unit-measure {
 		font-size: 13px;
 		font-weight: 400;
+	}
+	#patient-data-card > .box .info > h2 {
+		margin-top: 7px;
+		font-style: italic;
+	}
+	#patient-data-card > .box .info > p {
+		font-weight: 300;
+		font-size: 35px;
+		margin-top: 35px;
+		margin-bottom: 0;
+		line-height: 20px;
+	}
+	#patient-data-card > .box .info > p > .unit-measure {
+		font-size: 15px;
+		font-weight: 400;
+	}
+	#patient-data-card > .box .info > .percent {
+		font-weight: 700;
+		font-size: 18px;
+		margin-top: 30px;
+	}
+	#patient-data-card > .box .info > .percent > span {
+		font-size: 13px;
+	}
+	#patient-data-card > .box .info > .equal {
+		font-weight: 700;
+		font-size: 30px;
+		margin-top: 36px;
+		color: #605ca8;
 	}
 </style>
 

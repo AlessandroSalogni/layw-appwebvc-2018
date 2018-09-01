@@ -8,7 +8,7 @@ namespace LaywApplication.Models
     public class Weights
     {
         public DateTime Date { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
         public double Bmi { get; set; }
     }
 }
