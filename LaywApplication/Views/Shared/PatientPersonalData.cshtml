@@ -3,51 +3,74 @@
 @using LaywApplication.Controllers.Utils;
 @using LaywApplication.Models;
 @using Newtonsoft.Json.Linq;
+@using System.Globalization;
 
 @{
-    JObject json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1m");
-    PatientPersonalData dataMonth = json.GetObject<PatientPersonalData>();
-    json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1w");
-    PatientPersonalData dataWeek = json.GetObject<PatientPersonalData>(); //todo controllare che sia null, se null non è ancora settato per cui comportarsi di conseguenza
+	JObject json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1m");
+	PatientPersonalData dataMonth = json.GetObject<PatientPersonalData>();
+	json = await APIUtils.GetAsync("https://localhost:44333/dashboard/patients/" + Model.Id + "/personal-data?date=" + "23-06-2018"/*DateTime.Now.ToShortDateString()*/ + "&period=1w");
+	PatientPersonalData dataWeek = json.GetObject<PatientPersonalData>(); //todo controllare che sia null, se null non è ancora settato per cui comportarsi di conseguenza
+
+	string country = new RegionInfo(Model.Country).EnglishName;
 }
 
+<div class="row" style="margin:0;">
+	<div id="patient-info-card" class="col-sm-4">
+		<div class="box">
+			@if (Model.Gender == Gender.MALE)
+			{
+				<div class="img" style="background-color:#0080FF;">
+					<i class="fa fa-mars fa-5x"></i>
+				</div>
+			}
+			else
+			{
+				<div class="img" style="background-color:#FF40A0;">
+					<i class="fa fa-venus fa-5x"></i>
+				</div>
+			}
+			<h2>
+				@Model.Name<br />
+				<span>@Model.Age years old&nbsp;&nbsp;-&nbsp;&nbsp;@Model.DateOfBirth.ToShortDateString()</span><br />
+				<span>@country</span>
+			</h2>
+			<div class="row" style="padding-top:0;">
+				<div class="col-sm-4 info no-space">
+					<h2 class="personal-title">Stride lenght Running</h2>
+					<i class="fas fa-walking fa-2x"></i>
+					<p class="personal-data">
+						@Model.StrideLengthRunning<br />
+						<span class="unit-measure">cm</span>
+					</p>
+				</div>
+				<div class="col-sm-4 info no-space">
+					<h2 class="personal-title">Height</h2>
+					<i class="fas fa-ruler fa-2x" style="margin-top:30px;"></i>
+					<p class="personal-data">
+						@Model.StrideLengthRunning<br />
+						<span class="unit-measure">cm</span>
+					</p>
+				</div>
+				<div class="col-sm-4 info no-space">
+					<h2 class="personal-title">Stride lenght Walking</h2>
+					<i class="fas fa-walking fa-2x"></i>
+					<p class="personal-data">
+						@Model.StrideLengthWalking<br />
+						<span class="unit-measure">cm</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="patient-data-card" class="col-sm-7 col-sm-offset-1">
+		<div class="box">
+			<h2>Weight</h2>
+		</div>
+	</div>
+</div>
+<!--
 <div class="container container-inner">
     <div class="row">
-        <div class="col-sm-2 no-space">
-            <h2 class="personal-title">Name</h2>
-            <i class="fas fa-male fa-2x"></i>
-            <h2 class="personal-data">@Model.Name</h2>
-        </div>
-        <div class="col-sm-2 no-space">
-            <h2 class="personal-title">Birthday</h2>
-            <i class="fas fa-calendar fa-2x"></i>
-            <h2 class="personal-data">@Model.DateOfBirth.ToShortDateString()</h2>
-        </div>
-        <div class="col-sm-2 no-space">
-            <h2 class="personal-title">Age</h2>
-            <i class="fas fa-clock-o fa-2x"></i>
-            <h2 class="personal-data">@Model.Age</h2>
-            <p class="count-text">years old</p>
-        </div>
-        <div class="col-sm-2 no-space">
-            <h2 class="personal-title">Gender</h2>
-            @{
-                if (Model.Gender == Gender.FEMALE)
-                {
-                    <i class="fas fa-venus fa-2x"></i>
-                }
-                else
-                {
-                    <i class="fas fa-mars fa-2x"></i>
-                }
-            }
-            <h2 class="personal-data">@Model.Gender</h2>
-        </div>
-        <div class="col-sm-2 no-space">
-            <h2 class="personal-title">Country</h2>
-            <i class="fas fa-map fa-2x"></i>
-            <h2 class="personal-data">@Model.Country</h2>
-        </div>
         <div class="col-sm-2 no-space">
             <h2 class="personal-title">Height</h2>
             <i class="fas fa-angle-up fa-2x"></i>
@@ -142,6 +165,7 @@
 
     </div>
 </div>
+-->
 
 <script>
 	$("#tab-item-personal-data").click(function () {
@@ -150,30 +174,9 @@
 </script>
 
 <style>
-    @@media (min-width: 1200px) {
-        .container-inner {
-            width: 1000px !important;
-        }
-    }
-
     .no-space {
         padding: 0px;
         border: none;
-    }
-
-    .row {
-        padding-top: 20px;
-        padding-bottom: 20px;
-        margin: 0px;
-    }
-
-    .personal-title {
-        font-size: 20px;
-        font-weight: bold;
-        color: #4ad1e5;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        text-align: center;
     }
 
     .personal-weight-title {
@@ -188,14 +191,6 @@
     .percent {
         font-size: 20px;
         font-weight: bold;
-        margin-top: 10px;
-        margin-bottom: 0;
-        text-align: center;
-    }
-
-    .personal-data {
-        font-size: 20px;
-        font-weight: normal;
         margin-top: 10px;
         margin-bottom: 0;
         text-align: center;
@@ -217,11 +212,72 @@
         text-align: center;
     }
 
-    .fa-2x {
-        margin: 0 auto;
-        float: none;
-        display: table;
-        color: #4ad1e5;
-    }
+
+	/*card*/
+	#patient-info-card,
+	#patient-data-card {
+		padding: 0;
+		background: #fff;
+		box-shadow: 0 20px 50px rgba(0,0,0,.1);
+		border-radius: 10px;
+		transition: 0.5s;
+		color: rgba(8,26,40,1);
+	}
+	#patient-info-card > .box,
+	#patient-data-card > .box {
+		text-align: center;
+		padding: 5px 25px;
+		box-sizing: border-box;
+		width: 100%;
+		height: 100%;
+		border: none;
+		margin: 20px 0;
+		box-shadow: none;
+		background-color: inherit;
+	}
+	#patient-info-card > .box .img {
+		width: 120px;
+		height: 120px;
+		margin: 0 auto;
+		border-radius: 50%;
+		overflow: hidden;
+	}
+	#patient-info-card > .box .img > .fa {
+		color: white;
+		margin-top: 25px;
+	}
+	#patient-info-card > .box > h2 {
+		font-size: 20px;
+		font-weight: 700;
+		font-style: italic;
+		margin: 20px auto;
+	}
+	#patient-info-card > .box > h2 > span {
+		font-size: 13px;
+		line-height: 20px;
+		color: rgba(8,26,40,1);
+		font-weight: 400;
+	}
+	#patient-info-card > .box .info > h2 {
+		font-size: 14px;
+		margin-top: 15px;
+		font-weight: 700;
+	}
+	#patient-info-card > .box .info > .fas {
+		margin: 15px auto 0;
+		color: #4ad1e5;
+	}
+	#patient-info-card > .box .info > p {
+		font-size: 14px;
+		font-weight: 400;
+		margin-top: 15px;
+		margin-bottom: 0;
+		line-height: 13px;
+		font-style: italic;
+	}
+	#patient-info-card > .box .info > p > .unit-measure {
+		font-size: 13px;
+		font-weight: 400;
+	}
 </style>
 
