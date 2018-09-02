@@ -17,6 +17,7 @@ namespace LaywApplication.Configuration
         public CaloriesSummary CaloriesSummary { get; set; }
         public Activities Activities { get; set; }
         public ActivitySummary ActivitySummary { get; set; }
+        public Weight Weight { get; set; }
     }
 
     public class QueryParams
@@ -45,5 +46,5 @@ namespace LaywApplication.Configuration
     public class WeightSummary : JsonData { }
     public class Activities : JsonData { }
     public class ActivitySummary : JsonData { }
-
+    public class Weight : JsonData { }
 }
