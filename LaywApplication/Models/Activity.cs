@@ -7,6 +7,7 @@ namespace LaywApplication.Models
 {
     public class Activity
     {
+        public long Id { get; } = (long)((new Random().NextDouble() * 2.0 - 1.0) * long.MaxValue);
         public List<HeartBeat> HeartBeats { get; set; }
         public string ActivityName { get; set; }
         public DateTime Date { get; set; }
