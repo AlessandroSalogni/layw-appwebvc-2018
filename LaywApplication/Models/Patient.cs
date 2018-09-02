@@ -16,9 +16,6 @@ namespace LaywApplication.Models
         public double StrideLengthRunning { get; set; }
         public double StrideLengthWalking { get; set; }
         public double AverageDailySteps { get; set; }
-
-        [JsonIgnore]
-        public AerobicFunction AerobicFunction { get; set; }
     }
 
     public class AerobicFunction

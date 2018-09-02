@@ -22,7 +22,7 @@ namespace LaywApplication.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
         {
-            ViewBag.AerobicFunction = currentPatient.AerobicFunction;
+            ViewBag.AerobicFunction = new AerobicFunction(currentPatient);
 
             JObject activitiesJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + currentPatient.Id 
                 + ActivityJsonData.Url + "?" + QueryParamsConfig.Date + "=14-06-2018"); //TODO mettere data di oggi

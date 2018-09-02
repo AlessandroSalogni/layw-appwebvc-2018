@@ -38,7 +38,6 @@ namespace LaywApplication.Controllers
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 var doctor = HttpContext.Session.Get<Doctor>(SessionKeyName);
-                doctor.Patients.ForEach(x => x.AerobicFunction = new AerobicFunction(x));
 
                 ViewBag.CurrentPatient = doctor.Patients.FirstOrDefault(x => x.Id == id);
                 return View("Patient", doctor);
@@ -60,7 +59,6 @@ namespace LaywApplication.Controllers
 
             JObject json = APIUtils.Get(IPConfig.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
             doctor.Patients = ((JArray)json.GetValue("users")).GetList<Patient>();
-            doctor.Patients.ForEach(x => x.AerobicFunction = new AerobicFunction(x));
 
             return doctor;
         }
