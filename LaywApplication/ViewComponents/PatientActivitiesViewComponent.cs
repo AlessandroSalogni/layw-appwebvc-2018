@@ -7,13 +7,13 @@ using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.ViewComponents
 {
-    public class ActivitiesViewComponent : ViewComponent
+    public class PatientActivitiesViewComponent : ViewComponent
     {
         private readonly ServerIP IPConfig;
         private readonly QueryParams QueryParamsConfig;
         private readonly JsonData ActivityJsonData;
 
-        public ActivitiesViewComponent(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
+        public PatientActivitiesViewComponent(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
         {
             this.IPConfig = IPConfig;
             QueryParamsConfig = jsonStructureConfig.QueryParams;
