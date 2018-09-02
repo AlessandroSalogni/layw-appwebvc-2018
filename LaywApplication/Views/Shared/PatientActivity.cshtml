@@ -1,91 +1,59 @@
-﻿@model Tuple<string, string, Activity, Patient, int>
+﻿@model Activity
 
-<div class="row">
-    <div class="col-sm-12 text-center">
-        <h2>@Model.Item3.ActivityName</h2>
-        <h4><i class="fas fa-flag-checkered"></i> Start: @Model.Item3.HeartBeats.First().HeartRateTime - <i class="fas fa-flag-checkered"></i> Finish: @Model.Item3.HeartBeats.Last().HeartRateTime</h4>
-    </div>
+<div class="row row-padding-top header-activity">
+	<div class="col-sm-12 text-center">
+		<h2>@Model.ActivityName</h2>
+		<h4>
+			<i class="fas fa-flag-checkered"></i>
+			&nbsp;&nbsp;@Model.HeartBeats.First().HeartRateTime&nbsp;&nbsp;-&nbsp;&nbsp;
+			<i class="fas fa-stopwatch"></i>
+			&nbsp;&nbsp;@Model.HeartBeats.Last().HeartRateTime
+		</h4>
+	</div>
 </div>
 
-<div class="row" id="counter-@Model.Item1">
-    <div class="col-sm-3 no-space">
-        <i class="fas fa-fire fa-2x"></i>
-        <h2 class="timer count-title count-number counter-value" data-count="@Model.Item3.Calories">0</h2>
-        <p class="count-text ">Calories</p>
-    </div>
-    <div class="col-sm-3 no-space">
-        <i class="fas fa-heartbeat fa-2x"></i>
-        <h2 class="timer count-title count-number counter-value" data-count="@Model.Item3.AverageHeartRate">0</h2>
-        <p class="count-text ">Average heart rate</p>
-    </div>
-    <div class="col-sm-3 no-space">
-        <i class="fas fa-shoe-prints fa-2x"></i>
-        <h2 class="timer count-title count-number counter-value" data-count="@Model.Item3.Steps">0</h2>
-        <p class="count-text ">Steps</p>
-    </div>
-    <div class="col-sm-3 no-space">
-        <i class="fas fa-clock-o fa-2x"></i>
-        <h2 class="timer count-title count-number counter-value" data-count="@((int)TimeSpan.FromMilliseconds(Model.Item3.Duration).TotalMinutes)">0</h2>
-        <p class="count-text ">Duration (minutes)</p>
-    </div>
+<div id="counter-activity-@Model.Id" class="row row-padding-top counter-activity">
+	<div class="col-sm-3 no-space">
+		<i class="fas fa-fire fa-2x"></i>
+		<h2 class="timer count-title count-number counter-value" data-count="@Model.Calories">0</h2>
+		<p class="count-text">Calories</p>
+	</div>
+	<div class="col-sm-3 no-space">
+		<i class="fas fa-heartbeat fa-2x"></i>
+		<h2 class="timer count-title count-number counter-value" data-count="@Model.AverageHeartRate">0</h2>
+		<p class="count-text">Average heart rate</p>
+	</div>
+	<div class="col-sm-3 no-space">
+		<i class="fas fa-shoe-prints fa-2x"></i>
+		<h2 class="timer count-title count-number counter-value" data-count="@Model.Steps">0</h2>
+		<p class="count-text">Steps</p>
+	</div>
+	<div class="col-sm-3 no-space">
+		<i class="fas fa-clock-o fa-2x"></i>
+		<h2 class="timer count-title count-number counter-value" data-count="@((int)TimeSpan.FromMilliseconds(Model.Duration).TotalMinutes)">0</h2>
+		<p class="count-text">Duration (minutes)</p>
+	</div>
 </div>
 
-<div class="row">
-    <div class="col-sm-12 no-space">
-        <div id="chart-@Model.Item1"></div>
-    </div>
+<div class="row row-padding-top">
+	<div class="col-sm-12 no-space">
+		<div id="chart-@Model.Id"></div>
+	</div>
 </div>
 
-<div class="row">
-    <div class="col-sm-6 col-sm-push-3 no-space">
-        <div id="pie-chart-@Model.Item1"></div>
-    </div>
+<div class="row row-padding-top">
+	<div class="col-sm-6 col-sm-push-3 no-space">
+		<div id="pie-chart-@Model.Id"></div>
+	</div>
 </div>
-
 
 <script>
-	$("#tab-item-activity-@Model.Item5").click(function () {
-		var down = @AerobicFunction.CalculateRange(Model.Item4).Item1;
-		var up = @AerobicFunction.CalculateRange(Model.Item4).Item2;
-
-		@{
-			int size = (Model.Item3.HeartBeats.Count)/40 + 1;
-		}
-		createHeartBeatChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartBeats)', down, up, @size);
-		createPieChart("@Model.Item1", '@Json.Serialize(Model.Item3.HeartRateZonesList)');
-	});
+$(document).ready(function () {
+	var down = @ViewBag.AerobicFunction.DownLimit;
+	var up = @ViewBag.AerobicFunction.UpLimit;
+	var stepX = @(Model.HeartBeats.Count/40 + 1);
+	
+	createHeartBeatChart("@Model.Id", '@Json.Serialize(Model.HeartBeats)', down, up, stepX);
+	createPieChart("@Model.Id", '@Json.Serialize(Model.HeartRateZonesList)');
+});
 </script>
-
-<style>
-    .no-space {
-        padding: 0;
-        border: none;
-    }
-
-    .row {
-        padding-top: 20px;
-    }
-
-    .count-title {
-        font-size: 40px;
-        font-weight: normal;
-        margin-top: 10px;
-        margin-bottom: 0;
-        text-align: center;
-    }
-
-    .count-text {
-        font-size: 13px;
-        font-weight: normal;
-        margin-top: 10px;
-        margin-bottom: 0;
-        text-align: center;
-    }
-
-    .fa-2x {
-        margin: 0 auto;
-        float: none;
-        display: table;
-        color: #4ad1e5;
-    }
-</style>

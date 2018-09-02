@@ -1,0 +1,66 @@
+﻿@model List<Activity>
+@using System.Collections.Generic;
+@using LaywApplication.Models;
+
+<div class="demo-section k-content">
+	<div id="tabstrip-activities">
+		<ul>
+			@{
+				for (int i = 0; i < Model.Count; i++)
+				{
+                    <li id="tab-item-activity-@Model[i].Id" class="mnu-activity" data-id="@Model[i].Id">@(i+1) - @Model[i].ActivityName</li>
+				}
+			}
+		</ul>
+		@{
+			foreach(Activity activity in Model)
+			{
+				<div class="tab-activity-content text-center">
+					@{ await Html.RenderPartialAsync("PatientActivity", activity); }
+				</div>
+			}
+		}
+	</div>
+</div>
+
+<style>
+	#tabstrip-activities > .tab-activity-content {
+		color: rgba(8,26,40,1);
+	}
+	#tabstrip-activities > .tab-activity-content > .header-activity h2 {
+		margin-bottom: 15px;
+	}
+	#tabstrip-activities > .tab-activity-content > .counter-activity {
+		margin: 20px 0;
+	}
+	#tabstrip-activities > .tab-activity-content > .counter-activity .count-title {
+		font-size: 40px;
+		font-weight: normal;
+		margin-top: 15px;
+		margin-bottom: 0;
+	}
+	#tabstrip-activities > .tab-activity-content > .counter-activity .count-text {
+		font-size: 13px;
+		font-weight: normal;
+		font-style: italic;
+		margin-bottom: 0;
+	}
+	#tabstrip-activities > .tab-activity-content > .counter-activity .fa-2x {
+		margin: 0 auto;
+		float: none;
+		display: table;
+		color: #4ad1e5;
+	}
+</style>
+
+<script>
+	$(document).ready(createTabStrip("activities"));
+
+	$("#tab-item-activities").click(function () {
+		$("#tab-item-activity-@Model?.ElementAt(0)?.Id").trigger("click");
+	})
+
+	$(".mnu-activity").click(function () {
+		counter("#counter-activity-" + $(this).attr('data-id') + " .counter-value");
+	});
+</script>

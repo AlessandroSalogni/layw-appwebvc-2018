@@ -24,8 +24,8 @@
                 @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient)); }
             </div>
             <div>
-                @{await Html.RenderPartialAsync("Activities", ((Patient)ViewBag.CurrentPatient)); }
-            </div>
+				@await  Component.InvokeAsync("Activities", new { currentPatient = ViewBag.CurrentPatient })
+			</div>
             <div>
                 @{await Html.RenderPartialAsync("PatientPersonalData", ((Patient)ViewBag.CurrentPatient)); }
             </div>
@@ -34,6 +34,13 @@
 </div>
 
 <style>
+	.no-space {
+		padding: 0;
+		border: none;
+	}
+	.row-padding-top {
+		padding-top: 20px;
+	}
 	#patient .k-content {
 		background-color: transparent;
 	}
