@@ -24,10 +24,10 @@
                 @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient)); }
             </div>
             <div>
-				@await  Component.InvokeAsync("Activities", new { currentPatient = ViewBag.CurrentPatient })
+				@await Component.InvokeAsync("PatientActivities", new { currentPatient = ViewBag.CurrentPatient })
 			</div>
             <div>
-                @{await Html.RenderPartialAsync("PatientPersonalData", ((Patient)ViewBag.CurrentPatient)); }
+                @await Component.InvokeAsync("PatientPersonalData", new { currentPatient = ViewBag.CurrentPatient })
             </div>
         </div>
     </div>
