@@ -9,18 +9,12 @@ using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.ViewComponents
 {
-    public class PatientPersonalDataViewComponent : ViewComponent
+    public class PatientPersonalDataViewComponent : BaseViewComponent
     {
-        private readonly ServerIP IPConfig;
-        private readonly JsonStructure JsonStructureConfig;
-
         public PatientPersonalDataViewComponent(ServerIP IPConfig, JsonStructure jsonStructureConfig)
-        {
-            this.IPConfig = IPConfig;
-            JsonStructureConfig = jsonStructureConfig;
-        }
+            : base(IPConfig, jsonStructureConfig) { }
         
         public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
         {
@@ -41,8 +35,8 @@ namespace LaywApplication.Controllers
             data.AverageFloors.Month = (from s in summariesMonth select s.Floors).Average();
             data.AverageFloors.Week = (from s in summariesWeek select s.Floors).Average();
 
-            data.WeightComparison.Today = await GetWeightAsync(currentPatient.Id, DateTime.Now.ToShortDateString());
-            data.WeightComparison.Yesterday = await GetWeightAsync(currentPatient.Id, DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            data.WeightComparison.Today = await GetWeightAsync(currentPatient.Id, DateTimeNow.ToShortDateString());
+            data.WeightComparison.Yesterday = await GetWeightAsync(currentPatient.Id, DateTimeNow.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
 
             return View(data);
         }

@@ -7,26 +7,18 @@ using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.ViewComponents
 {
-    public class PatientActivitiesViewComponent : ViewComponent
+    public class PatientActivitiesViewComponent : BaseViewComponent
     {
-        private readonly ServerIP IPConfig;
-        private readonly QueryParams QueryParamsConfig;
-        private readonly JsonData ActivityJsonData;
-
         public PatientActivitiesViewComponent(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
-        {
-            this.IPConfig = IPConfig;
-            QueryParamsConfig = jsonStructureConfig.QueryParams;
-            ActivityJsonData = jsonStructureConfig.Activities;
-        }
+            : base(IPConfig, jsonStructureConfig) { }
 
         public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
         {
             ViewBag.AerobicFunction = new AerobicFunction(currentPatient);
 
             JObject activitiesJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + currentPatient.Id 
-                + ActivityJsonData.Url + "?" + QueryParamsConfig.Date + "=14-06-2018"); //TODO mettere data di oggi
-            return View(((JArray)activitiesJson[ActivityJsonData.Root]).GetList<Activity>());
+                + JsonStructureConfig.Activities.Url + "?" + JsonStructureConfig.QueryParams.Date + "=14-06-2018"); //TODO mettere data di oggi
+            return View(((JArray)activitiesJson[JsonStructureConfig.Activities.Root]).GetList<Activity>());
         }
     }
 }
