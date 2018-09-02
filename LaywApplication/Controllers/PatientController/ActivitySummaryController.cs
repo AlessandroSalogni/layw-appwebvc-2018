@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers.PatientController
 {
-    public class ActivitySummaryController : BasePatientController
+    public class ActivitySummaryController : BaseJsonController
     {
-        public ActivitySummaryController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> parameters) : base(IPconfig, parameters) {}
+        public ActivitySummaryController(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
+            : base(IPConfig, jsonStructureConfig, jsonStructureConfig.ActivitySummary) {}
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<IActionResult> Read(int id, string date, string period)
+        public async Task<List<Models.ActivitySummary>> Read(int id, string date, string period)
         {
-            string periodParam = Request?.Query["period"] ?? period;
-            string dateParam = Request?.Query["date"] ?? date;
+            string periodParam = Request?.Query[QueryParamsConfig.Period] ?? period;
+            string dateParam = Request?.Query[QueryParamsConfig.Date] ?? date;
             //todo tirare eccezione se uno dei due o tutti e due null?
 
-            JObject obj = await APIUtils.GetAsync(IPconfig.GetTotalUrlUser() + id + "/activity-summary?" + ParametersConfig.Date + "=" + dateParam + "&" + ParametersConfig.Period + "=" + periodParam); //Request.Query["date"] //period
-            JArray activities = (JArray)obj.GetValue("activity-summary");
-            return Json(activities);
+            JObject summaryListJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url + "?" + 
+                QueryParamsConfig.Date + "=" + dateParam + "&" + QueryParamsConfig.Period + "=" + periodParam); 
+            return ((JArray)summaryListJson[JsonDataConfig.Root]).GetList<Models.ActivitySummary>();
         }
     }
 }
