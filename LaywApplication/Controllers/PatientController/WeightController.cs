@@ -1,27 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
+using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers.PatientController
 {
-    public class WeightController : BasePatientController
+    public class WeightController : BaseJsonController
     {
-        public WeightController(IOptions<ServerIP> IPconfig, IOptions<JsonStructure> parameters) : base(IPconfig, parameters) {}
+        public WeightController(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
+            : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Weight) { }
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<IActionResult> Read(int id, string date)
+        public async Task<PatientWeight> Read(int id, string date)
         {
-            string dateParam = Request?.Query["date"] ?? date;
+            string dateParam = Request?.Query[QueryParamsConfig.Date] ?? date;
+            //todo tirare eccezione se uno dei due o tutti e due null?
 
-            JObject obj = await APIUtils.GetAsync(IPconfig.GetTotalUrlUser() + id + "/weights?" + ParametersConfig.Date + "=23-06-2018"/* + dateParam*/); // dateParam Request.Query["date"] //period
-            JObject weights = (JObject)obj.GetValue("weights");
-            return Json(weights); //todo cambiare ritornando l'oggetto
+            JObject weightJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url +
+                "?" + QueryParamsConfig.Date + "=23-06-2018"/* + dateParam*/); //todo sistemare data
+            return ((JObject)weightJson[JsonDataConfig.Root]).GetObject<PatientWeight>();
         }
     }
 }
