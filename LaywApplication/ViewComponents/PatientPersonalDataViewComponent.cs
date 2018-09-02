@@ -13,13 +13,20 @@ namespace LaywApplication.ViewComponents
 {
     public class PatientPersonalDataViewComponent : BaseViewComponent
     {
+        private readonly ActivitySummaryController ActivitySummaryController;
+        private readonly WeightController WeightController;
+
         public PatientPersonalDataViewComponent(ServerIP IPConfig, JsonStructure jsonStructureConfig)
-            : base(IPConfig, jsonStructureConfig) { }
+            : base(IPConfig, jsonStructureConfig)
+        {
+            ActivitySummaryController = new ActivitySummaryController(IPConfig, jsonStructureConfig);
+            WeightController = new WeightController(IPConfig, jsonStructureConfig);
+        }
         
         public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
         {
-            List<ActivitySummary> summariesMonth = await GetSummaryListAsync(currentPatient.Id, "23-06-2018", "1m"); //todo settare data oggi DateTime.Now.ToShortDateString()
-            List<ActivitySummary> summariesWeek = await GetSummaryListAsync(currentPatient.Id, "23-06-2018", "1w");
+            List<Models.ActivitySummary> summariesMonth = await ActivitySummaryController.Read(currentPatient.Id, "23-06-2018", "1m"); //todo settare data oggi DateTime.Now.ToShortDateString()
+            List<Models.ActivitySummary> summariesWeek = await ActivitySummaryController.Read(currentPatient.Id, "23-06-2018", "1w");
 
             var data = new PatientPersonalData
             {
@@ -35,22 +42,10 @@ namespace LaywApplication.ViewComponents
             data.AverageFloors.Month = (from s in summariesMonth select s.Floors).Average();
             data.AverageFloors.Week = (from s in summariesWeek select s.Floors).Average();
 
-            data.WeightComparison.Today = await GetWeightAsync(currentPatient.Id, DateTimeNow.ToShortDateString());
-            data.WeightComparison.Yesterday = await GetWeightAsync(currentPatient.Id, DateTimeNow.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            data.WeightComparison.Today = await WeightController.Read(currentPatient.Id, DateTimeNow.ToShortDateString());
+            data.WeightComparison.Yesterday = await WeightController.Read(currentPatient.Id, DateTimeNow.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
 
             return View(data);
-        }
-
-        private async Task<PatientWeight> GetWeightAsync(int id, string date)
-        {
-            var jsonWeight = (JsonResult)await new WeightController(IPConfig, JsonStructureConfig).Read(id, date);
-            return JObject.Parse(jsonWeight.Value.ToString()).GetObject<PatientWeight>();
-        }
-
-        private async Task<List<ActivitySummary>> GetSummaryListAsync(int id, string date, string period)
-        {
-            var jsonSummary = (JsonResult)await new ActivitySummaryController(IPConfig, JsonStructureConfig).Read(id, date, period);
-            return JArray.Parse(jsonSummary.Value.ToString()).GetList<ActivitySummary>();
         }
     }
 }
