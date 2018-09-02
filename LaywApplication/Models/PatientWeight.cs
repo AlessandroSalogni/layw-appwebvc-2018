@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Models
 {
-    public class Weights
+    public class PatientWeight
     {
         public DateTime Date { get; set; }
         public double Weight { get; set; }
