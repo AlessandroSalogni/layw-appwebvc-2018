@@ -1,32 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
-using uPLibrary.Networking.M2Mqtt;
-using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace LaywApplication.Controllers
 {
-    public class DashboardController : Controller
+    public class DashboardController : BaseController
     {
         public const string SessionKeyName = "_Doctor";
-        private readonly IOptions<ServerIP> _config;
-        private readonly IHubContext<MqttHub> _hubContext;
 
-        public DashboardController(IOptions<ServerIP> config, IHubContext<MqttHub> hubContext)
-        {
-            _config = config;
-            _hubContext = hubContext;
-        }
+        public DashboardController(ServerIP IPConfig) : base(IPConfig) { }
 
         [HttpGet("~/dashboard")]
         public IActionResult Index()
@@ -34,8 +22,6 @@ namespace LaywApplication.Controllers
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 var doctor = BuildDoctor();
-
-                MQTT.Listen("server/" + doctor.EMail, null);
 
                 HttpContext.Session.Set(SessionKeyName, doctor);
 
@@ -51,7 +37,8 @@ namespace LaywApplication.Controllers
             //TODO oltre a verificare l'autenticazione, verificare che il paziente appartenga veramente al medico. in caso contrario non restituire la view
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                var doctor = BuildDoctor();
+                var doctor = HttpContext.Session.Get<Doctor>(SessionKeyName);
+                doctor.Patients.ForEach(x => x.AerobicFunction = new AerobicFunction(x));
 
                 ViewBag.CurrentPatient = doctor.Patients.FirstOrDefault(x => x.Id == id);
                 return View("Patient", doctor);
@@ -69,10 +56,11 @@ namespace LaywApplication.Controllers
 
             string jsonResult = "{\"doctor\": {\"name\": \"" + doctor.Name + "\", \"email\": \"" + doctor.EMail + "\"}}";
 
-            APIUtils.Post(_config.Value.GetTotalUrl() + "doctors", jsonResult);
+            APIUtils.Post(IPConfig.GetTotalUrl() + "doctors", jsonResult);
 
-            JObject json = APIUtils.Get(_config.Value.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
+            JObject json = APIUtils.Get(IPConfig.GetTotalUrl() + "users?doctor-id=" + doctor.EMail); //todo mettere path nel config
             doctor.Patients = ((JArray)json.GetValue("users")).GetList<Patient>();
+            doctor.Patients.ForEach(x => x.AerobicFunction = new AerobicFunction(x));
 
             return doctor;
         }
