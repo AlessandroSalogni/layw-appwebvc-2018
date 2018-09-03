@@ -18,6 +18,7 @@ namespace LaywApplication.Configuration
         public Activities Activities { get; set; }
         public ActivitySummary ActivitySummary { get; set; }
         public Weight Weight { get; set; }
+        public Diet Diet { get; set; }
     }
 
     public class QueryParams
@@ -33,7 +34,7 @@ namespace LaywApplication.Configuration
     {
         public string Url { get; set; }
         public string Root { get; set; }
-        public string Key { get; set; }
+        public string[] Key { get; set; }
     }
     public class GoalsStepsDaily : JsonData { }
     public class GoalsWeight : JsonData { }
@@ -47,4 +48,5 @@ namespace LaywApplication.Configuration
     public class Activities : JsonData { }
     public class ActivitySummary : JsonData { }
     public class Weight : JsonData { }
+    public class Diet : JsonData { }
 }
