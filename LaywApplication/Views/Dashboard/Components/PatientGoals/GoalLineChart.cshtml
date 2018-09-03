@@ -1,0 +1,51 @@
+﻿@model LaywApplication.Configuration.ChartInfo
+@{
+	string divId = Model.Title.Replace(" ", "-");
+}
+
+<div class="box box-default">
+	@{ Html.RenderPartial("ChartHeader", Model.Title); }
+	<div class="box-body">
+		<div id="chart-@divId"></div>
+
+		<div class="date-selector">
+			<input id="beginDate-@divId" title="Chose a day" />
+
+			<ul id="period-@divId" title="Chose a period">
+				<li>Week</li>
+				<li>Month</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script>
+	var period = "1w";
+	var date = "@DateTime.Now.ToShortDateString().Replace('/','-')";
+	var url = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
+
+	$("#tab-item-goals").click(function () {
+		createLineChart(url, "@divId", date, period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
+	});
+
+    $("#period-@divId").kendoButtonGroup({
+		select: function (e) {
+			if ($("#period-@divId").children().eq(e.indices).text() == "Week")
+				period = "1w";
+			else
+				period = "1m"
+
+			$("#tab-item-goals").trigger("click");
+        },
+        index: 0
+    });
+
+	$("#beginDate-@divId").kendoDatePicker({
+		format: "dd-MM-yyyy",
+		value: date,
+		change: function () {
+			date = $("#beginDate-@divId").val();
+			$("#tab-item-goals").trigger("click");
+		}
+	});
+</script>
