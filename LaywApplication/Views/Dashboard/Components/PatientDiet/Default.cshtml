@@ -1,7 +1,7 @@
 ﻿@model int
 
 <div class="demo-section k-content">
-	<div id="tabstrip-diet">
+	<div id="tabstrip-diet" class="tabstrip-content-grid">
 		<ul>
 			@foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)).OfType<DayOfWeek>().OrderBy(day => day < DayOfWeek.Monday))
 			{
@@ -17,32 +17,6 @@
 		}
 	</div>
 </div>
-
-<style>
-	#tabstrip-diet .k-grid {
-		margin-top: 40px;
-		color: rgba(8,26,40,1);
-	}
-	.k-window > .k-window-titlebar,
-	#tabstrip-diet .k-grid thead > tr {
-		background-color: #605ca8;
-	}
-	#tabstrip-diet .k-grid thead .k-header {
-		text-align: center;
-		color: white;
-		font-weight: 700;
-		background-color: transparent;
-	}
-	#tabstrip-diet .k-grid tbody > .k-alt {
-		background-color: rgba(238,242,250,0.9);
-	}
-	#tabstrip-diet .k-grid tbody > tr > td:first-child {
-		font-weight: 700;
-	}
-	#tabstrip-diet .k-grid tbody > tr .k-button {
-		border-radius: 15px;
-	}
-</style>
 
 <script>
 	$(document).ready(function() {

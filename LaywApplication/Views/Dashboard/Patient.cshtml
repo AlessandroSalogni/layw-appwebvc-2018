@@ -13,12 +13,13 @@
                 <li id="tab-item-activities"> Activities </li>
                 <li id="tab-item-personal-data"> Personal data </li>
             </ul>
-            <div>
+            <div class="content-grid">
                 @{ await Html.RenderPartialAsync("Components/PatientDiet/Default", 
 					   ((Patient)ViewBag.CurrentPatient).Id); }
             </div>
-            <div>
-                @{await Html.RenderPartialAsync("PatientTraining", ((Patient)ViewBag.CurrentPatient)); }
+            <div class="content-grid">
+                @{await Html.RenderPartialAsync("Components/PatientTraining/Default",
+					  ((Patient)ViewBag.CurrentPatient).Id); }
             </div>
             <div>
                 @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient)); }
@@ -98,6 +99,29 @@
 		.container {
 			width: 1090px;
 		}
+	}
+	#patient #tabstrip-main > .content-grid .k-grid {
+		margin-top: 40px;
+		color: rgba(8,26,40,1);
+	}
+	.k-window > .k-window-titlebar,
+	#patient #tabstrip-main > .content-grid .k-grid thead > tr {
+		background-color: #605ca8;
+	}
+	#patient #tabstrip-main > .content-grid .k-grid thead .k-header {
+		text-align: center;
+		color: white;
+		font-weight: 700;
+		background-color: transparent;
+	}
+	#patient #tabstrip-main > .content-grid .k-grid tbody > .k-alt {
+		background-color: rgba(238,242,250,0.9);
+	}
+	#patient #tabstrip-main > .content-grid .k-grid tbody > tr > td:first-child {
+		font-weight: 700;
+	}
+	#patient #tabstrip-main > .content-grid .k-grid tbody > tr .k-button {
+		border-radius: 15px;
 	}
 </style>
 
