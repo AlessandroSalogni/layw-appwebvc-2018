@@ -1,12 +1,11 @@
 ﻿@model Doctor
 @{
-    ViewBag.PageHeader = ((Patient)ViewBag.CurrentPatient).Name;
-    var divId = "main";
+	ViewBag.PageHeader = ((Patient)ViewBag.CurrentPatient).Name;
 }
 
 <div id="patient" class="container">
     <div class="demo-section k-content">
-        <div id="tabstrip-@divId">
+        <div id="tabstrip-main">
             <ul>
                 <li id="tab-item-diet" class="k-state-active"> Diet </li>
                 <li id="tab-item-training"> Training </li>
@@ -15,7 +14,8 @@
                 <li id="tab-item-personal-data"> Personal data </li>
             </ul>
             <div>
-                @{await Html.RenderPartialAsync("PatientDiet", ((Patient)ViewBag.CurrentPatient)); }
+                @{ await Html.RenderPartialAsync("Components/PatientDiet/Default", 
+					   ((Patient)ViewBag.CurrentPatient).Id); }
             </div>
             <div>
                 @{await Html.RenderPartialAsync("PatientTraining", ((Patient)ViewBag.CurrentPatient)); }
@@ -24,10 +24,10 @@
                 @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient)); }
             </div>
             <div>
-				@await Component.InvokeAsync("PatientActivities", new { currentPatient = ViewBag.CurrentPatient })
+				@{ await Component.InvokeAsync("PatientActivities", new { currentPatient = ViewBag.CurrentPatient }); }
 			</div>
             <div>
-                @await Component.InvokeAsync("PatientPersonalData", new { currentPatient = ViewBag.CurrentPatient })
+                @{ await Component.InvokeAsync("PatientPersonalData", new { currentPatient = ViewBag.CurrentPatient }); }
             </div>
         </div>
     </div>
@@ -102,6 +102,6 @@
 </style>
 
 <script>
-	$(document).ready(createTabStrip("@divId"));
+	$(document).ready(createTabStrip("main"));
 </script>
 
