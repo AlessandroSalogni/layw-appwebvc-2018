@@ -23,7 +23,7 @@
             <div class="content-grid chart-box">
                 @{ await Html.RenderPartialAsync("Components/PatientGoals/Default", currentPatientId); }
             </div>
-            <div>
+            <div class="chart-box">
 				@await Component.InvokeAsync("PatientActivities", new { currentPatient = ViewBag.CurrentPatient })
 			</div>
             <div>

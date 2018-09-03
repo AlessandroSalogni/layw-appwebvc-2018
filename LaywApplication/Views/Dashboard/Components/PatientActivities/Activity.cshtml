@@ -38,15 +38,21 @@
 	</div>
 </div>
 
-<div class="row row-padding-top">
-	<div class="col-sm-12 no-space">
+<div class="box box-default">
+	@{ Html.RenderPartial("ChartHeader", "Heartbeats History"); }
+	<div class="box-body">
 		<div id="chart-@index"></div>
 	</div>
 </div>
 
-<div class="row row-padding-top">
-	<div class="col-sm-6 col-sm-push-3 no-space">
-		<div id="pie-chart-@index"></div>
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3 no-space">
+		<div class="box box-default">
+			@{ Html.RenderPartial("ChartHeader", "Heartrate Zones"); }
+			<div class="box-body">
+				<div id="pie-chart-@index"></div>
+			</div>
+		</div>
 	</div>
 </div>
 
