@@ -1,6 +1,7 @@
 ﻿@model Doctor
 @{
 	ViewBag.PageHeader = ((Patient)ViewBag.CurrentPatient).Name;
+	int currentPatientId = ((Patient)ViewBag.CurrentPatient).Id;
 }
 
 <div id="patient" class="container">
@@ -14,15 +15,13 @@
                 <li id="tab-item-personal-data"> Personal data </li>
             </ul>
             <div class="content-grid">
-                @{ await Html.RenderPartialAsync("Components/PatientDiet/Default", 
-					   ((Patient)ViewBag.CurrentPatient).Id); }
+                @{ await Html.RenderPartialAsync("Components/PatientDiet/Default", currentPatientId); }
             </div>
             <div class="content-grid">
-                @{await Html.RenderPartialAsync("Components/PatientTraining/Default",
-					  ((Patient)ViewBag.CurrentPatient).Id); }
+                @{ await Html.RenderPartialAsync("Components/PatientTraining/Default", currentPatientId); }
             </div>
-            <div>
-                @{await Html.RenderPartialAsync("PatientStatistics", ((Patient)ViewBag.CurrentPatient)); }
+            <div class="content-grid">
+                @{ await Html.RenderPartialAsync("Components/PatientGoals/Default", currentPatientId); }
             </div>
             <div>
 				@await Component.InvokeAsync("PatientActivities", new { currentPatient = ViewBag.CurrentPatient })
@@ -41,6 +40,16 @@
 	}
 	.row-padding-top {
 		padding-top: 20px;
+	}
+	@@media (min-width: 1200px) {
+		.container {
+			width: 1090px;
+		}
+	}
+	@@media (min-width: 1200px) {
+		.container-inner {
+			width: 1000px !important;
+		}
 	}
 	#patient .k-content {
 		background-color: transparent;
@@ -94,11 +103,6 @@
 	}
 	#patient .k-tabstrip > .k-tabstrip-items .k-item > .k-complete {
 		border: none;
-	}
-	@@media (min-width: 1200px) {
-		.container {
-			width: 1090px;
-		}
 	}
 	#patient #tabstrip-main > .content-grid .k-grid {
 		margin-top: 40px;
