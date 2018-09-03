@@ -16,7 +16,7 @@
 			for(int i = 0; i < Model.Count; i++)
 			{
 				<div class="tab-activity-content text-center">
-					@{ await Html.RenderPartialAsync("PatientActivity", Model[i], 
+					@{ await Html.RenderPartialAsync("Components/PatientActivities/Activity", Model[i], 
 						   new ViewDataDictionary(this.ViewData) { { "index", i } }); }
 				</div>
 			}
