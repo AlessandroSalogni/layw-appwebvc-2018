@@ -32,6 +32,7 @@ namespace LaywApplication
         {
             services.Configure<Kendo>(Configuration.GetSection("kendo"));
             services.Configure<Theme>(Configuration.GetSection("theme"));
+            services.Configure<ChartGoalPatientPageInfo>(Configuration.GetSection("chart-goal-patient-page-info"));
 
             var settingsServerIP = Configuration.GetSection("server-ip").Get<ServerIP>();
             services.AddSingleton(settingsServerIP);
