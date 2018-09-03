@@ -1,4 +1,7 @@
 ﻿@model Activity
+@{ 
+	var index = ViewData["index"];
+}
 
 <div class="row row-padding-top header-activity">
 	<div class="col-sm-12 text-center">
@@ -12,7 +15,7 @@
 	</div>
 </div>
 
-<div id="counter-activity-@ViewData["index"]" class="row row-padding-top counter-activity">
+<div id="counter-activity-@index" class="row row-padding-top counter-activity">
 	<div class="col-sm-3 no-space">
 		<i class="fas fa-fire fa-2x"></i>
 		<h2 class="timer count-title count-number counter-value" data-count="@Model.Calories">0</h2>
@@ -37,13 +40,13 @@
 
 <div class="row row-padding-top">
 	<div class="col-sm-12 no-space">
-		<div id="chart-@ViewData["index"]"></div>
+		<div id="chart-@index"></div>
 	</div>
 </div>
 
 <div class="row row-padding-top">
 	<div class="col-sm-6 col-sm-push-3 no-space">
-		<div id="pie-chart-@ViewData["index"]"></div>
+		<div id="pie-chart-@index"></div>
 	</div>
 </div>
 
@@ -52,8 +55,8 @@ $(document).ready(function () {
 	var down = @ViewBag.AerobicFunction.DownLimit;
 	var up = @ViewBag.AerobicFunction.UpLimit;
 	var stepX = @(Model.HeartBeats.Count/40 + 1);
-	
-	createHeartBeatChart("@ViewData["index"]", '@Json.Serialize(Model.HeartBeats)', down, up, stepX);
-	createPieChart("@ViewData["index"]", '@Json.Serialize(Model.HeartRateZonesList)');
+
+	createHeartBeatChart("@index", '@Json.Serialize(Model.HeartBeats)', down, up, stepX);
+	createPieChart("@index", '@Json.Serialize(Model.HeartRateZonesList)');
 });
 </script>
