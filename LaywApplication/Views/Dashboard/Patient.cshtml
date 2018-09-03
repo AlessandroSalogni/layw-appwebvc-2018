@@ -20,7 +20,7 @@
             <div class="content-grid">
                 @{ await Html.RenderPartialAsync("Components/PatientTraining/Default", currentPatientId); }
             </div>
-            <div class="content-grid">
+            <div class="content-grid chart-box">
                 @{ await Html.RenderPartialAsync("Components/PatientGoals/Default", currentPatientId); }
             </div>
             <div>
@@ -108,6 +108,7 @@
 		margin-top: 40px;
 		color: rgba(8,26,40,1);
 	}
+	.k-calendar-container .k-header,
 	.k-window > .k-window-titlebar,
 	#patient #tabstrip-main > .content-grid .k-grid thead > tr {
 		background-color: #605ca8;
@@ -126,6 +127,17 @@
 	}
 	#patient #tabstrip-main > .content-grid .k-grid tbody > tr .k-button {
 		border-radius: 15px;
+	}
+	#patient #tabstrip-main > .chart-box .box {
+		color: rgba(8,26,40,1);
+		margin: 40px 0 0;
+		padding-bottom: 5px;
+	}
+	#patient #tabstrip-main > .chart-box .box > .box-body .date-selector > .k-widget {
+		margin-right: 10px;
+	}
+	#patient #tabstrip-main > .chart-box .box > .box-body .date-selector > ul {
+		margin-left: 10px;
 	}
 </style>
 
