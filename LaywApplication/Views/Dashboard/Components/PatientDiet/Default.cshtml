@@ -1,6 +1,6 @@
 ﻿@model int
 
-<div class="demo-section k-content">
+<div class="k-content">
 	<div id="tabstrip-diet" class="tabstrip-content-grid">
 		<ul>
 			@foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)).OfType<DayOfWeek>().OrderBy(day => day < DayOfWeek.Monday))
