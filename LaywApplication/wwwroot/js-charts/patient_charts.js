@@ -156,9 +156,6 @@ function createHeartBeatChart(divId, source, down, up, stepX) {
         dataSource: {
             data: JSON.parse(source)
         },
-        title: {
-            text: "Heartbeats history"
-        },
         legend: {
             position: "top"
         },
@@ -263,9 +260,6 @@ function createPieChart(divId, source) {
     $("#pie-chart-" + divId).kendoChart({
         dataSource: {
             data: JSON.parse(source)
-        },
-        title: {
-            text: "Heartrate Zones"
         },
         legend: {
             position: "top"
