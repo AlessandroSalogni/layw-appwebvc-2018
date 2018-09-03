@@ -1,4 +1,4 @@
-﻿function createLineChart(urlComplete, divId, title, beginDate, period, dataTitle, interval) {
+﻿function createLineChart(urlComplete, divId, beginDate, period, dataTitle, interval) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
             transport: {
@@ -16,9 +16,6 @@
                 field: "day",
                 dir: "asc"
             }
-        },
-        title: {
-            text: title
         },
         legend: {
             position: "top"
