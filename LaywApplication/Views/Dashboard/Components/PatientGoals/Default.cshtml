@@ -4,25 +4,37 @@
 @inject IOptions<LaywApplication.Configuration.ChartGoalPatientPageInfo> ChartGoalPatientPageInfo
 @{ 
 	var viewDataDictionary = new ViewDataDictionary(this.ViewData) { { "patientId", Model } };
+	var weightChartInfo = ChartGoalPatientPageInfo.Value.WeightChartInfo;
+	var stepsChartInfo = ChartGoalPatientPageInfo.Value.StepsDailyChartInfo;
+	var caloriesChartInfo = ChartGoalPatientPageInfo.Value.CaloriesOutChartInfo;
 }
 
-<div class="container container-inner">
+<div class="container container-inner text-center">
+	<div class="row">
+		<div class="col-sm-4 no-space">
+			@{ await Html.RenderPartialAsync("Components/PatientGoals/GoalSetGrid", weightChartInfo, viewDataDictionary);}
+		</div>
+		<div class="col-sm-4 no-space">
+			@{ await Html.RenderPartialAsync("Components/PatientGoals/GoalSetGrid", stepsChartInfo, viewDataDictionary);}
+		</div>
+		<div class="col-sm-4 no-space">
+			@{ await Html.RenderPartialAsync("Components/PatientGoals/GoalSetGrid", caloriesChartInfo, viewDataDictionary);}
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-sm-12 no-space">
-			@{ await Html.RenderPartialAsync("Components/PatientGoals/GoalChart", 
-				   ChartGoalPatientPageInfo.Value.WeightChartInfo, viewDataDictionary);}
+			@{ await Html.RenderPartialAsync("Components/PatientGoals/GoalLineChart", weightChartInfo, viewDataDictionary);}
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-sm-6 no-space">
-			@{await Html.RenderPartialAsync("Components/PatientGoals/GoalChart", 
-				  ChartGoalPatientPageInfo.Value.StepsDailyChartInfo, viewDataDictionary);}
+			@{await Html.RenderPartialAsync("Components/PatientGoals/GoalLineChart", stepsChartInfo, viewDataDictionary);}
 		</div>
 
 		<div class="col-sm-6 no-space">
-			@{await Html.RenderPartialAsync("Components/PatientGoals/GoalChart", 
-				  ChartGoalPatientPageInfo.Value.CaloriesOutChartInfo, viewDataDictionary);}
+			@{await Html.RenderPartialAsync("Components/PatientGoals/GoalLineChart", caloriesChartInfo, viewDataDictionary);}
 		</div>
 	</div>
 </div>

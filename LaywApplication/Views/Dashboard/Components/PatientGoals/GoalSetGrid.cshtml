@@ -1,0 +1,19 @@
+﻿@model LaywApplication.Configuration.ChartInfo
+@{
+	string divId = Model.Title.Replace(" ", "-");
+}
+
+<div id="grid-current-goal-@divId"></div>
+
+<script>
+	var urlGoal = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.ControllerGoal)";
+
+	$("#tab-item-goals").click(function () {
+		var dataSource = createGridGoalsDataSource(urlGoal, 1);
+		var columns = [];
+		columns.push({ "field": "goal", "title": "Today @Model.Title" + " Goal" });
+		columns.push({ "command": "edit", "title": "&nbsp;", "width": "50px" });
+
+		createGrid("current-goal-@divId", false, "inline", dataSource, JSON.stringify(columns));
+	});
+</script>
