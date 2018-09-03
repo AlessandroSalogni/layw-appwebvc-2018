@@ -1,11 +1,6 @@
-﻿@model Tuple<string, string, string, string, int, Patient, string>
+﻿@model LaywApplication.Configuration.ChartInfo
 @{
-    string urlGoal = Url.Content("~/dashboard/patients/" + Model.Item6.Id + "/" + Model.Item7);
-    string url = Url.Content("~/dashboard/patients/" + Model.Item6.Id + "/" + Model.Item3);
-    string divId = Model.Item1;
-    string title = Model.Item2;
-    string dataTitle = Model.Item4;
-    int chartInterval = Model.Item5;
+	string divId = Model.Title.Replace(" ", "-");
 }
 
 <div class="demo-section k-content wide text-center">
@@ -26,16 +21,17 @@
 <script>
 	var period = "1w";
 	var date = "@DateTime.Now.ToShortDateString().Replace('/','-')";
+	var url = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
+	var urlGoal = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.ControllerGoal)";
 
 	$("#tab-item-goals").click(function () {
-		createLineChart("@url", "@divId", "@title", date, period, "@dataTitle", @chartInterval)
+		createLineChart(url, "@divId", "@Model.Title", date, period, "@Model.LegendTitle[0]", @Model.AxisXInterval)
 
-		var dataSource = createGridGoalsDataSource("@urlGoal", 1);
+		var dataSource = createGridGoalsDataSource(urlGoal, 1);
 		var columns = [];
-		columns.push({ "field": "goal", "title": "Today @title" });
+		columns.push({ "field": "goal", "title": "Today @Model.Title" });
 		columns.push({ "command": "edit", "title": "Set today goal", "width": "50px" });
-		console.log(dataSource);
-		console.log(columns);
+
 		createGrid("current-@divId", false, "inline", dataSource, JSON.stringify(columns));
 	});
 

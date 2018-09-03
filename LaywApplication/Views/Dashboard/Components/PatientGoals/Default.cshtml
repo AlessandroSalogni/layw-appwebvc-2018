@@ -1,0 +1,29 @@
+﻿@model int
+@using Microsoft.Extensions.Options
+
+@inject IOptions<LaywApplication.Configuration.ChartGoalPatientPageInfo> ChartGoalPatientPageInfo
+@{ 
+	var viewDataDictionary = new ViewDataDictionary(this.ViewData) { { "patientId", Model } };
+}
+
+<div class="container container-inner">
+	<div class="row">
+		<div class="col-sm-12 no-space">
+			@{ await Html.RenderPartialAsync("Components/PatientGoals/GoalChart", 
+				   ChartGoalPatientPageInfo.Value.WeightChartInfo, viewDataDictionary);}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 no-space">
+			@{await Html.RenderPartialAsync("Components/PatientGoals/GoalChart", 
+				  ChartGoalPatientPageInfo.Value.StepsDailyChartInfo, viewDataDictionary);}
+		</div>
+
+		<div class="col-sm-6 no-space">
+			@{await Html.RenderPartialAsync("Components/PatientGoals/GoalChart", 
+				  ChartGoalPatientPageInfo.Value.CaloriesOutChartInfo, viewDataDictionary);}
+		</div>
+	</div>
+</div>
+
