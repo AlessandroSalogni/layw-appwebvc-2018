@@ -1,14 +1,12 @@
-﻿@model Tuple<string, Patient>
-@{
-	ViewData["Title"] = "DayDiet";
-	string day = Model.Item1;
-	Patient patient = Model.Item2;
+﻿@model Patient
+@{ 
+	var day = ViewData["dayOfWeek"];
 }
 
 <div id="grid-diet-@day"></div>
 <script>
 	$("#tab-item-diet-@day").click(function () {
-		var crudServiceBaseUrl = "@Url.Content("~/dashboard/patients/" + patient.Id + "/diet/" + day + "/")";
+		var crudServiceBaseUrl = "@Url.Content("~/dashboard/patients/" + Model.Id + "/diet/" + day + "/")";
 		var dataSource = createGridTrainingDietDataSource(crudServiceBaseUrl, 6);
 
 		var columns = [];

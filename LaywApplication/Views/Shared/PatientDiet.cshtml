@@ -1,47 +1,26 @@
 ﻿@model Patient
-@{
-    ViewData["Title"] = "PatientDiet";
-    var divId = "diet";
-}
 
 <div class="demo-section k-content">
-    <div id="tabstrip-@divId">
-        <ul>
-            <li id="tab-item-diet-Monday" class="k-state-active">Monday</li>
-            <li id="tab-item-diet-Tuesday">Tuesday</li>
-            <li id="tab-item-diet-Wednesday">Wednesday</li>
-            <li id="tab-item-diet-Thursday">Thursday</li>
-            <li id="tab-item-diet-Friday">Friday</li>
-            <li id="tab-item-diet-Saturday">Saturday</li>
-            <li id="tab-item-diet-Sunday">Sunday</li>
-        </ul>
-        <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Monday", Model)); }
-        </div>
-        <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Tuesday", Model)); }
-        </div>
-        <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Wednesday", Model)); }
-        </div>
-        <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Thursday", Model)); }
-        </div>
-        <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Friday", Model)); }
-        </div>
-        <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Saturday", Model)); }
-        </div>
-        <div>
-            @{await Html.RenderPartialAsync("DayDiet", Tuple.Create("Sunday", Model)); }
-        </div>
-    </div>
+	<div id="tabstrip-diet">
+		<ul>
+			@foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+			{
+				<li id="tab-item-diet-@day.ToString()">@day.ToString()</li>
+			}
+		</ul>
+		@foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+		{
+			<div>
+				@{await Html.RenderPartialAsync("DayDiet", Model, new ViewDataDictionary(this.ViewData)
+					{ { "dayOfWeek", day.ToString() } }); }
+			</div>
+		}
+	</div>
 </div>
 
 <script>
 	$(document).ready(function() {
-		createTabStrip("@divId");
+		createTabStrip("diet");
 		$("#tab-item-diet-Monday").trigger("click");
 	});
 
