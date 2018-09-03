@@ -1,0 +1,18 @@
+﻿@model int
+
+<div id="grid-training"></div>
+<script>
+    $("#tab-item-training").click(function () {
+		var crudServiceBaseUrl = "@Url.Content("~/dashboard/patients/" + Model + "/training/")";
+		var dataSource = createGridTrainingDietDataSource(crudServiceBaseUrl, 7);
+
+		var columns = [];
+		columns.push({ "field": "name", "title": "Training", "width": "60px" });
+		columns.push({ "field": "option1", "title": "Exercise 1" });
+		columns.push({ "field": "option2", "title": "Exercise 2" });
+		columns.push({ "field": "option3", "title": "Exercise 3" });
+		columns.push({ "command": "edit", "title": "&nbsp;", "width": "20px" });
+
+		createGrid("training", false, "popup", dataSource, JSON.stringify(columns))
+    });
+</script>
