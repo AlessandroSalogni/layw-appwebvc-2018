@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
