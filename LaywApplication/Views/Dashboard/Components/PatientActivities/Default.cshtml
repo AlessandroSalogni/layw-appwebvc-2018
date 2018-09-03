@@ -8,15 +8,16 @@
 			@{
 				for (int i = 0; i < Model.Count; i++)
 				{
-                    <li id="tab-item-activity-@Model[i].Id" class="mnu-activity" data-id="@Model[i].Id">@(i+1) - @Model[i].ActivityName</li>
+                    <li id="tab-item-activity-@i" class="mnu-activity" data-id="@i">@(i+1) - @Model[i].ActivityName</li>
 				}
 			}
 		</ul>
 		@{
-			foreach(Activity activity in Model)
+			for(int i = 0; i < Model.Count; i++)
 			{
 				<div class="tab-activity-content text-center">
-					@{ await Html.RenderPartialAsync("PatientActivity", activity); }
+					@{ await Html.RenderPartialAsync("PatientActivity", Model[i], 
+						   new ViewDataDictionary(this.ViewData) { { "index", i } }); }
 				</div>
 			}
 		}
@@ -57,7 +58,7 @@
 	$(document).ready(createTabStrip("activities"));
 
 	$("#tab-item-activities").click(function () {
-		$("#tab-item-activity-@Model?.ElementAt(0)?.Id").trigger("click");
+		$("#tab-item-activity-0").trigger("click");
 	})
 
 	$(".mnu-activity").click(function () {
