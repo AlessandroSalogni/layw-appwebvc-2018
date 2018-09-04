@@ -43,7 +43,7 @@
 			<!-- Menu toggle button -->
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="fa fa-bell"></i>
-				<span id="notifications-number" class="label label-warning">0</span> @*aumentare numero in base a quando un paziente raggiunge un obiettivo*@
+				<span id="notifications-number" class="label label-warning"></span> @*aumentare numero in base a quando un paziente raggiunge un obiettivo*@
 			</a>
 			<ul class="dropdown-menu">
 				<li class="header">You have 10 notifications</li> @*aumentare numero in base a quando un paziente raggiunge un obiettivo*@
@@ -154,14 +154,22 @@
 <script src="~/lib/signalr/signalr.js"></script>
 <script type="text/javascript">
 	"use strict";
+	var numberSpan = document.getElementById("notifications-number");
+
+	if (sessionStorage.getItem("notifications-number") && sessionStorage.getItem("notifications-number") !=  0)
+		numberSpan.innerHTML = sessionStorage.getItem("notifications-number");
+	else
+		sessionStorage.setItem("notifications-number", "0");
 
 	var connection = new signalR.HubConnectionBuilder().withUrl("/mqttHub").build();
-	console.log(connection);
-	connection.on("ciao", function (message) {
-		document.getElementById("notifications-number").innerHTML = "1";
-	});
-
 	connection.start();
+
+	connection.on("server/@Model.EMail", function (message) {
+		var number = parseInt(sessionStorage.getItem("notifications-number"));
+
+		sessionStorage.setItem("notifications-number", (number + 1).toString());
+		numberSpan.innerHTML = (number + 1).toString();
+	});
 
 	//connection.start().catch(function (err) {
 	//	return console.error(err.toString());
