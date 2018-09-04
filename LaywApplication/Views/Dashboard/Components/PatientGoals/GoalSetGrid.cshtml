@@ -1,19 +1,20 @@
 ﻿@model LaywApplication.Configuration.ChartInfo
 @{
-	string divId = Model.Title.Replace(" ", "-");
+	string divId = Model.Title.Replace(" ", "_");
 }
 
 <div id="grid-current-goal-@divId"></div>
 
 <script>
-	var urlGoal = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.ControllerGoal)";
+	$(document).ready(function () {
+		$("#tab-item-goals").click(function () {
+			this["urlGoal_@divId"] = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.ControllerGoal)";
+			var dataSource = createGridGoalsDataSource(this["urlGoal_@divId"], 1);
+			var columns = [];
+			columns.push({ "field": "goal", "title": "Today @Model.Title" + " Goal" });
+			columns.push({ "command": "edit", "title": "&nbsp;", "width": "50px" });
 
-	$("#tab-item-goals").click(function () {
-		var dataSource = createGridGoalsDataSource(urlGoal, 1);
-		var columns = [];
-		columns.push({ "field": "goal", "title": "Today @Model.Title" + " Goal" });
-		columns.push({ "command": "edit", "title": "&nbsp;", "width": "50px" });
-
-		createGrid("current-goal-@divId", false, "popup", dataSource, JSON.stringify(columns));
+			createGrid("current-goal-@divId", false, "popup", dataSource, JSON.stringify(columns));
+		});
 	});
 </script>

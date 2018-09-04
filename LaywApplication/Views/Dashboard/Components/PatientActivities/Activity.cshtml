@@ -60,9 +60,9 @@
 $(document).ready(function () {
 	var down = @ViewBag.AerobicFunction.DownLimit;
 	var up = @ViewBag.AerobicFunction.UpLimit;
-	var stepX = @(Model.HeartBeats.Count/40 + 1);
+	this["stepX_@index"] = @(Model.HeartBeats.Count/40 + 1);
 
-	createHeartBeatChart("@index", '@Json.Serialize(Model.HeartBeats)', down, up, stepX);
+	createHeartBeatChart("@index", '@Json.Serialize(Model.HeartBeats)', down, up, this["stepX_@index"]);
 	createPieChart("@index", '@Json.Serialize(Model.HeartRateZonesList)');
 });
 </script>

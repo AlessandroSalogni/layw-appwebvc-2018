@@ -20,32 +20,30 @@
 </div>
 
 <script>
-	var period = "1w";
-	var date = "@DateTime.Now.ToShortDateString().Replace('/','-')";
-	var url = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
+	$(document).ready(function () {
+		$("#tab-item-goals").click(function (e) {
+			var period = ($("#period-@divId").children().eq(e.indices).text() == "Week") ? "1w" : "1m";
+			this["url_@divId"] = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
+			createLineChart(this["url_@divId"], "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
+		});
 
-	$("#tab-item-goals").click(function () {
-		createLineChart(url, "@divId", date, period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
-	});
+		$("#period-@divId").kendoButtonGroup({
+			select: function (e) {
+				var period = ($("#period-@divId").children().eq(e.indices).text() == "Week") ? "1w" : "1m";
+				var url = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
+				createLineChart(url, "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
+			},
+			index: 0
+		});
 
-    $("#period-@divId").kendoButtonGroup({
-		select: function (e) {
-			if ($("#period-@divId").children().eq(e.indices).text() == "Week")
-				period = "1w";
-			else
-				period = "1m"
-
-			$("#tab-item-goals").trigger("click");
-        },
-        index: 0
-    });
-
-	$("#beginDate-@divId").kendoDatePicker({
-		format: "dd-MM-yyyy",
-		value: date,
-		change: function () {
-			date = $("#beginDate-@divId").val();
-			$("#tab-item-goals").trigger("click");
-		}
+		$("#beginDate-@divId").kendoDatePicker({
+			format: "dd-MM-yyyy",
+			value: "@DateTime.Now.ToShortDateString().Replace('/', '-')",
+			change: function (e) {
+				var period = ($("#period-@divId").children().eq(e.indices).text() == "Week") ? "1w" : "1m";
+				var url = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
+				createLineChart(url, "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
+			}
+		});
 	});
 </script>
