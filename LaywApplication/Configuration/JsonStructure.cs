@@ -37,7 +37,12 @@ namespace LaywApplication.Configuration
         public string Root { get; set; }
         public string[] Key { get; set; }
     }
-    public class GoalsStepsDaily : JsonData { }
+    public class GoalsStepsDaily : JsonData
+    {
+        public string UrlUpdate { get; set; }
+        public string RootUpdate { get; set; }
+        public string Period { get; set; }
+    }
     public class GoalsWeight : JsonData { }
     public class GoalCaloriesOut : JsonData { }
     public class StepsSummary : JsonData { }
