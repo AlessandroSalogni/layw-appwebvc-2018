@@ -30,7 +30,8 @@ namespace LaywApplication.Controllers
         protected string EndUrlDate(HttpRequest request, string date)
         {
             string dateParam = Request?.Query[QueryParamsConfig.Date] ?? date;
-            return (dateParam == null) ? AdditionalPathConfig.Current : QueryParamsConfig.Date + "=" + dateParam;
+            return (dateParam == null) ? AdditionalPathConfig.Current : 
+                "?" + QueryParamsConfig.Date + "=" + dateParam;
         }
     }
 }
