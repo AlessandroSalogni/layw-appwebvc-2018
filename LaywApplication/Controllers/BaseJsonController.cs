@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 
 namespace LaywApplication.Controllers
 {
@@ -39,8 +40,11 @@ namespace LaywApplication.Controllers
             string periodParam = Request?.Query[QueryParamsConfig.Period] ?? period;
             string dateParam = Request?.Query[QueryParamsConfig.Date] ?? date;
 
-            return (dateParam == null) ? AdditionalPathConfig.Current : "?" + QueryParamsConfig.Date + "=" +
-                dateParam + ((periodParam == null) ? "" : "&" + QueryParamsConfig.Period + "=" + periodParam);
+            if (periodParam == null || dateParam == null)
+                throw new NullReferenceException();
+
+            return "?" + QueryParamsConfig.Date + "=" + dateParam + "&" +
+                QueryParamsConfig.Period + "=" + periodParam;
         }
     }
 }
