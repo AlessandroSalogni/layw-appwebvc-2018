@@ -15,12 +15,8 @@ namespace LaywApplication.Controllers.PatientController
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
         public async Task<List<Models.ActivitySummary>> Read(int id, string date, string period)
         {
-            string periodParam = Request?.Query[QueryParamsConfig.Period] ?? period;
-            string dateParam = Request?.Query[QueryParamsConfig.Date] ?? date;
-            //todo tirare eccezione se uno dei due o tutti e due null?
-
-            JObject summaryListJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url + "?" + 
-                QueryParamsConfig.Date + "=" + dateParam + "&" + QueryParamsConfig.Period + "=" + periodParam); 
+            JObject summaryListJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url +
+                EndUrlDatePeriod(Request, date, period)); 
             return ((JArray)summaryListJson[JsonDataConfig.Root]).GetList<Models.ActivitySummary>();
         }
     }

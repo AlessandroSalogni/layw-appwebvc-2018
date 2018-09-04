@@ -13,10 +13,10 @@ namespace LaywApplication.Controllers.PatientController
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Weight) { }
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<PatientWeight> Read(int id, string date)
+        public async Task<PatientWeight> Read(int id, string date, string period)
         {
             JObject weightJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url +
-                EndUrlDate(Request, "23-06-2018")); //todo sistemare data
+                EndUrlDatePeriod(Request, date, period));
             return ((JObject)weightJson[JsonDataConfig.Root]).GetObject<PatientWeight>();
         }
     }

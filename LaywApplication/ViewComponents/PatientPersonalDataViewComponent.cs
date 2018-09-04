@@ -40,8 +40,8 @@ namespace LaywApplication.ViewComponents
             data.AverageFloors.Month = (from s in summariesMonth select s.Floors).Average();
             data.AverageFloors.Week = (from s in summariesWeek select s.Floors).Average();
 
-            data.WeightComparison.Today = await WeightController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat));
-            data.WeightComparison.Yesterday = await WeightController.Read(currentPatient.Id, DateTimeNow.Subtract(TimeSpan.FromDays(1)).ToString(italianDateFormat));
+            data.WeightComparison.Today = await WeightController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat), null);
+            data.WeightComparison.Yesterday = await WeightController.Read(currentPatient.Id, DateTimeNow.Subtract(TimeSpan.FromDays(1)).ToString(italianDateFormat), null);
 
             return View(data);
         }

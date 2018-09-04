@@ -33,5 +33,14 @@ namespace LaywApplication.Controllers
             return (dateParam == null) ? AdditionalPathConfig.Current : 
                 "?" + QueryParamsConfig.Date + "=" + dateParam;
         }
+    
+        protected string EndUrlDatePeriod(HttpRequest request, string date, string period)
+        {
+            string periodParam = Request?.Query[QueryParamsConfig.Period] ?? period;
+            string dateParam = Request?.Query[QueryParamsConfig.Date] ?? date;
+
+            return (dateParam == null) ? AdditionalPathConfig.Current : "?" + QueryParamsConfig.Date + "=" +
+                dateParam + ((periodParam == null) ? "" : "&" + QueryParamsConfig.Period + "=" + periodParam);
+        }
     }
 }
