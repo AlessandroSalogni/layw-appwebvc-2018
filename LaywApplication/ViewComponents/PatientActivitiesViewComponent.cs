@@ -20,7 +20,7 @@ namespace LaywApplication.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
         {
             ViewBag.AerobicFunction = new AerobicFunction(currentPatient);
-            return View(await ActivityController.Read(currentPatient.Id, DateTimeNow.ToShortDateString()));
+            return View(await ActivityController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat)));
         }
     }
 }

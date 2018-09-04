@@ -6,6 +6,8 @@ namespace LaywApplication.ViewComponents
 {
     public abstract class BaseViewComponent : ViewComponent
     {
+        protected static readonly string italianDateFormat = "dd-MM-yyyy";
+
         protected readonly ServerIP IPConfig;
         protected readonly JsonStructure JsonStructureConfig;
         protected readonly DateTime DateTimeNow = DateTime.Now;

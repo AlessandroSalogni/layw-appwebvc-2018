@@ -7,7 +7,8 @@ namespace LaywApplication.Controllers
 {
     public class BaseController : Controller
     {
-        protected static readonly IsoDateTimeConverter italianDateConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
+        protected static readonly string italianDateFormat = "dd-MM-yyyy";
+        protected static readonly IsoDateTimeConverter italianDateConverter = new IsoDateTimeConverter { DateTimeFormat = italianDateFormat };
         protected static readonly object Empty = new { };
 
         protected readonly DateTime DateTimeNow = DateTime.Now;

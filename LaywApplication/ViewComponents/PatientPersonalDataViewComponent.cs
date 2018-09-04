@@ -23,7 +23,7 @@ namespace LaywApplication.ViewComponents
         
         public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
         {
-            List<Models.ActivitySummary> summariesMonth = await ActivitySummaryController.Read(currentPatient.Id, "23-06-2018", "1m"); //todo settare data oggi DateTime.Now.ToShortDateString()
+            List<Models.ActivitySummary> summariesMonth = await ActivitySummaryController.Read(currentPatient.Id, "23-06-2018", "1m"); //todo settare data oggi DateTime.Now.ToString(italianDateFormat)
             List<Models.ActivitySummary> summariesWeek = await ActivitySummaryController.Read(currentPatient.Id, "23-06-2018", "1w");
 
             var data = new PatientPersonalData
@@ -40,8 +40,8 @@ namespace LaywApplication.ViewComponents
             data.AverageFloors.Month = (from s in summariesMonth select s.Floors).Average();
             data.AverageFloors.Week = (from s in summariesWeek select s.Floors).Average();
 
-            data.WeightComparison.Today = await WeightController.Read(currentPatient.Id, DateTimeNow.ToShortDateString());
-            data.WeightComparison.Yesterday = await WeightController.Read(currentPatient.Id, DateTimeNow.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            data.WeightComparison.Today = await WeightController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat));
+            data.WeightComparison.Yesterday = await WeightController.Read(currentPatient.Id, DateTimeNow.Subtract(TimeSpan.FromDays(1)).ToString(italianDateFormat));
 
             return View(data);
         }
