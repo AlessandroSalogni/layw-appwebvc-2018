@@ -3,8 +3,8 @@
 @inject IOptions<LaywApplication.Configuration.ServerIP> ServerIP
 
 <ul class="sidebar-menu" data-widget="tree">
-    <li class="active"><a href="~/dashboard"><i class="fa fa-home" style="color:orange"></i> <span>Homepage</span></a></li> <!--TODO schiaffato url, mettere in config-->
-    <li class="treeview">
+    <li id="homepage" class="menu-homepage"><a href="~/dashboard"><i class="fa fa-home" style="color:orange"></i> <span>Homepage</span></a></li> <!--TODO schiaffato url, mettere in config-->
+    <li id="patient-menu" class="treeview">
         <a href="#">
             <i class="fa fa-heartbeat" style="color:red"></i> <span>Patients</span>
             <span class="pull-right-container">
@@ -15,7 +15,7 @@
             @{
                 foreach (Patient p in Model.Patients.OrderBy(x => x.Name))
                 {
-                    <li>
+                    <li id="patient-@p.Name">
                         <a href="~/dashboard/patients/@p.Id">
                             @{
                                 if (p.Gender == Gender.MALE)
@@ -31,3 +31,38 @@
         </ul>
     </li>
 </ul>
+
+<script>
+    $('.sidebar-menu > li').click(function (e) {
+        $('.sidebar-menu > li').each(function () {
+            $(this).removeClass('active');
+        });
+        $(this).addClass('active');
+        sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
+    });
+
+    $('.sidebar-menu > #homepage').click(function (e) {
+        sessionStorage.setItem('treeviewmenu-active', null);
+    });
+
+    if (sessionStorage.getItem('sidebarmenu-active'))
+        $('.sidebar-menu > #' + sessionStorage.getItem('sidebarmenu-active')).addClass('active');
+    else
+        $('.sidebar-menu > #homepage').addClass('active');
+
+    $('.treeview-menu > li').click(function (e) {
+        $('.treeview-menu > li').each(function () {
+            $(this).removeClass('active');
+        });
+        $(this).addClass('active');
+        sessionStorage.setItem('treeviewmenu-active', $(this).attr("id"));
+    });
+    if (sessionStorage.getItem('treeviewmenu-active'))
+        $('.treeview-menu > #' + sessionStorage.getItem('treeviewmenu-active')).addClass('active');
+</script>
+
+<style>
+    .treeview-menu > li:hover > a {
+        background: #1e282c;
+    }
+</style>
