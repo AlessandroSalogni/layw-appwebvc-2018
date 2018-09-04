@@ -13,10 +13,18 @@ namespace LaywApplication.Controllers.PatientController
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.ActivitySummary) {}
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
+        public async Task<Models.ActivitySummary> Read(int id, string date)
+        {
+            JObject summaryJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url +
+                EndUrlDate(Request, date)); 
+            return ((JObject)summaryJson[JsonDataConfig.Root]).GetObject<Models.ActivitySummary>();
+        }
+
+        [HttpGet("~/dashboard/patients/{id}/[controller]/list")]
         public async Task<List<Models.ActivitySummary>> Read(int id, string date, string period)
         {
             JObject summaryListJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url +
-                EndUrlDatePeriod(Request, date, period)); 
+                EndUrlDatePeriod(Request, date, period));
             return ((JArray)summaryListJson[JsonDataConfig.Root]).GetList<Models.ActivitySummary>();
         }
     }

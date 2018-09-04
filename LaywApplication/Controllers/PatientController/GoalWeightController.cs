@@ -25,7 +25,7 @@ namespace LaywApplication.Controllers.PatientController
         {
             item.StartDate = DateTimeNow;
             item.StartWeight = (await new WeightController(IPConfig, JsonStructureConfig).
-                Read(id, DateTimeNow.ToString(italianDateFormat), null)).Weight;
+                Read(id, DateTimeNow.ToString(italianDateFormat))).Weight;
 
             var jsonGoalWeight = new JObject
             {
