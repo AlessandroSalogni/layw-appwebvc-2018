@@ -3,7 +3,7 @@ using System;
 
 namespace LaywApplication.Models
 {
-    public class GoalsWeight
+    public class GoalWeight
     {
         [JsonIgnore]
         public DateTime Date { get; set; }

@@ -13,15 +13,15 @@ namespace LaywApplication.Controllers.PatientController
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.GoalsWeight) { }
 
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<Models.GoalsWeight> Read(int id, string date)
+        public async Task<Models.GoalWeight> Read(int id, string date)
         {
             JObject goalWeightJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id +
                 JsonDataConfig.Url + EndUrlDate(Request, date));
-            return ((JObject)goalWeightJson[JsonDataConfig.Root]).GetObject<Models.GoalsWeight>();
+            return ((JObject)goalWeightJson[JsonDataConfig.Root]).GetObject<Models.GoalWeight>();
         }
 
         [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
-        public async Task<object> Update(int id, [FromBody]Models.GoalsWeight item)
+        public async Task<object> Update(int id, [FromBody]Models.GoalWeight item)
         {
             item.StartDate = DateTimeNow;
             item.StartWeight = (await new WeightController(IPConfig, JsonStructureConfig).

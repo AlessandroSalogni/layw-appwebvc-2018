@@ -13,15 +13,15 @@ namespace LaywApplication.Controllers.PatientController
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.GoalsCaloriesOut) { }
         
         [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<Models.GoalsCaloriesOut> Read(int id, string date)
+        public async Task<Models.GoalCaloriesOut> Read(int id, string date)
         {
             JObject goalCaloriesJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id +
                 JsonDataConfig.Url + EndUrlDate(Request, date));
-            return ((JObject)goalCaloriesJson[JsonDataConfig.Root]).GetObject<Models.GoalsCaloriesOut>();
+            return ((JObject)goalCaloriesJson[JsonDataConfig.Root]).GetObject<Models.GoalCaloriesOut>();
         }
 
         [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
-        public async Task<object> Update(int id, [FromBody]Models.GoalsCaloriesOut item)
+        public async Task<object> Update(int id, [FromBody]Models.GoalCaloriesOut item)
         {
             var goalCaloriesJson = new JObject
             {
