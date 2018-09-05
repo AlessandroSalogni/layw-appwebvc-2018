@@ -22,16 +22,16 @@
 <script>
 	$(document).ready(function () {
 		$("#tab-item-goals").click(function (e) {
-			var period = ($("#period-@divId").children().eq(e.indices).text() == "Week") ? "1w" : "1m";
+			var period = ($("#period-@divId > .k-state-active").text() == "Week") ? "1w" : "1m";
 			this["url_@divId"] = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
-			createLineChart(this["url_@divId"], "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
+			createGoalStatisticsLineChart(this["url_@divId"], "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
 		});
 
 		$("#period-@divId").kendoButtonGroup({
-			select: function (e) {
-				var period = ($("#period-@divId").children().eq(e.indices).text() == "Week") ? "1w" : "1m";
+			select: function () {
+				var period = ($("#period-@divId > .k-state-active").text() == "Week") ? "1w" : "1m";
 				var url = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
-				createLineChart(url, "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
+				createGoalStatisticsLineChart(url, "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
 			},
 			index: 0
 		});
@@ -39,10 +39,10 @@
 		$("#beginDate-@divId").kendoDatePicker({
 			format: "dd-MM-yyyy",
 			value: "@DateTime.Now.ToShortDateString().Replace('/', '-')",
-			change: function (e) {
-				var period = ($("#period-@divId").children().eq(e.indices).text() == "Week") ? "1w" : "1m";
+			change: function () {
+				var period = ($("#period-@divId > .k-state-active").text() == "Week") ? "1w" : "1m";
 				var url = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + Model.Controller)";
-				createLineChart(url, "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
+				createGoalStatisticsLineChart(url, "@divId", $("#beginDate-@divId").val(), period, "@Model.LegendTitle[0]", @Model.AxisXInterval);
 			}
 		});
 	});
