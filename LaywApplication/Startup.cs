@@ -4,7 +4,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
+using LaywApplication.Data;
+using LaywApplication.Extensions;
 using LaywApplication.Models;
+using LinqToDB;
+using LinqToDB.DataProvider.SQLite;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +43,9 @@ namespace LaywApplication
 
             var settingsJsonStructure = Configuration.GetSection("json-structure").Get<JsonStructure>();
             services.AddSingleton(settingsJsonStructure);
+
+            var settingsDb = Configuration.GetConnectionString("layw-db");
+            services.AddSingleton(settingsDb);
 
             services.AddAuthentication(options =>
             {
@@ -94,6 +101,14 @@ namespace LaywApplication
                 options.Cookie.Name = ".Layw.Session";
             });
 
+            var dbFactory = new AdminDataContextFactory(
+                dataProvider: SQLiteTools.GetDataProvider(),
+                connectionString: Configuration.GetConnectionString("layw-db")
+            );
+
+            services.AddSingleton<IDataContextFactory<AdminDataContext>>(dbFactory);
+            SetupDatabase(dbFactory);
+
             services.AddSignalR();
 
             services.AddMvc();
@@ -121,7 +136,7 @@ namespace LaywApplication
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<MQTTHub>("/mqttHub");
+                //routes.MapHub<MQTTHub>("/mqttHub");
             });
 
             app.UseMvcWithDefaultRoute();
@@ -130,6 +145,15 @@ namespace LaywApplication
             {
                 await context.Response.WriteAsync("Oops, something went wrong");
             });
+        }
+
+        void SetupDatabase(IDataContextFactory<AdminDataContext> dataContext)
+        {
+            using (var db = dataContext.Create())
+            {
+                db.CreateTableIfNotExists<Admin>();
+                db.InsertOrReplace(new Admin { Email = "rikiper96@gmail.com", Password = "riccardo" });
+            }
         }
     }
 }
