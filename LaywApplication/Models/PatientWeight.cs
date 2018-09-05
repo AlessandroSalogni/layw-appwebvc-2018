@@ -1,11 +1,14 @@
-﻿using System;
+﻿using LaywApplication.Models.Abstract;
 
 namespace LaywApplication.Models
 {
-    public class PatientWeight
+    public class PatientWeight : RealDataAbstract<double>
     {
-        public DateTime Date { get; set; }
-        public double Weight { get; set; }
+        public double Weight {
+            get { return RealData; }
+            set { RealData = value; }
+        }
+
         public double Bmi { get; set; }
     }
 }
