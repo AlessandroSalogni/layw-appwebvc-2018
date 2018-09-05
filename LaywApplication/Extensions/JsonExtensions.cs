@@ -7,7 +7,7 @@ namespace LaywApplication.Controllers.Utils
 {
     public static class JsonExtensions
     {
-        private static IsoDateTimeConverter DateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
+        private static readonly IsoDateTimeConverter DateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd-MM-yyyy" };
 
         public static T GetObject<T>(this JObject jsonObject)
         {
