@@ -9,6 +9,7 @@ namespace LaywApplication.Configuration
     {
         public QueryParams QueryParams { get; set; }
         public AdditionalPath AdditionalPath { get; set; }
+        public Doctor Doctor { get; set; }
         public GoalsStepsDaily GoalsStepsDaily { get; set; }
         public GoalsWeight GoalsWeight { get; set; }
         public GoalCaloriesOut GoalsCaloriesOut { get; set; }
@@ -23,6 +24,7 @@ namespace LaywApplication.Configuration
     {
         public string Period { get; set; }
         public string Date { get; set; }
+        public string DoctorId { get; set; }
     }
     public class AdditionalPath
     {
@@ -33,6 +35,11 @@ namespace LaywApplication.Configuration
         public string Url { get; set; }
         public string Root { get; set; }
         public string[] Key { get; set; }
+    }
+    public class Doctor : JsonData
+    {
+        public string UrlPatients { get; set; }
+        public string RootPatients { get; set; }
     }
     public class GoalsStepsDaily : JsonData
     {
