@@ -25,5 +25,8 @@ namespace LaywApplication.Controllers
             AdditionalPathConfig = jsonStructureConfig.AdditionalPath;
             JsonDataConfig = jsonDataConfig;
         }
+
+        public BaseJsonController(ServerIP IPConfig, JsonStructure jsonStructureConfig) : 
+            this(IPConfig, jsonStructureConfig, null) { }
     }
 }
