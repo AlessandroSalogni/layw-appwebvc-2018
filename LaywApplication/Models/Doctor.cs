@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace LaywApplication.Models
@@ -7,7 +8,11 @@ namespace LaywApplication.Models
     {
         public string EMail { get; set; }
         public string Name { get; set; }
+
+        [JsonIgnore]
         public Uri Image { get; set; }
+
+        [JsonIgnore]
         public List<Patient> Patients { get; set; }
     }
 }
