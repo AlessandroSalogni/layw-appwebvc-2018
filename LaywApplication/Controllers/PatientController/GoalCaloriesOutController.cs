@@ -7,20 +7,13 @@ using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers.PatientController
 {
-    public class GoalCaloriesOutController : BaseJsonController
+    [Route("~/dashboard/patients/{id}/[controller]")]
+    public class GoalCaloriesOutController : BaseJsonReadController<Models.GoalCaloriesOut>
     {
         public GoalCaloriesOutController(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.GoalsCaloriesOut) { }
-        
-        [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<Models.GoalCaloriesOut> Read(int id, string date)
-        {
-            JObject goalCaloriesJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id +
-                JsonDataConfig.Url + EndUrlDate(Request, date));
-            return ((JObject)goalCaloriesJson[JsonDataConfig.Root]).GetObject<Models.GoalCaloriesOut>();
-        }
 
-        [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
+        [HttpPost("update")]
         public async Task<object> Update(int id, [FromBody]Models.GoalCaloriesOut item)
         {
             var goalCaloriesJson = new JObject

@@ -7,18 +7,11 @@ using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers.PatientController
 {
-    public class GoalWeightController : BaseJsonController
+    [Route("~/dashboard/patients/{id}/[controller]")]
+    public class GoalWeightController : BaseJsonReadController<Models.GoalWeight>
     {
         public GoalWeightController(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.GoalsWeight) { }
-
-        [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<Models.GoalWeight> Read(int id, string date)
-        {
-            JObject goalWeightJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id +
-                JsonDataConfig.Url + EndUrlDate(Request, date));
-            return ((JObject)goalWeightJson[JsonDataConfig.Root]).GetObject<Models.GoalWeight>();
-        }
 
         [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
         public async Task<object> Update(int id, [FromBody]Models.GoalWeight item)

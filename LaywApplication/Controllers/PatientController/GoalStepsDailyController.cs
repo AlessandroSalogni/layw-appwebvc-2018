@@ -7,20 +7,13 @@ using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers.PatientController
 {
-    public class GoalStepsDailyController : BaseJsonController
+    [Route("~/dashboard/patients/{id}/[controller]")]
+    public class GoalStepsDailyController : BaseJsonReadController<Models.GoalStepsDaily>
     {
         public GoalStepsDailyController(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.GoalsStepsDaily) { }
 
-        [HttpGet("~/dashboard/patients/{id}/[controller]")]
-        public async Task<Models.GoalStepsDaily> Read(int id, string date)
-        {
-            JObject goalStepsJson = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id +
-                JsonDataConfig.Url + EndUrlDate(Request, date));
-            return ((JObject)goalStepsJson[JsonDataConfig.Root]).GetObject<Models.GoalStepsDaily>();
-        }
-
-        [HttpPost("~/dashboard/patients/{id}/[controller]/update")]
+        [HttpPost("update")]
         public async Task<object> Update(int id, [FromBody]Models.GoalStepsDaily item)
         {
             var GoalsStepsDailyConfig = JsonDataConfig as GoalsStepsDaily;
