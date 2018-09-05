@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
-using RestSharp;
-using System.Collections.Generic;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,13 +15,15 @@ namespace LaywApplication.Controllers.Utils
         public static JObject Get(string uri)
         {
             using (var client = new WebClient())
-                return JObject.Parse(client.DownloadString(uri));//TODO gestire codice di errore
+                try { return JObject.Parse(client.DownloadString(uri)); }
+                catch (Exception) { return null; }
         }
 
         public async static Task<JObject> GetAsync(string uri)
         {
             using (var client = new WebClient())
-                return JObject.Parse(await client.DownloadStringTaskAsync(uri));
+                try { return JObject.Parse(await client.DownloadStringTaskAsync(uri)); }
+                catch (Exception) { return null; }
         }
 
         public static JObject Post(string uri, string body)
