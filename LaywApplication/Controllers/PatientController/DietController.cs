@@ -10,12 +10,13 @@ using Newtonsoft.Json.Linq;
 
 namespace LaywApplication.Controllers
 {
+    [Route("~/dashboard/patients/{id}/[controller]/{day}")]
     public class DietController : BaseJsonController
     {
         public DietController(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Diet) { }
 
-        [HttpGet("~/dashboard/patients/{id}/[controller]/{day}")]
+        [HttpGet]
         public async Task<IEnumerable<MealKendo>> Read(int id, string day)
         {
             JObject jsonDiet = await APIUtils.GetAsync(IPConfig.GetTotalUrlUser() + id + JsonDataConfig.Url);
@@ -28,7 +29,7 @@ namespace LaywApplication.Controllers
             return mealsKendo;
         }
 
-        [HttpPost("~/dashboard/patients/{id}/[controller]/{day}/update")]
+        [HttpPost("update")]
         public async Task<object> Update(int id, string day, [FromBody]MealKendo item)
         {
             JObject jsonMeal = JObject.Parse(JsonConvert.SerializeObject
