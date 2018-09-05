@@ -1,10 +1,9 @@
-﻿function createLineChart(urlComplete, divId, beginDate, period, dataTitle, interval) {
+﻿function createGoalStatisticsLineChart(urlComplete, divId, beginDate, period, dataTitle, interval) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
             transport: {
                 read: {
                     url: urlComplete,
-                    dataType: "json",
                     type: "get",
                     data: {
                         beginDate: beginDate,
@@ -13,8 +12,17 @@
                 }
             },
             sort: {
-                field: "day",
+                field: "date",
                 dir: "asc"
+            },
+            schema: {
+                model: {
+                    fields: {
+                        realData: { type: "number" },
+                        goal: { type: "number" },
+                        date: { type: "string" }
+                    }
+                }
             }
         },
         legend: {
@@ -22,21 +30,21 @@
         },
         series: [{
             type: "line",
-            field: "value",
-            categoryField: "day",
+            field: "realData",
+            categoryField: "date",
             name: dataTitle
         }, {
             type: "area",
             field: "goal",
-            categoryField: "day",
+            categoryField: "date",
             name: "Goal",
             color: "#ff8080"
         }],
         categoryAxis: {
             labels: {
-                rotation: -90
+                rotation: "auto",
             }
-        },
+        }, 
         valueAxis: {
             labels: {
                 format: "N0"
