@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Controllers.PatientController
 {
-    public class BaseJsonReadController<TModel> : BaseJsonController where TModel : class
+    public abstract class BaseJsonReadController<TModel> : BaseJsonController where TModel : class
     {
         public BaseJsonReadController(ServerIP IPConfig, JsonStructure jsonStructureConfig, JsonData jsonDataConfig) :
             base(IPConfig, jsonStructureConfig, jsonDataConfig) { }
