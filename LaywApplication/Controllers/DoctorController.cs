@@ -16,28 +16,42 @@ namespace LaywApplication.Controllers
             : base(IPConfig, jsonStructure, jsonStructure.Doctor) { }
 
         [HttpGet]
-        public List<Models.Doctor> Read()
+        public async Task<List<Models.Doctor>> Read()
         {
             var doctorConfig = JsonDataConfig as Configuration.Doctor;
 
-            JObject doctorsJson = APIUtils.Get(IPConfig.GetTotalUrl() + doctorConfig.Url);
-            return (doctorsJson == null) ? new List<Models.Doctor>() :
-                ((JArray)doctorsJson[doctorConfig.RootDoctors]).GetList<Models.Doctor>();
+            JObject doctorsJson = await APIUtils.GetAsync(IPConfig.GetTotalUrl() + doctorConfig.Url);
+
+            if (doctorsJson == null)
+                return new List<Models.Doctor>();
+            else
+            {
+                var doctors = ((JArray)doctorsJson[doctorConfig.RootDoctors]).GetList<Models.Doctor>();
+                foreach (Models.Doctor doctor in doctors)
+                {
+                    JObject patientsJson = await APIUtils.GetAsync(IPConfig.GetTotalUrl() + doctorConfig.UrlPatients + "?" + QueryParamsConfig.DoctorId + "=" + doctor.Email);
+                    if (patientsJson == null)
+                        doctor.Patients = new List<Models.Patient>();
+                    else
+                        doctor.Patients = ((JArray)patientsJson[doctorConfig.RootPatients]).GetList<Models.Patient>();
+                }
+                return doctors;
+            }
         }
 
         [HttpGet("{email}")]
-        public async Task<List<Patient>> Read(string email)
+        public async Task<List<Models.Patient>> Read(string email)
         {
             var doctorConfig = JsonDataConfig as Configuration.Doctor;
 
             JObject patientsJson = await APIUtils.GetAsync(IPConfig.GetTotalUrl() + doctorConfig.UrlPatients + 
                 "?" + QueryParamsConfig.DoctorId + "=" + email);
-            return (patientsJson == null) ? new List<Patient>() :
-                ((JArray)patientsJson[doctorConfig.RootPatients]).GetList<Patient>();
+            return (patientsJson == null) ? new List<Models.Patient>() :
+                ((JArray)patientsJson[doctorConfig.RootPatients]).GetList<Models.Patient>();
         }
 
         [HttpPut("{email}/update")]
-        public async Task<object> Update(string email, [FromBody]List<Patient> item)
+        public async Task<object> Update(string email, [FromBody]List<Models.Patient> item)
         {
             var doctorConfig = JsonDataConfig as Configuration.Doctor;
             
