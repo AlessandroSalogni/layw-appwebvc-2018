@@ -40,6 +40,7 @@ namespace LaywApplication.Configuration
     {
         public string UrlPatients { get; set; }
         public string RootPatients { get; set; }
+        public string RootDoctors { get; set; }
     }
     public class GoalsStepsDaily : JsonData
     {
