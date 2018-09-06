@@ -38,6 +38,9 @@ namespace LaywApplication
             services.Configure<Theme>(Configuration.GetSection("theme"));
             services.Configure<ChartGoalPatientPageInfo>(Configuration.GetSection("chart-goal-patient-page-info"));
 
+            var settingsDoctorAccount = Configuration.GetSection("doctor-account").Get<DoctorAccount>();
+            services.AddSingleton(settingsDoctorAccount);
+
             var settingsServerIP = Configuration.GetSection("server-ip").Get<ServerIP>();
             services.AddSingleton(settingsServerIP);
 
