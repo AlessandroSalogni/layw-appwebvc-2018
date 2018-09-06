@@ -18,7 +18,11 @@ namespace LaywApplication.Controllers
         [HttpGet]
         public List<Models.Doctor> Read()
         {
-            return null;
+            var doctorConfig = JsonDataConfig as Configuration.Doctor;
+
+            JObject doctorsJson = APIUtils.Get(IPConfig.GetTotalUrl() + doctorConfig.Url);
+            return (doctorsJson == null) ? new List<Models.Doctor>() :
+                ((JArray)doctorsJson[doctorConfig.RootDoctors]).GetList<Models.Doctor>();
         }
 
         [HttpGet("{email}")]
