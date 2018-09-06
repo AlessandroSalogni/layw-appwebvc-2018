@@ -21,7 +21,7 @@ namespace LaywApplication.ViewComponents
             WeightController = new WeightController(IPConfig, jsonStructureConfig);
         }
         
-        public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
+        public async Task<IViewComponentResult> InvokeAsync(Models.Patient currentPatient)
         {
             List<Models.ActivitySummary> summariesMonth = await ActivitySummaryController.Read(currentPatient.Id, "23-06-2018", "1m"); //todo settare data oggi DateTime.Now.ToString(italianDateFormat)
             List<Models.ActivitySummary> summariesWeek = await ActivitySummaryController.Read(currentPatient.Id, "23-06-2018", "1w");

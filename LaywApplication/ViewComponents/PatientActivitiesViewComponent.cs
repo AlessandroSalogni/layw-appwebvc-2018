@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.PatientController;
-using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +16,7 @@ namespace LaywApplication.ViewComponents
             ActivityController = new ActivityController(IPConfig, jsonStructureConfig);
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(Patient currentPatient)
+        public async Task<IViewComponentResult> InvokeAsync(Models.Patient currentPatient)
         {
             ViewBag.AerobicFunction = new AerobicFunction(currentPatient);
             return View(await ActivityController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat), "1d"));
