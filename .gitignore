@@ -3,4 +3,6 @@ LaywApplication/bin/
 LaywApplication/obj/
 LaywAuthentication/bin/
 LaywAuthentication/obj/
+LaywAuthentication/layw.db
 /LaywApplication/wwwroot/AdminLTE-2.4.3/dist/img/logo50x50vecchio.png
+/LaywApplication/layw.db
