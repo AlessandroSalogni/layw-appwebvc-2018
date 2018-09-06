@@ -36,7 +36,7 @@ namespace LaywApplication.Controllers
                     var name = User.Claims.FirstOrDefault(c => c.Type == DoctorAccountConfig.Name).Value;
                     var image = new Uri(User.Claims.FirstOrDefault(c => c.Type == DoctorAccountConfig.ImageUri).Value);
 
-                    doctor = doctorController.Read().FirstOrDefault(x => x.Email == email);
+                    doctor = (await doctorController.Read()).FirstOrDefault(x => x.Email == email);
 
                     if (doctor == null)
                     {
@@ -45,7 +45,7 @@ namespace LaywApplication.Controllers
                             Email = email,
                             Name = name,
                             Image = image,
-                            Patients = new List<Patient>()
+                            Patients = new List<Models.Patient>()
                         };
 
                         await doctorController.Create(doctor);
