@@ -4,7 +4,7 @@
 
 <ul class="sidebar-menu" data-widget="tree">
     <li id="homepage" class="menu-homepage"><a href="~/dashboard"><i class="fa fa-home" style="color:orange"></i> <span>Homepage</span></a></li> <!--TODO schiaffato url, mettere in config-->
-    <li id="patient-menu" class="treeview">
+    <li class="treeview">
         <a href="#">
             <i class="fa fa-heartbeat" style="color:red"></i> <span>Patients</span>
             <span class="pull-right-container">
@@ -33,13 +33,13 @@
 </ul>
 
 <script>
-    $('.sidebar-menu > li').click(function (e) {
-        $('.sidebar-menu > li').each(function () {
-            $(this).removeClass('active');
-        });
-        $(this).addClass('active');
-        sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
-    });
+    //$('.sidebar-menu > li').click(function (e) {
+    //    $('.sidebar-menu > li').each(function () {
+    //        $(this).removeClass('active');
+    //    });
+    //    $(this).addClass('active');
+    //    sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
+    //});
 
     $('.sidebar-menu > #homepage').click(function (e) {
         sessionStorage.setItem('treeviewmenu-active', null);
@@ -64,5 +64,8 @@
 <style>
     .treeview-menu > li:hover > a {
         background: #1e282c;
+    }
+    .treeview-menu {
+        padding-left: 0px;
     }
 </style>
