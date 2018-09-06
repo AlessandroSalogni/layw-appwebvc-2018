@@ -37,7 +37,7 @@
         $('.sidebar-menu > li').each(function () {
             $(this).removeClass('active');
         });
-        $(this).addClass('active');
+        //$(this).addClass('active');
         sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
     });
 
@@ -67,5 +67,8 @@
     }
     .treeview-menu {
         padding-left: 0px;
+    }
+    .sidebar-menu > li.menu-open > a {
+        border-left-color: #605ca8;
     }
 </style>
