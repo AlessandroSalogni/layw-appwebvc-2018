@@ -4,3 +4,5 @@ LaywApplication/obj/
 LaywAuthentication/bin/
 LaywAuthentication/obj/
 /LaywApplication/wwwroot/AdminLTE-2.4.3/dist/img/logo50x50vecchio.png
+*.db
+/LaywApplication/Views/Dashboard/Components/AdminPatientOfDoctor/Default.cshtml
