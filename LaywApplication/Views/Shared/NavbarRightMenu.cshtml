@@ -115,7 +115,7 @@
 					<img src="@Model.Image" class="img-circle" alt="User Image">
 					<p>
 						@Model.Name
-						<small>@Model.EMail</small>
+						<small>@Model.Email</small>
 					</p>
 				</li>
 				@*<!-- Menu Body -->
@@ -164,7 +164,7 @@
 	var connection = new signalR.HubConnectionBuilder().withUrl("/mqttHub").build();
 	connection.start();
 
-	connection.on("server/@Model.EMail", function (message) {
+	connection.on("server/@Model.Email", function (message) {
 		var number = parseInt(sessionStorage.getItem("notifications-number"));
 
 		sessionStorage.setItem("notifications-number", (number + 1).toString());
