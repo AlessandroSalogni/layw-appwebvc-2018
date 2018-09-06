@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
+using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.Controllers
@@ -24,16 +26,31 @@ namespace LaywApplication.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                var doctor = new Models.Doctor
-                {
-                    Email = User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.Email).Value,
-                    Name = User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.Name).Value,
-                    Image = new Uri(User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.ImageUri).Value),
-                };
-                doctor.Patients = await DoctorController.Read(doctor.Email);
-                await DoctorController.Create(doctor);
+                var email = User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.Email).Value;
+                var name = User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.Name).Value;
+                var image = new Uri(User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.ImageUri).Value);
 
-                HttpContext.Session.Set(sessionKeyName + doctor.Email, doctor);
+                Models.Doctor doctor = DoctorController.Read().FirstOrDefault(x => x.Email == email);
+
+                if (doctor == null)
+                {
+                    doctor = new Models.Doctor
+                    {
+                        Email = email,
+                        Name = name,
+                        Image = image,
+                        Patients = new List<Patient>()
+                    };
+
+                    await DoctorController.Create(doctor);
+                }
+                else
+                {
+                    doctor.Image = image;
+                    doctor.Patients = await DoctorController.Read(email);
+                }
+
+                HttpContext.Session.Set(sessionKeyName + email, doctor);
                 return View(doctor);
             }
             else
