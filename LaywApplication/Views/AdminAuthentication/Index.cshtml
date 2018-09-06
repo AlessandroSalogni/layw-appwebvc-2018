@@ -1,8 +1,18 @@
-﻿
+﻿@model List<DoctorAssociatedPatients>
+
 @{
-    ViewData["Title"] = "Admin Area";
-    Layout = null;
+    Layout = "Layouts/_Admin";
 }
 
-<h2>Admin Area</h2>
+@foreach (DoctorAssociatedPatients associated in Model)
+{
+    <strong>@associated.Doctor.Name</strong><br />
+
+    @foreach (Patient patient in associated.Doctor.Patients)
+    {
+        <i>@patient.Name</i>
+    }
+
+    <br /><br /><br />
+}
 
