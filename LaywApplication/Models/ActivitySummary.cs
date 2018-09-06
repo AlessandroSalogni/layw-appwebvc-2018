@@ -23,7 +23,6 @@ namespace LaywApplication.Models
     {
         public CaloriesCategory CaloriesCategory
         {
-            get { return new CaloriesCategory { OutCalories = RealData }; }
             set { RealData = value.OutCalories; }
         }
     }
