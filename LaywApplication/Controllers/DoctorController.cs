@@ -33,8 +33,19 @@ namespace LaywApplication.Controllers
         }
 
         [HttpPut("{email}/update")]
-        public object Update(string email, [FromBody]List<Patient> item)
+        public async Task<object> Update(string email, [FromBody]List<Patient> item)
         {
+            var doctorConfig = JsonDataConfig as Configuration.Doctor;
+            
+            var patientListIdJson = new JArray();
+            item.ForEach(x => patientListIdJson.Add(x.Id));
+
+            var patientListJson = new JObject
+            {
+                { doctorConfig.RootPatients, patientListIdJson }
+            };
+
+            await APIUtils.PostAsync(IPConfig.GetTotalUrl() + JsonDataConfig.Url + "/" + email , patientListJson.ToString());
             return Empty;
         }
 
