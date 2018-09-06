@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.PatientController;
 using LaywApplication.Controllers.Utils;
+using LaywApplication.Models;
 using LaywApplication.Models.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace LaywApplication.Controllers
     {
         protected readonly BaseJsonReadController<TModelGoal> GoalController;
         protected readonly BaseJsonReadController<TModelRealData> RealDataController;
+        protected readonly GeneralHomepageChartInfo HomepageChartInfo;
 
         private struct GoalRealDataCompare
         {
@@ -26,12 +28,14 @@ namespace LaywApplication.Controllers
         }
 
         public GoalStatisticsHomepageAbstractController(ServerIP IPConfig, JsonStructure jsonStructureConfig,
+            ChartHomepageInfo homepageChartInfo,
             BaseJsonReadController<TModelGoal> goalController,
             BaseJsonReadController<TModelRealData> realDataController)
             : base(IPConfig, jsonStructureConfig)
         {
             GoalController = goalController;
             RealDataController = realDataController;
+            HomepageChartInfo = homepageChartInfo.GeneralChartInfo;
         }
 
         [HttpGet("achieved")]
@@ -54,14 +58,16 @@ namespace LaywApplication.Controllers
         }
 
         [HttpGet("summary")]
-        public async Task<ActionResult> ReadSummary(string doctorEmail)
+        public async Task<JsonResult> ReadSummary(string doctorEmail)
         {
             var goalRealDataCompareList = await GetGoalRealDataCompareListAsync(doctorEmail);
 
             int notAchieved = goalRealDataCompareList.Count(x => !GoalIsAchieved(x.Goal, x.RealData));
             int achieved = goalRealDataCompareList.Count - notAchieved;
 
-            return Json(new List<object> { new { category = "Achieved", amount = achieved, color = "#00E100" }, new { category = "Not Achieved", amount = notAchieved, color = "#FF0000" } });
+            return Json(new List<object> { new { category = HomepageChartInfo.Legend[0], amount = achieved,
+                color = HomepageChartInfo.Color[0] }, new { category = HomepageChartInfo.Legend[1],
+                amount = notAchieved, color = HomepageChartInfo.Color[1] } });
         }
 
         abstract protected bool GoalIsAchieved(TType goal, TType realData);

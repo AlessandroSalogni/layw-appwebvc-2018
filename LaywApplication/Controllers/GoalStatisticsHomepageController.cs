@@ -9,8 +9,9 @@ namespace LaywApplication.Controllers
     public class GoalStepsDailyStatisticsHomepageController
       : GoalStatisticsHomepageAbstractController<int, GoalStepsDaily, ActivitySummarySteps>
     {
-        public GoalStepsDailyStatisticsHomepageController(ServerIP IPConfig, JsonStructure jsonStructureConfig)
-            : base(IPConfig, jsonStructureConfig,
+        public GoalStepsDailyStatisticsHomepageController(ServerIP IPConfig, JsonStructure jsonStructureConfig,
+            ChartHomepageInfo homepageChartInfo)
+            : base(IPConfig, jsonStructureConfig, homepageChartInfo,
                   new GoalStepsDailyController(IPConfig, jsonStructureConfig),
                   new ActivitySummaryStepsController(IPConfig, jsonStructureConfig)) { }
 
@@ -21,8 +22,9 @@ namespace LaywApplication.Controllers
     public class GoalWeightStatisticsHomepageController
         : GoalStatisticsHomepageAbstractController<double, GoalWeight, PatientWeight>
     {
-        public GoalWeightStatisticsHomepageController(ServerIP IPConfig, JsonStructure jsonStructureConfig)
-            : base(IPConfig, jsonStructureConfig,
+        public GoalWeightStatisticsHomepageController(ServerIP IPConfig, JsonStructure jsonStructureConfig,
+            ChartHomepageInfo homepageChartInfo)
+            : base(IPConfig, jsonStructureConfig, homepageChartInfo,
                   new GoalWeightController(IPConfig, jsonStructureConfig),
                   new WeightController(IPConfig, jsonStructureConfig)) { }
 
@@ -33,8 +35,9 @@ namespace LaywApplication.Controllers
     public class GoalCaloriesStatisticsHomepageController 
         : GoalStatisticsHomepageAbstractController<int, Models.GoalCaloriesOut, ActivitySummaryCalories>
     {
-        public GoalCaloriesStatisticsHomepageController(ServerIP IPConfig, JsonStructure jsonStructureConfig)
-            : base(IPConfig, jsonStructureConfig,
+        public GoalCaloriesStatisticsHomepageController(ServerIP IPConfig, JsonStructure jsonStructureConfig,
+            ChartHomepageInfo homepageChartInfo)
+            : base(IPConfig, jsonStructureConfig, homepageChartInfo,
                   new GoalCaloriesOutController(IPConfig, jsonStructureConfig),
                   new ActivitySummaryCaloriesController(IPConfig, jsonStructureConfig)) { }
 

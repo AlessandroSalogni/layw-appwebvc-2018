@@ -7,9 +7,17 @@ namespace LaywApplication.Configuration
 {
     public class ChartHomepageInfo
     {
+        public GeneralHomepageChartInfo GeneralChartInfo { get; set; }
         public WeightHomepageChartInfo WeightChartInfo { get; set; }
         public StepsDailyHomepageChartInfo StepsDailyChartInfo { get; set; }
         public CaloriesOutHomepageChartInfo CaloriesOutChartInfo { get; set; }
+    }
+
+    public class GeneralHomepageChartInfo
+    {
+        public string[] Legend { get; set; }
+        public string[] Color { get; set; }
+
     }
 
     public class ChartInfo

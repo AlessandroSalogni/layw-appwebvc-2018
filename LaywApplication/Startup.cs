@@ -51,6 +51,9 @@ namespace LaywApplication
             var settingsDb = Configuration.GetConnectionString("layw-db");
             services.AddSingleton(settingsDb);
 
+            var settingsHomepageChartInfo = Configuration.GetSection("chart-homepage-info").Get<ChartHomepageInfo>();
+            services.AddSingleton(settingsHomepageChartInfo);
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
