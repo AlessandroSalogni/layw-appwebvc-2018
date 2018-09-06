@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.Controllers
 {
-    public class DashboardController : BaseController
+    public class HomePageController : BaseController
     {
         private readonly DoctorAccount DoctorAccount;
         private readonly DoctorController DoctorController;
 
-        public DashboardController(ServerIP IPConfig, JsonStructure jsonStructure, DoctorAccount doctorAccount) 
+        public HomePageController(ServerIP IPConfig, JsonStructure jsonStructure, DoctorAccount doctorAccount) 
             : base(IPConfig)
         {
             DoctorAccount = doctorAccount;
