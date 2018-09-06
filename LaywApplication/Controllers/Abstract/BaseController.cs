@@ -7,6 +7,7 @@ namespace LaywApplication.Controllers
 {
     public class BaseController : Controller
     {
+        protected static readonly string sessionKeyName = "Doctor_";
         protected static readonly string italianDateFormat = "dd-MM-yyyy";
         protected static readonly IsoDateTimeConverter italianDateConverter = new IsoDateTimeConverter { DateTimeFormat = italianDateFormat };
         protected static readonly object Empty = new { };
