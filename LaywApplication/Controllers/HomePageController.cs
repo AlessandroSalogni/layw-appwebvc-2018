@@ -1,22 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
+using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.Controllers
 {
     public class HomePageController : BaseController
     {
-        private readonly DoctorAccount DoctorAccount;
-        private readonly DoctorController DoctorController;
+        private readonly DoctorAccount DoctorAccountConfig;
+        private readonly JsonStructure JsonStructureConfig;
 
-        public HomePageController(ServerIP IPConfig, JsonStructure jsonStructure, DoctorAccount doctorAccount) 
-            : base(IPConfig)
+        public HomePageController(ServerIP IPConfig, JsonStructure jsonStructureConfig, 
+            DoctorAccount doctorAccountConfig) : base(IPConfig)
         {
-            DoctorAccount = doctorAccount;
-            DoctorController = new DoctorController(IPConfig, jsonStructure);
+            DoctorAccountConfig = doctorAccountConfig;
+            JsonStructureConfig = jsonStructureConfig;
         }
 
         [HttpGet("~/dashboard/[controller]")]
@@ -24,16 +26,39 @@ namespace LaywApplication.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                var doctor = new Models.Doctor
-                {
-                    Email = User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.Email).Value,
-                    Name = User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.Name).Value,
-                    Image = new Uri(User.Claims.FirstOrDefault(c => c.Type == DoctorAccount.ImageUri).Value),
-                };
-                doctor.Patients = await DoctorController.Read(doctor.Email);
-                await DoctorController.Create(doctor);
+                var email = User.Claims.FirstOrDefault(c => c.Type == DoctorAccountConfig.Email).Value;
+                var doctor = HttpContext.Session.Get<Models.Doctor>(sessionKeyName + email);
 
-                HttpContext.Session.Set(sessionKeyName + doctor.Email, doctor);
+                if (doctor == null)
+                {
+                    var doctorController = new DoctorController(IPConfig, JsonStructureConfig);
+
+                    var name = User.Claims.FirstOrDefault(c => c.Type == DoctorAccountConfig.Name).Value;
+                    var image = new Uri(User.Claims.FirstOrDefault(c => c.Type == DoctorAccountConfig.ImageUri).Value);
+
+                    doctor = doctorController.Read().FirstOrDefault(x => x.Email == email);
+
+                    if (doctor == null)
+                    {
+                        doctor = new Models.Doctor
+                        {
+                            Email = email,
+                            Name = name,
+                            Image = image,
+                            Patients = new List<Patient>()
+                        };
+
+                        await doctorController.Create(doctor);
+                    }
+                    else
+                    {
+                        doctor.Image = image;
+                        doctor.Patients = await doctorController.Read(email);
+                    }
+
+                    HttpContext.Session.Set(sessionKeyName + email, doctor);
+                }
+
                 return View(doctor);
             }
             else

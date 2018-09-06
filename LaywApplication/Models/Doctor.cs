@@ -8,11 +8,7 @@ namespace LaywApplication.Models
     {
         public string Email { get; set; }
         public string Name { get; set; }
-
-        [JsonIgnore]
         public Uri Image { get; set; }
-
-        [JsonIgnore]
         public List<Patient> Patients { get; set; }
     }
 }
