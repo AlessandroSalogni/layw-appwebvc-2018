@@ -50,7 +50,7 @@
 						<a href="#" class="btn btn-default btn-flat">Profile</a>
 					</div>
 					<div class="pull-right">
-						<a href="/signout?returnUrl=%2F" class="btn btn-default btn-flat">Sign out</a>
+						<a href="/signout?doctorEmail=@Model.Email&returnUrl=%2F" class="btn btn-default btn-flat">Sign out</a>
 					</div>
 				</li>
 			</ul>
@@ -80,14 +80,5 @@
 
 	//connection.start().catch(function (err) {
 	//	return console.error(err.toString());
-	//});
-
-	//document.getElementById("sendButton").addEventListener("click", function (event) {
-	//	var user = document.getElementById("userInput").value;
-	//	var message = document.getElementById("messageInput").value;
-	//	connection.invoke("SendMessage", user, message).catch(function (err) {
-	//		return console.error(err.toString());
-	//	});
-	//	event.preventDefault();
 	//});
 </script>

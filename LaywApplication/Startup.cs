@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
 using LaywApplication.Data;
 using LaywApplication.Extensions;
-using LaywApplication.Models;
+using LaywApplication.Mqtt;
 using LinqToDB;
 using LinqToDB.DataProvider.SQLite;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,7 +13,6 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -143,7 +141,7 @@ namespace LaywApplication
 
             app.UseSignalR(routes =>
             {
-                //routes.MapHub<MQTTHub>("/mqttHub");
+                routes.MapHub<MQTTHub>("/mqttHub");
             });
 
             app.UseMvcWithDefaultRoute();
@@ -154,7 +152,7 @@ namespace LaywApplication
             });
         }
 
-        void SetupDatabase(IDataContextFactory<AdminDataContext> dataContext)
+        private void SetupDatabase(IDataContextFactory<AdminDataContext> dataContext)
         {
             using (var db = dataContext.Create())
             {
