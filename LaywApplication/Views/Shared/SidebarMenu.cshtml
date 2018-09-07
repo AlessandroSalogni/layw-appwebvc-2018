@@ -4,7 +4,7 @@
 
 <ul class="sidebar-menu" data-widget="tree">
     <li id="homepage" class="menu-homepage"><a href="~/dashboard/homepage"><i class="fa fa-home" style="color:orange"></i> <span>Homepage</span></a></li> <!--TODO schiaffato url, mettere in config-->
-    <li class="treeview">
+    <li id="patient" class="treeview">
         <a href="#">
             <i class="fa fa-heartbeat" style="color:red"></i> <span>Patients</span>
             <span class="pull-right-container">
@@ -37,7 +37,7 @@
         $('.sidebar-menu > li').each(function () {
             $(this).removeClass('active');
         });
-        //$(this).addClass('active');
+        $(this).addClass('active');
         sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
     });
 
@@ -68,7 +68,7 @@
     .treeview-menu {
         padding-left: 0px;
     }
-    .sidebar-menu > li.menu-open > a {
+    /*.sidebar-menu > li.menu-open > a {
         border-left-color: #605ca8;
-    }
+    }*/
 </style>
