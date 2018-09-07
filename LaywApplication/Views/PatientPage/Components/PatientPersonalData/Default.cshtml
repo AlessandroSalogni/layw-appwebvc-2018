@@ -56,7 +56,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="patient-data-card" class="col-sm-7 col-sm-offset-1 card">
+	<div id="patient-weight-card" class="col-sm-7 col-sm-offset-1 card">
 		<div class="box">
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-1 info no-space">
@@ -101,60 +101,75 @@
 			</div>
 		</div>
 	</div>
+	<div id="patient-summary-card" class="col-sm-7 col-sm-offset-1 card">
+		<div class="box">
+			<div class="row">
+				<div class="col-sm-4 info no-space">
+					<h2>Total Steps</h2>
+					<i class="fas fa-shoe-prints fa-2x"></i>
+					<div class="row">
+						<div class="col-sm-4 col-sm-offset-2 no-space week-data">
+							<p>
+								@Model.TotalSteps.Week<br />
+								<span class="unit-measure">week</span>
+							</p>
+						</div>
+						<div class="col-sm-4 no-space">
+							<p>
+								@Model.TotalSteps.Month<br />
+								<span class="unit-measure">month</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 info no-space">
+					<h2>Total Calories</h2>
+					<i class="fas fa-fire fa-2x"></i>
+					<div class="row">
+						<div class="col-sm-4 col-sm-offset-2 no-space week-data">
+							<p>
+								@Model.TotalCalories.Week<br />
+								<span class="unit-measure">week</span>
+							</p>
+						</div>
+						<div class="col-sm-4 no-space">
+							<p>
+								@Model.TotalCalories.Month<br />
+								<span class="unit-measure">month</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 info no-space">
+					<h2>Average Floor</h2>
+					<i class="fas fa-shoe-prints fa-2x"></i>
+					<div class="row">
+						<div class="col-sm-4 col-sm-offset-2 no-space week-data">
+							<p>
+								@Model.AverageFloors.Week.ToString("0.00")<br />
+								<span class="unit-measure">week</span>
+							</p>
+						</div>
+						<div class="col-sm-4 no-space">
+							<p>
+								@Model.AverageFloors.Month.ToString("0.00")<br />
+								<span class="unit-measure">month</span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<!--
-<div class="container container-inner">
-        <div class="row">
-            <div class="col-sm-4 no-space">
-                <h2 class="personal-title">Total steps/<span style="color:green">week</span></h2>
-                <i class="fas fa-shoe-prints fa-2x"></i>
-                <h2 class="personal-data" data-count="@Model.TotalSteps.Week">0</h2>
-            </div>
-            <div class="col-sm-4 no-space">
-                <h2 class="personal-title">Total calories/<span style="color:green">week</span></h2>
-                <i class="fas fa-fire fa-2x"></i>
-                <h2 class="personal-data" data-count="@Model.TotalCalories.Week">0</h2>
-            </div>
-            <div class="col-sm-4 no-space">
-                <h2 class="personal-title">Floors/<span style="color:green">week</span></h2>
-                <i class="fas fa-home fa-2x"></i>
-                <h2 class="personal-data" data-count="@(Math.Round(Model.AverageFloors.Week, 0))">0</h2>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-4 no-space">
-                <h2 class="personal-title">Total steps/<span style="color:purple">month</span></h2>
-                <i class="fas fa-shoe-prints fa-2x"></i>
-                <h2 class="personal-data" data-count="@Model.TotalSteps.Month">0</h2>
-            </div>
-            <div class="col-sm-4 no-space">
-                <h2 class="personal-title">Total calories/<span style="color:purple">month</span></h2>
-                <i class="fas fa-fire fa-2x"></i>
-                <h2 class="personal-data" data-count="@Model.TotalCalories.Month">0</h2>
-            </div>
-            <div class="col-sm-4 no-space">
-                <h2 class="personal-title">Floors/<span style="color:purple">month</span></h2>
-                <i class="fas fa-home fa-2x"></i>
-                <h2 class="personal-data" data-count="@(Math.Round(Model.AverageFloors.Month, 0))">0</h2>
-            </div>
-        </div>
-    </div>
-</div>
--->
 
 <script>
-	$("#tab-item-personal-data").click(function () {
-		counter("#personal-data-@Model.Patient.Name .counter");
-	});
+$("#tab-item-personal-data").click(function () {
+	counter("#personal-data-@Model.Patient.Name .counter");
+});
 </script>
 
 <style>
-    .no-space {
-        padding: 0px;
-        border: none;
-    }
-
 	.card {
 		padding: 0;
 		background: #fff;
@@ -227,34 +242,60 @@
 		font-size: 13px;
 		font-weight: 400;
 	}
-	#patient-data-card > .box .info > h2 {
+	#patient-weight-card > .box .info > h2 {
 		margin-top: 7px;
 		font-style: italic;
 	}
-	#patient-data-card > .box .info > p {
+	#patient-weight-card > .box .info > p {
 		font-weight: 300;
 		font-size: 35px;
 		margin-top: 35px;
 		margin-bottom: 0;
 		line-height: 20px;
 	}
-	#patient-data-card > .box .info > p > .unit-measure {
+	#patient-weight-card > .box .info > p > .unit-measure {
 		font-size: 15px;
 		font-weight: 400;
 	}
-	#patient-data-card > .box .info > .percent {
+	#patient-weight-card > .box .info > .percent {
 		font-weight: 700;
 		font-size: 18px;
 		margin-top: 30px;
 	}
-	#patient-data-card > .box .info > .percent > span {
+	#patient-weight-card > .box .info > .percent > span {
 		font-size: 13px;
 	}
-	#patient-data-card > .box .info > .equal {
+	#patient-weight-card > .box .info > .equal {
 		font-weight: 700;
 		font-size: 30px;
 		margin-top: 36px;
 		color: #605ca8;
+	}
+	#patient-summary-card {
+		margin-top: 35px;
+	}
+	#patient-summary-card > .box .info > h2 {
+		font-style: italic;
+		margin-bottom: 20px;
+		font-size: 25px;
+		margin-top:0;
+	}
+	#patient-summary-card > .box .info .week-data > p {
+		border-right-width: 1px;
+		border-right-color: rgba(8,26,40,1);
+		border-right-style: dashed;
+	}
+	#patient-summary-card > .box .info p {
+		font-weight: 300;
+		font-size: 25px;
+		margin-top: 30px;
+		padding: 5px;
+		margin-bottom: 0;
+		line-height: 20px;
+	}
+	#patient-summary-card > .box .info p > .unit-measure {
+		font-size: 13px;
+		font-weight: 400;
 	}
 </style>
 
