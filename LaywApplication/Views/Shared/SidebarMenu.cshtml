@@ -1,4 +1,5 @@
-﻿@model Doctor
+﻿@model List<Patient>
+
 @using Microsoft.Extensions.Options
 @inject IOptions<LaywApplication.Configuration.ServerIP> ServerIP
 
@@ -13,7 +14,7 @@
         </a>
         <ul class="treeview-menu">
             @{
-                foreach (Patient p in Model.Patients.OrderBy(x => x.Name))
+                foreach (Patient p in Model.OrderBy(x => x.Name))
                 {
                     <li id="patient-@p.Name.Replace(" ", "_")">
                         <a href="~/dashboard/patients/@p.Id">

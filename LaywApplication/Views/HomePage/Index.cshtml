@@ -15,24 +15,24 @@
 	<div id="goal-statistics" class="row text-center">
 		<div class="col-sm-4">
 			@{
-				await Html.RenderPartialAsync("DashboardDonutChart", stepsChartInfo, viewDataDictionary);
+				await Html.RenderPartialAsync("Components/GoalChartStatistics/Default", stepsChartInfo, viewDataDictionary);
 			}
 		</div>
 		<div class="col-sm-4">
 			@{
-				await Html.RenderPartialAsync("DashboardDonutChart", weightChartInfo, viewDataDictionary);
+				await Html.RenderPartialAsync("Components/GoalChartStatistics/Default", weightChartInfo, viewDataDictionary);
 			}
 		</div>
 		<div class="col-sm-4">
 			@{
-				await Html.RenderPartialAsync("DashboardDonutChart", caloriesChartInfo, viewDataDictionary);
+				await Html.RenderPartialAsync("Components/GoalChartStatistics/Default", caloriesChartInfo, viewDataDictionary);
 			}
 		</div>
-		<div class="col-sm-4">
+		@*<div class="col-sm-4">
 			@{
 				await Html.RenderPartialAsync("PatientHomepageDonutChart", Tuple.Create("Patients", "patientchartdashboard", "Patient"));
 			}
-		</div>
+		</div>*@
 	</div>
 </div>
 

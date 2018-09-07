@@ -45,8 +45,8 @@ namespace LaywApplication.Controllers
                 if (patient == null)
                     return Redirect("~/dashboard/homepage");
 
-                ViewBag.CurrentPatient = patient;
-                return View(doctor);
+                ViewBag.Doctor = doctor;
+                return View(patient);
             }
             else
                 return Redirect("~/signin");
