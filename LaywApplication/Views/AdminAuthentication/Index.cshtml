@@ -15,9 +15,12 @@
 </select>
 
 <h2>Manage the patients below of the doctor selected, and then press "Add patients"</h2>
-<div id="patients-box"> </div>
+<div id="patients-box"></div>
+
 <button class="k-button" id="post-patients">Add patients</button>
+
 <div id="response" style="font-size:20px; color:dodgerblue"></div>
+
 
 <script>
     $(document).ready(function () {
@@ -40,8 +43,8 @@
             return res;
         };  
 
-        var url = "@Url.Content("~/dashboard/doctors/")";
         var patients;
+        var url = "@Url.Content("~/dashboard/doctors/")";
         var json = @Html.Raw(Json.Serialize(Model)) 
         
         $("#doctor").kendoDropDownList({
@@ -53,7 +56,32 @@
         }
 
         var d = $("#doctor").data("kendoDropDownList");
-        
+
+        $("#post-patients").click(function () {
+            var url = "@Url.Content("~/dashboard/doctors/")";
+            var ids = JSON.parse(JSON.stringify(patients.value()));
+
+            var ar = [];
+            for (var i = 0; i < ids.length; i++)
+                ar.push({ id: ids[i] });
+
+            $.ajax({
+                url: url + d.value() + "/update",
+                type: 'PUT',
+                data: JSON.stringify(ar), 
+                dataType: 'json',
+                contentType: "application/json",
+                success: function (data) {
+                    $("#response").html("Confirmed");
+                    setTimeout(function () { $("#response").html(""); }, 2000);
+                },
+                error: function (data) {
+                    $("#response").html("Error");
+                    setTimeout(function () { $("#response").html(""); }, 2000);
+                }
+            });
+        });
+
         function getPatients() {
             var url = "@Url.Content("~/dashboard/doctors/")";
             $.ajax({
@@ -90,32 +118,6 @@
             patients = $("#patients").kendoMultiSelect().data("kendoMultiSelect");
         }
         
-        $("#post-patients").click(function () {
-            var url = "@Url.Content("~/dashboard/doctors/")";
-            var ids = JSON.parse(JSON.stringify(patients.value()));
-
-            var ar = [];
-            for (var i = 0; i < ids.length; i++)
-                ar.push({ id: ids[i] });
-
-            $.ajax({
-                url: url + d.value() + "/update",
-                type: 'PUT',
-                data: JSON.stringify(ar), 
-                dataType: 'json',
-                contentType: "application/json",
-                success: function (data) {
-                    $("#response").html("Confirmed");
-                    setTimeout(function () { $("#response").html(""); }, 2000);
-                },
-                error: function (data) {
-                    $("#response").html("Error");
-                    setTimeout(function () { $("#response").html(""); }, 2000);
-                }
-            });
-
-        });
-
         getPatients();
     });
 </script>
