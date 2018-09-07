@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Models
 {
-    public class DoctorAssociatedPatients
+    public class DoctorsPatients
     {
-        public Doctor Doctor { get; set; }
-
-        public List<Patient> NoPatientYet { get; set; }
+        public List<Doctor> Doctors { get; set; }
+        public List<Patient> Patients { get; set; }
     }
 }

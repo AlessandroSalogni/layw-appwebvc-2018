@@ -1,18 +1,134 @@
-﻿@model List<DoctorAssociatedPatients>
+﻿@model DoctorsPatients
 
 @{
     Layout = "Layouts/_Admin";
 }
 
-@foreach (DoctorAssociatedPatients associated in Model)
-{
-    <strong>@associated.Doctor.Name</strong><br />
-
-    @foreach (Patient patient in associated.Doctor.Patients)
+<h1>Choose a doctor from the list below:</h1>
+<select id="doctor" style="width: 100%;">
+    <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
+    
+    @for (int i = 1; i < Model.Doctors.Count; i++)
     {
-        <i>@patient.Name</i>
+        <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
+    }
+</select>
+
+<h2>Manage the patients below of the doctor selected, and then press "Add patients"</h2>
+<div id="patients-box"> </div>
+<button class="k-button" id="post-patients">Add patients</button>
+<div id="response" style="font-size:20px; color:dodgerblue"></div>
+
+<script>
+    $(document).ready(function () {
+        Array.prototype.except = function (arr, comparer) {
+            if (!(arr instanceof Array)) arr = [arr];
+            comparer = comparer || DefaultEqualityComparer;
+            var l = this.length;
+            var res = [];
+            for (var i = 0; i < l; i++) {
+                var k = arr.length;
+                var t = false;
+                while (k-- > 0) {
+                    if (comparer(this[i], arr[k]) === true) {
+                        t = true;
+                        break;
+                    }
+                }
+                if (!t) res.push(this[i]);
+            }
+            return res;
+        };  
+
+        var url = "@Url.Content("~/dashboard/doctors/")";
+        var patients;
+        var json = @Html.Raw(Json.Serialize(Model)) 
+        
+        $("#doctor").kendoDropDownList({
+            change: onChange
+        });
+        
+        function onChange() {
+            getPatients();
+        }
+
+        var d = $("#doctor").data("kendoDropDownList");
+        
+        function getPatients() {
+            var url = "@Url.Content("~/dashboard/doctors/")";
+            $.ajax({
+                url: url + d.value(),
+                type: 'GET',
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    insertPatients(JSON.parse(JSON.stringify(data)));
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+        
+        function insertPatients(patientsOfSelectedDoctor) {
+            $('#patients-box').html('');
+            var html = "<select id='patients' multiple='multiple' data-placeholder='Select patients...'>";
+            
+            for (var i = 0; i < patientsOfSelectedDoctor.length; i++) {
+                html = html.concat("<option value=" + parseInt(patientsOfSelectedDoctor[i].id) + " selected>" + patientsOfSelectedDoctor[i].name + "</option>");
+            }
+
+            var nopatients = (json.patients.except(patientsOfSelectedDoctor, function (a, b) { return a.id === b.id; }));
+
+            for (var j = 0; j < nopatients.length; j++) {
+                html = html.concat("<option value=" + parseInt(nopatients[j].id) + ">" + nopatients[j].name + "</option>");
+            }
+
+            html = html.concat("</select>");
+            
+            $('#patients-box').html(html);
+            patients = $("#patients").kendoMultiSelect().data("kendoMultiSelect");
+        }
+        
+        $("#post-patients").click(function () {
+            var url = "@Url.Content("~/dashboard/doctors/")";
+            var ids = JSON.parse(JSON.stringify(patients.value()));
+
+            var ar = [];
+            for (var i = 0; i < ids.length; i++)
+                ar.push({ id: ids[i] });
+
+            $.ajax({
+                url: url + d.value() + "/update",
+                type: 'PUT',
+                data: JSON.stringify(ar), 
+                dataType: 'json',
+                contentType: "application/json",
+                success: function (data) {
+                    $("#response").html("Confirmed");
+                    setTimeout(function () { $("#response").html(""); }, 2000);
+                },
+                error: function (data) {
+                    $("#response").html("Error");
+                    setTimeout(function () { $("#response").html(""); }, 2000);
+                }
+            });
+
+        });
+
+        getPatients();
+    });
+</script>
+
+
+<style>
+    .demo-section label {
+        display: block;
+        margin: 15px 0 5px 0;
     }
 
-    <br /><br /><br />
-}
-
+    #get {
+        float: right;
+        margin: 25px auto 0;
+    }
+</style>
