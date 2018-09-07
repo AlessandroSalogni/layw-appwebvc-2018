@@ -3,11 +3,13 @@
 	@inject IOptions<LaywApplication.Configuration.Theme> Theme
 
 	@{
-        var kendo = Kendo.Value;
-        var theme = Theme.Value;
+		var kendo = Kendo.Value;
+		var theme = Theme.Value;
 
-        ViewBag.Logo = "logo.png";
-        ViewBag.LogoMini = "logo1.png";
+		ViewBag.Logo = "logo.png";
+		ViewBag.LogoMini = "logo1.png";
+
+		Doctor doctor = (Model is Doctor) ? Model : (Doctor)ViewBag.Doctor;
 	}
 
 	<!DOCTYPE html>
@@ -90,7 +92,7 @@
                         <span class="sr-only">Toggle navigation</span>
                     </a>
                     <!-- Navbar Right Menu -->
-                    @{ await Html.RenderPartialAsync("NavbarRightMenu"); }
+                    @{ await Html.RenderPartialAsync("NavbarRightMenu", doctor); }
                 </nav>
             </header>
             <!-- Left side column. contains the logo and sidebar -->
@@ -98,7 +100,7 @@
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar Menu -->
-                    @{ await Html.RenderPartialAsync("SidebarMenu"); }
+                    @{ await Html.RenderPartialAsync("SidebarMenu", doctor.Patients); }
                     <!-- /.sidebar-menu -->
                 </section>
                 <!-- /.sidebar -->
@@ -110,7 +112,6 @@
                     <h1 class="text-center" style="font-style:italic; font-weight:700;">
                         @ViewBag.PageHeader
                     </h1>
-                    @{ await Html.RenderPartialAsync("Breadcrumb"); }
                 </section>
                 <!-- Main content -->
                 <section class="content container-fluid">
