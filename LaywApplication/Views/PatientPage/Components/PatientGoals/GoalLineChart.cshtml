@@ -46,4 +46,8 @@
 			}
 		});
 	});
+
+	$(window).bind("resize", function () {
+        $("#chart-@divId").data("kendoChart").refresh();
+    });
 </script>

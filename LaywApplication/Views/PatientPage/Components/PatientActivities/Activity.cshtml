@@ -57,12 +57,17 @@
 </div>
 
 <script>
-$(document).ready(function () {
-	var down = @ViewBag.AerobicFunction.DownLimit;
-	var up = @ViewBag.AerobicFunction.UpLimit;
-	this["stepX_@index"] = @(Model.HeartBeats.Count/40 + 1);
+	$(document).ready(function () {
+		var down = @ViewBag.AerobicFunction.DownLimit;
+		var up = @ViewBag.AerobicFunction.UpLimit;
+		this["stepX_@index"] = @(Model.HeartBeats.Count/40 + 1);
 
-	createHeartBeatChart("@index", '@Json.Serialize(Model.HeartBeats)', down, up, this["stepX_@index"]);
-	createPieChart("@index", '@Json.Serialize(Model.HeartRateZonesList)');
-});
+		createHeartBeatChart("@index", '@Json.Serialize(Model.HeartBeats)', down, up, this["stepX_@index"]);
+		createPieChart("@index", '@Json.Serialize(Model.HeartRateZonesList)');
+	});
+
+	$(window).bind("resize", function () {
+		$("#chart-@index").data("kendoChart").refresh();
+		$("#pie-chart-@index").data("kendoChart").refresh();
+    });
 </script>
