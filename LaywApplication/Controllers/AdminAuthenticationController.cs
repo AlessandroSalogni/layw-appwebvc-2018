@@ -27,37 +27,28 @@ namespace LaywApplication.Controllers
             ConnectionString = connectionString;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return Redirect("~/signin");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Index(IFormCollection collection)
         {
             string email = collection["email"];
             string password = collection["password"];
 
-            var dbFactory = new AdminDataContextFactory(
-                dataProvider: SQLiteTools.GetDataProvider(),
-                connectionString: ConnectionString
-            );
+            var dbFactory = new AdminDataContextFactory( dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
 
             Task<Admin> admin;
-
             using (var db = dbFactory.Create())
-            {
                 admin = db.GetTable<Admin>().FirstOrDefaultAsync(c => c.Email.Equals(email) && c.Password.Equals(password));
-            }
-
+            
             if (admin.Result != null)
-            {
-                return View(
-                    new DoctorsPatients
-                    {
-                        Doctors = await DoctorController.Read(),
-                        Patients = await PatientCollectionController.Read()
-                    }
-                );
-            }
+                return View(new DoctorsPatients { Doctors = await DoctorController.Read(), Patients = await PatientCollectionController.Read()});
             else
                 return Redirect("~/signin");
         }
-        
     }
 }

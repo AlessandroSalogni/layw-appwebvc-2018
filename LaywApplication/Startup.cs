@@ -159,7 +159,9 @@ namespace LaywApplication
             using (var db = dataContext.Create())
             {
                 db.CreateTableIfNotExists<Admin>();
-                db.InsertOrReplace(new Admin { Email = "rikiper96@gmail.com", Password = "riccardo" });
+                db.InsertOrReplace(new Admin { Email = "salogni.alex@libero.com", Password = "admin" });
+                db.InsertOrReplace(new Admin { Email = "20013787@studenti.uniupo.it", Password = "admin" });
+                db.InsertOrReplace(new Admin { Email = "user", Password = "admin" });
             }
         }
     }

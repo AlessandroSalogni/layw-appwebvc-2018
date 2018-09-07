@@ -7,66 +7,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="description" content="" />
-	<meta name="author" content="" />
-	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="~/bootstrap-social-gh-pages/bootstrap-social.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/bootstrap-social-gh-pages/bootstrap-social.css">
 
-	<style>
-		body, html, #LoginForm {
-			height: 100%;
-		}
-		#LoginForm {
-			background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg");
-			background-repeat: no-repeat;
-			background-position: center;
-			background-size: cover;
-			padding: 10px;
-			display: flex;
-			align-items: center;
-		}
-		#LoginForm .panel h2 {
-			color: #444444;
-			font-size: 18px;
-			margin: 0 0 8px 0;
-		}
-		#LoginForm .panel p {
-			color: #777777;
-			font-size: 14px;
-			margin-bottom: 30px;
-			line-height: 24px;
-		}
-		#LoginForm .main-div {
-			background: #ffffff none repeat scroll 0 0;
-			border-radius: 10px;
-			margin: 0 auto;
-			padding: 50px 60px 70px;
-		}
-		#LoginForm .btn-form > .btn-social > :first-child {
-			width: 36px;
-			line-height: 28px;
-		}
-		#LoginForm .btn-form > .btn {
-			margin-bottom: 10px;
-		}
-		#LoginForm .btn-form > .btn > .fa {
-			padding: 5px;
-		}
-		#LoginForm .btn-form:last-child > .btn {
-			margin-bottom: 0;
-		}
-		@@media (min-width: 1200px) {
-			#LoginForm .main-div {
-				padding: 60px 70px 80px;
-			}
-		}
-	</style>
+    <style>
+        body, html, #LoginForm {
+            height: 100%;
+        }
+
+        #LoginForm {
+            background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+            #LoginForm .panel h2 {
+                color: #444444;
+                font-size: 18px;
+                margin: 0 0 8px 0;
+            }
+
+            #LoginForm .panel p {
+                color: #777777;
+                font-size: 14px;
+                margin-bottom: 30px;
+                line-height: 24px;
+            }
+
+            #LoginForm .main-div {
+                background: #ffffff none repeat scroll 0 0;
+                border-radius: 10px;
+                margin: 0 auto;
+                padding: 50px 60px 70px;
+            }
+
+            #LoginForm .btn-form > .btn-social > :first-child {
+                width: 36px;
+                line-height: 28px;
+            }
+
+            #LoginForm .btn-form > .btn {
+                margin-bottom: 10px;
+            }
+
+                #LoginForm .btn-form > .btn > .fa {
+                    padding: 5px;
+                }
+
+            #LoginForm .btn-form:last-child > .btn {
+                margin-bottom: 0;
+            }
+
+        @@media (min-width: 1200px) {
+            #LoginForm .main-div {
+                padding: 60px 70px 80px;
+            }
+        }
+
+        a:hover {
+            color: aquamarine;
+            cursor: pointer;
+        }
+
+        #btn-form-admin {
+            margin-top: 15px;
+        }
+
+        #loginAsAdmin {
+            font-size:11px;
+        }
+    </style>
 </head>
 <body id="LoginForm">
     <div class="container">
@@ -88,24 +111,28 @@
                         </button>
                     </form>
                 }
+                <br /><br />
+                <a id="loginAsAdmin">Login as Administrator</a>
 
-                <div class="panel text-center" style="padding-top:100px">
-                    <h2>Sign in as Admin</h2>
-
+                <div id="form-admin" class="panel text-center" style="display:none;">
                     <form method="post" action="~/AdminAuthentication">
                         <div class="form-group">
-                            <label for="usr">Email:</label>
-                            <input type="text" class="form-control" name="email" />
+                            
+                            <input type="text" class="form-control" name="email" placeholder="Email"/>
+                            <input type="password" class="form-control" name="password" placeholder="Password"/>
 
-                            <label for="usr">Password:</label>
-                            <input type="password" class="form-control" name="password" />
-                            <br />
-                            <button type="submit" class="btn btn-default">Login</button>
+                            <button id="btn-form-admin" type="submit" class="btn btn-info">Login</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>  
+
+    <script>
+        $("#loginAsAdmin").click(function () {
+            $("#form-admin").toggle(800);
+        });
+    </script>
 </body>
 </html>
