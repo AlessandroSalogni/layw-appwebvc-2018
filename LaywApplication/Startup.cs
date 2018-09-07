@@ -37,6 +37,7 @@ namespace LaywApplication
             services.Configure<Kendo>(Configuration.GetSection("kendo"));
             services.Configure<Theme>(Configuration.GetSection("theme"));
             services.Configure<ChartGoalPatientPageInfo>(Configuration.GetSection("chart-goal-patient-page-info"));
+            services.Configure<ChartHomepageInfo>(Configuration.GetSection("chart-homepage-info"));
 
             var settingsDoctorAccount = Configuration.GetSection("doctor-account").Get<DoctorAccount>();
             services.AddSingleton(settingsDoctorAccount);
@@ -49,6 +50,9 @@ namespace LaywApplication
 
             var settingsDb = Configuration.GetConnectionString("layw-db");
             services.AddSingleton(settingsDb);
+
+            var settingsHomepageChartInfo = Configuration.GetSection("chart-homepage-info").Get<ChartHomepageInfo>();
+            services.AddSingleton(settingsHomepageChartInfo);
 
             services.AddAuthentication(options =>
             {

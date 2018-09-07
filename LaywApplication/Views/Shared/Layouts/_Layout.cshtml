@@ -3,11 +3,13 @@
 	@inject IOptions<LaywApplication.Configuration.Theme> Theme
 
 	@{
-        var kendo = Kendo.Value;
-        var theme = Theme.Value;
+		var kendo = Kendo.Value;
+		var theme = Theme.Value;
 
-        ViewBag.Logo = "logo.png";
-        ViewBag.LogoMini = "logo1.png";
+		ViewBag.Logo = "logo.png";
+		ViewBag.LogoMini = "logo1.png";
+
+		Doctor doctor = (Model is Doctor) ? Model : (Doctor)ViewBag.Doctor;
 	}
 
 	<!DOCTYPE html>
@@ -77,7 +79,7 @@
             <!-- Main Header -->
             <header class="main-header">
                 <!-- Logo -->
-                <a href="./" class="logo">
+                <a href="~/dashboard/homepage" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><img src="~/AdminLTE-2.4.3/dist/img/@ViewBag.LogoMini"></span>
                     <!-- logo for regular state and mobile devices -->
@@ -90,28 +92,15 @@
                         <span class="sr-only">Toggle navigation</span>
                     </a>
                     <!-- Navbar Right Menu -->
-                    @{ await Html.RenderPartialAsync("NavbarRightMenu"); }
+                    @{ await Html.RenderPartialAsync("NavbarRightMenu", doctor); }
                 </nav>
             </header>
             <!-- Left side column. contains the logo and sidebar -->
             <aside class="main-sidebar">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
-                    <!-- Sidebar user panel (optional) -->
-                    <!-- search form (Optional) -->
-                    @*<form action="#" method="get" class="sidebar-form">
-                        <div class="input-group">
-                            <input type="text" name="q" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>*@
-                    <!-- /.search form -->
                     <!-- Sidebar Menu -->
-                    @{ await Html.RenderPartialAsync("SidebarMenu"); }
+                    @{ await Html.RenderPartialAsync("SidebarMenu", doctor.Patients); }
                     <!-- /.sidebar-menu -->
                 </section>
                 <!-- /.sidebar -->
@@ -123,7 +112,6 @@
                     <h1 class="text-center" style="font-style:italic; font-weight:700;">
                         @ViewBag.PageHeader
                     </h1>
-                    @{ await Html.RenderPartialAsync("Breadcrumb"); }
                 </section>
                 <!-- Main content -->
                 <section class="content container-fluid">

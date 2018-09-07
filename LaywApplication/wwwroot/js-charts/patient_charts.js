@@ -59,14 +59,16 @@
     });
 }
 
-function createDonutChart(completeUrl, divId) {
+function createDonutChart(completeUrl, divId, doctorEmail) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
             transport: {
                 read: {
                     url: completeUrl,
                     type: "get",
-                    dataType: "json"
+                    data: {
+                        doctorEmail: doctorEmail
+                    }
                 }
             }
         },
@@ -93,14 +95,16 @@ function createDonutChart(completeUrl, divId) {
     });
 }
 
-function createGridTotalGoal(completeUrl, divId, title) {
+function createGridTotalGoal(completeUrl, divId, title, doctorEmail) {
     $("#grid-" + divId).kendoGrid({
         dataSource: {
             transport: {
                 read: {
-                    dataType: "json",
                     url: completeUrl,
-                    type: "get"
+                    type: "get",
+                    data: {
+                        doctorEmail: doctorEmail
+                    }
                 }
             },
             pageSize: 20,

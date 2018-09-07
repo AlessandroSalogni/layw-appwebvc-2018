@@ -1,37 +1,87 @@
 ﻿@model Doctor
+@using Microsoft.Extensions.Options
+
+@inject IOptions<LaywApplication.Configuration.ChartHomepageInfo> ChartHomepageInfo
 @{
 	ViewBag.PageHeader = "Homepage";
+
+	var viewDataDictionary = new ViewDataDictionary(this.ViewData) { { "doctorEmail", Model.Email } };
+	var weightChartInfo = ChartHomepageInfo.Value.WeightChartInfo;
+	var stepsChartInfo = ChartHomepageInfo.Value.StepsDailyChartInfo;
+	var caloriesChartInfo = ChartHomepageInfo.Value.CaloriesOutChartInfo;
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            @{
-                await Html.RenderPartialAsync("DashboardDonutChart", Tuple.Create("Goal Steps Daily", "goalstepschartdashboard", "StepsDaily"));
-            }
-        </div>
-        <div class="col-sm-4">
-            @{
-                await Html.RenderPartialAsync("DashboardDonutChart", Tuple.Create("Goal Weight", "goalweightschartdashboard", "Weight"));
-            }
-        </div>
-        <div class="col-sm-4">
-            @{
-                await Html.RenderPartialAsync("DashboardDonutChart", Tuple.Create("Goal Calories Out", "goalcaloriesoutchartdashboard", "CaloriesOut"));
-            }
-        </div>
-        <div class="col-sm-4">
-            @{
-                await Html.RenderPartialAsync("PatientHomepageDonutChart", Tuple.Create("Patients", "patientchartdashboard", "Patient"));
-            }
-        </div>
-    </div>
+	<div id="goal-statistics" class="row text-center">
+		<div class="col-sm-4">
+			@{
+				await Html.RenderPartialAsync("Components/GoalChartStatistics/Default", stepsChartInfo, viewDataDictionary);
+			}
+		</div>
+		<div class="col-sm-4">
+			@{
+				await Html.RenderPartialAsync("Components/GoalChartStatistics/Default", weightChartInfo, viewDataDictionary);
+			}
+		</div>
+		<div class="col-sm-4">
+			@{
+				await Html.RenderPartialAsync("Components/GoalChartStatistics/Default", caloriesChartInfo, viewDataDictionary);
+			}
+		</div>
+		@*<div class="col-sm-4">
+			@{
+				await Html.RenderPartialAsync("PatientHomepageDonutChart", Tuple.Create("Patients", "patientchartdashboard", "Patient"));
+			}
+		</div>*@
+	</div>
 </div>
 
 <style>
+	.no-space {
+		padding: 0;
+		border: none;
+	}
 	@@media (min-width: 1200px) {
 		.container {
 			width: 1090px;
 		}
+	}
+	.window-goal .k-grid-content tr {
+		background-color: #e6ffe6;
+	}
+	.window-goal > .achieved .k-grid-content .k-alt {
+		background-color: #f4fff4;
+	}
+	.window-goal > .notachieved .k-grid-content tr {
+		background-color: #ffe6e6;
+	}
+	.window-goal > .notachieved .k-grid-content .k-alt {
+		background-color: #fff4f4;
+	}
+	.window-goal .k-link {
+		font-weight: 700;
+		text-align: center;
+		margin-right: 0;
+		padding-right: 0;
+	}
+	.window-goal .k-grid-filter {
+		position: absolute;
+		right: 0;
+		top: 4px;
+		margin-right: 0.5px;
+	}
+	.window-goal > .achieved .k-link {
+		color: green;
+	}
+	.window-goal > .notachieved .k-link {
+		color: red;
+	}
+	.button-open-window {
+		border-color: #b3d9ff;
+		border-radius: 15px;
+		background-color: transparent;
+		padding: 5px 20px;
+		margin: 5px;
+		box-shadow: 0 6px 6px rgba(0,0,0,.2), 0 2px 3px rgba(0,0,0,.05);
 	}
 </style>

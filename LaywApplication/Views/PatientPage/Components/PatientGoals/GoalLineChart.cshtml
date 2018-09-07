@@ -1,4 +1,4 @@
-﻿@model LaywApplication.Configuration.ChartInfo
+﻿@model LaywApplication.Configuration.ChartPatientPageInfo
 @{
 	string divId = Model.Title.Replace(" ", "-");
 }
@@ -46,4 +46,8 @@
 			}
 		});
 	});
+
+	$(window).bind("resize", function () {
+        $("#chart-@divId").data("kendoChart").refresh();
+    });
 </script>

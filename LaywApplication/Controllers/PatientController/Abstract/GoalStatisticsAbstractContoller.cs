@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace LaywApplication.Controllers.PatientController.Abstract
 {
     public abstract class GoalStatisticsController<TType, TModelGoal, TModelRealData> : BaseJsonController
-      where TType : IComparable<TType>
+      where TType : struct, IComparable<TType>
       where TModelGoal : GoalAbstract<TType>
       where TModelRealData : RealDataAbstract<TType>
     {

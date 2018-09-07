@@ -1,7 +1,6 @@
-﻿@model Doctor
+﻿@model Patient
 @{
-	ViewBag.PageHeader = ((Patient)ViewBag.CurrentPatient).Name;
-	int currentPatientId = ((Patient)ViewBag.CurrentPatient).Id;
+	ViewBag.PageHeader = Model.Name;
 }
 
 <div id="patient" class="container">
@@ -15,19 +14,19 @@
                 <li id="tab-item-personal-data"> Personal data </li>
             </ul>
             <div class="content-grid">
-                @{ await Html.RenderPartialAsync("Components/PatientDiet/Default", currentPatientId); }
+                @{ await Html.RenderPartialAsync("Components/PatientDiet/Default", Model.Id); }
             </div>
             <div class="content-grid">
-                @{ await Html.RenderPartialAsync("Components/PatientTraining/Default", currentPatientId); }
+                @{ await Html.RenderPartialAsync("Components/PatientTraining/Default", Model.Id); }
             </div>
             <div class="content-grid chart-box">
-                @{ await Html.RenderPartialAsync("Components/PatientGoals/Default", currentPatientId); }
+                @{ await Html.RenderPartialAsync("Components/PatientGoals/Default", Model.Id); }
             </div>
             <div class="chart-box">
-				@await Component.InvokeAsync("PatientActivities", new { currentPatient = ViewBag.CurrentPatient })
+				@await Component.InvokeAsync("PatientActivities", new { currentPatient = Model })
 			</div>
             <div>
-                @await Component.InvokeAsync("PatientPersonalData", new { currentPatient = ViewBag.CurrentPatient })
+                @await Component.InvokeAsync("PatientPersonalData", new { currentPatient = Model })
             </div>
         </div>
     </div>

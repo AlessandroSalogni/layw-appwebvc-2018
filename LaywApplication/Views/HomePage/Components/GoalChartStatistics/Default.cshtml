@@ -1,0 +1,45 @@
+﻿@model LaywApplication.Configuration.ChartInfo
+@{
+	string doctoEmail = (string)ViewData["doctorEmail"];
+	string divId = Model.Title.Replace(" ", "_");
+}
+
+<div class="box box-default">
+	@{ Html.RenderPartial("ChartHeader", Model.Title); }
+	<div class="box-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<div id="chart-@divId"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div id="window-@divId" class="window-goal">
+					<div id="grid-@divId-achieved" class="col-sm-6 no-space achieved"></div>
+					<div id="grid-@divId-notachieved" class="col-sm-6 no-space notachieved"></div>
+				</div>
+				<span id="undo-@divId" class="button-open-window k-button hide-on-narrow">
+					Click here for more details
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function createDashboard() {
+		var baseUrl = "@Url.Content("~/dashboard/homepage/" + Model.Controller)";
+        createDonutChart(baseUrl + "/summary", "@divId", "@doctoEmail");
+		createGridTotalGoal(baseUrl + "/achieved", "@divId-achieved", "Achieved", "@doctoEmail");
+		createGridTotalGoal(baseUrl + "/notachieved", "@divId-notachieved", "Not Achieved", "@doctoEmail");
+        createWindow("@divId", "@Model.Title");
+	}
+
+    $(document).ready(createDashboard);
+    $(document).bind("kendo:skinChange", createDashboard);
+
+    $(window).bind("resize", function () {
+        $("#chart-@divId").data("kendoChart").refresh();
+    });
+</script>
