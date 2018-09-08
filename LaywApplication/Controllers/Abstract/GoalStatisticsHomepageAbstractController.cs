@@ -82,12 +82,12 @@ namespace LaywApplication.Controllers
             foreach (Models.Patient patient in doctor.Patients)
             {
                 var realData = await RealDataController.Read(patient.Id, dateNow);
-                var realDataValue = (realData != null) ? realData.RealData : default(TType);
+                var goal = await GoalController.Read(patient.Id, dateNow);
 
                 goalRealDataCompareList.Add(new GoalRealDataCompare
                 {
-                    Goal = (await GoalController.Read(patient.Id, dateNow)).Goal,
-                    RealData = realDataValue,
+                    Goal = (goal != null) ? goal.Goal : default(TType),
+                    RealData = (realData != null) ? realData.RealData : default(TType),
                     PatientName = patient.Name
                 });
             }
