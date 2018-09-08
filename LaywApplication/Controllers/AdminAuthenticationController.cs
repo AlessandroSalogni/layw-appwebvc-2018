@@ -57,8 +57,7 @@ namespace LaywApplication.Controllers
                 return Redirect("~/signin");
             }
         }
-
-
+        
         [HttpPut("{email}/update")]
         public object Update(string email, IFormCollection collection)
         {

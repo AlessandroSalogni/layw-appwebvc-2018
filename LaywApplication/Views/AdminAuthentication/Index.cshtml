@@ -4,61 +4,51 @@
     Layout = "Layouts/_Admin";
 }
 
-@{ await Html.RenderPartialAsync("ButtonHeader"); }
+<div id="admin-auth">
 
-<div class="row" style="width:100%">
-    <div class="col-sm-12">
-        <h1>Welcome to your administration page</h1>
-    </div>
-</div>
-<div id="patient-manager" class="panel text-center">
-    <div class="row" style="width:100%">
-        <div class="col-sm-12">
-            <h2>Choose a doctor from the list below:</h2>
-            <select id="doctor" style="width: 50%;">
-                <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
 
-                @for (int i = 1; i < Model.Doctors.Count; i++)
-                {
-                    <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
-                }
-            </select>
-        </div>
-    </div>
+    @{ await Html.RenderPartialAsync("ButtonHeader"); }
 
     <div class="row" style="width:100%">
         <div class="col-sm-12">
-            <h4 style="margin-top:30px;">Manage the patients below of the doctor selected, and then press "Apply"</h4>
-            <div id="patients-box" style="width:50%; margin-right:auto; margin-left:auto;" ></div>
+            <h1>Welcome to your administration page</h1>
+        </div>
+    </div>
+    <div id="patient-manager" class="panel text-center active-panel">
+        <div class="row" style="width:100%">
+            <div class="col-sm-12">
+                <h2>Choose a doctor from the list below:</h2>
+                <select id="doctor" style="width: 50%;">
+                    <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
+
+                    @for (int i = 1; i < Model.Doctors.Count; i++)
+                    {
+                        <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row" style="width:100%">
+            <div class="col-sm-12">
+                <h4 style="margin-top:30px;">Manage the patients below of the doctor selected, and then press "Apply"</h4>
+                <div id="patients-box" style="width:50%; margin-right:auto; margin-left:auto;"></div>
+            </div>
+        </div>
+
+        <div class="row" style="width:100%">
+            <div class="col-sm-12">
+                <button class="k-button" id="post-patients" style="margin-top:20px;">Apply</button>
+                <h4 id="response"></h4>
+            </div>
         </div>
     </div>
 
-    <div class="row" style="width:100%">
-        <div class="col-sm-12">
-            <button class="k-button" id="post-patients" style="margin-top:20px;">Apply</button>
-            <h4 id="response"></h4>
-        </div>
-    </div>
+    @{ await Html.RenderPartialAsync("FormChangePassword"); }
+
+    @{ await Html.RenderPartialAsync("FormAddAdmin"); }
+
 </div>
-
-@{ await Html.RenderPartialAsync("FormChangePassword"); }
-
-
-<div class="row" style="width:100%">
-    <div class="col-sm-6 col-sm-offset-3">
-        <div id="div-add-admins" class="panel text-center" style="display:none;">
-            <form id="form-add-admins" action="/AdminAuthentication/create">
-                <div class="form-group">
-                    <label>Add an administrator</label>
-                    <input type="text" class="form-control" name="mailNewAdmin" placeholder="Email" required />
-                    <button type="submit" id="btn-change-pass" class="k-button" style="margin-top:20px;">Add</button>
-                    <h4 id="add-response"></h4>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 
 <script>
     var toggleTime = 500;
@@ -124,34 +114,37 @@
             $('#patients-box').html('');
             var html = "<select id='patients' multiple='multiple' data-placeholder='Select patients...'>";
 
-            for (var i = 0; i < patientsOfSelectedDoctor.length; i++) 
+            for (var i = 0; i < patientsOfSelectedDoctor.length; i++)
                 html = html.concat("<option value=" + parseInt(patientsOfSelectedDoctor[i].id) + " selected>" + patientsOfSelectedDoctor[i].name + "</option>");
-            
+
             var nopatients = (json.patients.except(patientsOfSelectedDoctor, function (a, b) { return a.id === b.id; }));
 
-            for (var j = 0; j < nopatients.length; j++) 
+            for (var j = 0; j < nopatients.length; j++)
                 html = html.concat("<option value=" + parseInt(nopatients[j].id) + ">" + nopatients[j].name + "</option>");
-            
+
             html = html.concat("</select>");
             $('#patients-box').html(html);
             patients = $("#patients").kendoMultiSelect().data("kendoMultiSelect");
         }
-        
+
         $("#btn-change-password").click(function () {
-            $("#div-change-password").toggle(toggleTime);
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");
+            $("#div-change-password").toggle(toggleTime).addClass("active-panel");
         });
 
         $("#btn-manage-patients").click(function () {
-            $("#patient-manager").toggle(toggleTime);
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");;
+            $("#patient-manager").toggle(toggleTime).addClass("active-panel");
         });
 
         $("#btn-add-admins").click(function () {
-            $("#div-add-admins").toggle(toggleTime);
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");;
+            $("#div-add-admins").toggle(toggleTime).addClass("active-panel");
         });
 
         $('#form-change-password').submit(function (event) {
             event.preventDefault();
-            
+
             $.ajax({
                 type: "PUT",
                 url: this.action,
