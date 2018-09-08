@@ -44,6 +44,22 @@
 @{ await Html.RenderPartialAsync("FormChangePassword"); }
 
 
+<div class="row" style="width:100%">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div id="div-add-admins" class="panel text-center" style="display:none;">
+            <form id="form-add-admins" action="/AdminAuthentication/create">
+                <div class="form-group">
+                    <label>Add an administrator</label>
+                    <input type="text" class="form-control" name="mailNewAdmin" placeholder="Email" required />
+                    <button type="submit" id="btn-change-pass" class="k-button" style="margin-top:20px;">Add</button>
+                    <h4 id="add-response"></h4>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <script>
     var toggleTime = 500;
     var responseTimeout = 2000;
@@ -129,6 +145,10 @@
             $("#patient-manager").toggle(toggleTime);
         });
 
+        $("#btn-add-admins").click(function () {
+            $("#div-add-admins").toggle(toggleTime);
+        });
+
         $('#form-change-password').submit(function (event) {
             event.preventDefault();
             
@@ -144,6 +164,26 @@
                 error: function (error) {
                     $("#password-response").html(error);
                     setTimeout(function () { $("#password-response").html(""); }, responseTimeout);
+                }
+            });
+        });
+
+
+        $('#form-add-admins').submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: this.action,
+                data: $(this).serialize(),
+                dataType: 'html',
+                success: function (response) {
+                    $("#add-response").html(response);
+                    setTimeout(function () { $("#add-response").html(""); }, responseTimeout);
+                },
+                error: function (error) {
+                    $("#add-response").html(error);
+                    setTimeout(function () { $("#add-response").html(""); }, responseTimeout);
                 }
             });
         });

@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Abstract;
 using LaywApplication.Controllers.Services;
@@ -17,7 +20,7 @@ namespace LaywApplication.Controllers
         private readonly string ConnectionString;
         private readonly DoctorController DoctorController;
         private readonly PatientController PatientCollectionController;
-        
+
         public AdminAuthenticationController(string connectionString, ServerIP IPConfig, JsonStructure jsonStructureConfig) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Patient)
         {
@@ -51,7 +54,6 @@ namespace LaywApplication.Controllers
                 TempData["ErrorAdminMessage"] = "Mail or password wrong";
                 return Redirect("~/signin");
             }
-                
         }
 
 
@@ -74,6 +76,58 @@ namespace LaywApplication.Controllers
                 }
                 else
                     return "Old password wrong";
+            }
+        }
+
+        [HttpPost("create")]
+        public object Create(IFormCollection collection)
+        {
+            string email = collection["mailNewAdmin"];
+            string password = PasswordGenerator();
+            var dbFactory = new AdminDataContextFactory(dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
+            
+            using (var db = dbFactory.Create())
+            {
+                db.InsertOrReplace(new Admin { Email = email, Password = password });
+
+                SendEmail(email, password);
+
+                db.Delete(new Admin { Email = email, Password = password});
+            }
+
+            return Empty;
+        }
+
+        private string PasswordGenerator()
+        {
+            Random random = new Random();
+            string chars = "abcdefghilmnopqrstuvz0123456789";
+            return new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private void SendEmail(string email, string password)
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                mail.From = new MailAddress("lookafteryourweight@gmail.com");
+                mail.To.Add(email);
+                mail.Subject = "Layw Admin";
+                mail.Body = "Congratulations! You have just become a layw administrator. Your login data:\n" +
+                    "Mail: " + email + "\n" + "Password: " + password + ".\n" +
+                    "Remember to change your password. Thank you for your help.\n\nTeam LAYW";
+                SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("lookafteryourweight@gmail.com", "layw-2018");
+                SmtpServer.EnableSsl = true;
+                SmtpServer.Timeout = 20000;
+                SmtpServer.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Data);
             }
         }
     }
