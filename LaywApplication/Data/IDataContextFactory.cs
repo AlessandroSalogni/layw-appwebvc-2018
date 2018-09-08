@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Data
 {
-    public interface IDataContextFactory<T>
-        where T : DataConnection
+    public interface IDataContextFactory<T> where T : DataConnection
     {
         T Create();
     }
