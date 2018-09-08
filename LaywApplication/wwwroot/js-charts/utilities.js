@@ -1,4 +1,23 @@
-﻿function createGoalStatisticsLineChart(urlComplete, divId, beginDate, period, dataTitle, interval) {
+﻿Array.prototype.except = function (arr, comparer) {
+    if (!(arr instanceof Array)) arr = [arr];
+    comparer = comparer || DefaultEqualityComparer;
+    var l = this.length;
+    var res = [];
+    for (var i = 0; i < l; i++) {
+        var k = arr.length;
+        var t = false;
+        while (k-- > 0) {
+            if (comparer(this[i], arr[k]) === true) {
+                t = true;
+                break;
+            }
+        }
+        if (!t) res.push(this[i]);
+    }
+    return res;
+};
+
+function createGoalStatisticsLineChart(urlComplete, divId, beginDate, period, dataTitle, interval) {
     $("#chart-" + divId).kendoChart({
         dataSource: {
             transport: {
