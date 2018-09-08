@@ -4,13 +4,7 @@
     Layout = "Layouts/_Admin";
 }
 
-<div class="row" style="text-align:right; width:100%">
-    <div class="col-sm-12">
-        <a id="btn-manage-patients" class="k-button">Manage patients</a>
-        <a id="btn-change-password" class="k-button">Change password</a>
-        <a href="/signout?returnUrl=%2F" class="k-button">Sign out</a>
-    </div>
-</div>
+@{ await Html.RenderPartialAsync("ButtonHeader"); }
 
 <div class="row" style="width:100%">
     <div class="col-sm-12">
@@ -47,23 +41,7 @@
     </div>
 </div>
 
-<div class="row" style="width:100%">
-    <div class="col-sm-6 col-sm-offset-3">
-        <div id="div-change-password" class="panel text-center" style="display:none;">
-            <form id="form-change-password" action="/AdminAuthentication/@ViewBag.AdminEmail/update">
-                <div class="form-group">
-                    <label>Change your password</label>
-                    <input type="password" class="form-control" name="oldPassword" placeholder="Old password" required/>
-                    <input type="password" id="newPassword" class="form-control" name="newPassword" placeholder="New password" required/> 
-                    <button class="k-button" type="button" id="seeNewPassword">Press to show your new password</button>
-                    <br />
-                    <button type="submit" id="btn-change-pass" class="k-button" style="margin-top:20px;">Change</button>
-                    <h4 id="password-response"></h4>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@{ await Html.RenderPartialAsync("FormChangePassword"); }
 
 
 <script>
