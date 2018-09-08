@@ -55,8 +55,8 @@ namespace LaywApplication.Controllers
         }
 
 
-        [HttpPost("{email}/update")]
-        public async Task<object> Update(string email, IFormCollection collection)
+        [HttpPut("{email}/update")]
+        public object Update(string email, IFormCollection collection)
         {
             string oldPassword = collection["oldPassword"];
             string newPassword = collection["newPassword"];
