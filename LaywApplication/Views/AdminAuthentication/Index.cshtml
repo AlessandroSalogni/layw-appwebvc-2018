@@ -3,23 +3,47 @@
 @{
     Layout = "Layouts/_Admin";
 }
-
-<h1>Choose a doctor from the list below:</h1>
-<select id="doctor" style="width: 100%;">
-    <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
+<div style="text-align:right; width:100%">
+    <a id="btn-change-password" class="k-button">Change password</a>
     
+    <a href="/signout?returnUrl=%2F" class="k-button">Sign out</a>
+</div>
+
+<div style="width:100%" class="text-center">
+    <h1>Welcome to your administration page</h1>
+</div>
+
+<h2>Choose a doctor from the list below:</h2>
+<select id="doctor" style="width: 50%;">
+    <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
+
     @for (int i = 1; i < Model.Doctors.Count; i++)
     {
         <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
     }
 </select>
 
-<h2>Manage the patients below of the doctor selected, and then press "Add patients"</h2>
-<div id="patients-box"></div>
+<h4 style="margin-top:30px;">Manage the patients below of the doctor selected, and then press "Apply"</h4>
+<div id="patients-box" style="width:50%; margin-right:auto; margin-left:auto;" ></div>
 
-<button class="k-button" id="post-patients">Add patients</button>
+<button class="k-button" id="post-patients" style="margin-top:20px;">Apply</button>
 
-<div id="response" style="font-size:20px; color:dodgerblue"></div>
+<h4 id="response" style="font-weight: 800; margin-top:20px; font-size:20px; color:dodgerblue"></h4>
+
+
+
+<div id="div-change-password" class="panel text-center" style="display:none">
+    <form id="form-change-password" method="post" action="~/AdminAuthentication/@ViewBag.AdminEmail/update">
+        <div class="form-group">
+            <input type="text" class="form-control" name="oldPassword" placeholder="Old password" />
+            <input type="text" class="form-control" name="newPassword" placeholder="New password" />
+
+            <button type="submit" id="btn-change-pass" class="btn btn-info">Change</button>
+
+            <h4 id="password-response"></h4>
+        </div>
+    </form>
+</div>
 
 
 <script>
@@ -41,16 +65,16 @@
                 if (!t) res.push(this[i]);
             }
             return res;
-        };  
+        };
 
         var patients;
         var url = "@Url.Content("~/dashboard/doctors/")";
-        var json = @Html.Raw(Json.Serialize(Model)) 
-        
+        var json = @Html.Raw(Json.Serialize(Model))
+
         $("#doctor").kendoDropDownList({
             change: onChange
         });
-        
+
         function onChange() {
             getPatients();
         }
@@ -68,11 +92,11 @@
             $.ajax({
                 url: url + d.value() + "/update",
                 type: 'PUT',
-                data: JSON.stringify(ar), 
+                data: JSON.stringify(ar),
                 dataType: 'json',
                 contentType: "application/json",
                 success: function (data) {
-                    $("#response").html("Confirmed");
+                    $("#response").html("Applied succesfully");
                     setTimeout(function () { $("#response").html(""); }, 2000);
                 },
                 error: function (data) {
@@ -97,31 +121,50 @@
                 }
             });
         }
-        
+
         function insertPatients(patientsOfSelectedDoctor) {
             $('#patients-box').html('');
             var html = "<select id='patients' multiple='multiple' data-placeholder='Select patients...'>";
-            
-            for (var i = 0; i < patientsOfSelectedDoctor.length; i++) {
-                html = html.concat("<option value=" + parseInt(patientsOfSelectedDoctor[i].id) + " selected>" + patientsOfSelectedDoctor[i].name + "</option>");
-            }
 
+            for (var i = 0; i < patientsOfSelectedDoctor.length; i++) 
+                html = html.concat("<option value=" + parseInt(patientsOfSelectedDoctor[i].id) + " selected>" + patientsOfSelectedDoctor[i].name + "</option>");
+            
             var nopatients = (json.patients.except(patientsOfSelectedDoctor, function (a, b) { return a.id === b.id; }));
 
-            for (var j = 0; j < nopatients.length; j++) {
+            for (var j = 0; j < nopatients.length; j++) 
                 html = html.concat("<option value=" + parseInt(nopatients[j].id) + ">" + nopatients[j].name + "</option>");
-            }
-
-            html = html.concat("</select>");
             
+            html = html.concat("</select>");
             $('#patients-box').html(html);
             patients = $("#patients").kendoMultiSelect().data("kendoMultiSelect");
         }
-        
+
         getPatients();
     });
-</script>
 
+    $("#btn-change-password").click(function () {
+        $("#div-change-password").toggle(800);
+    });
+
+    $('#form-change-password').submit(function (event) {
+        event.preventDefault();
+
+        $.ajax({
+            type: this.method,
+            url: this.action,
+            data: $(this).serialize(),
+            dataType: 'html',
+            success: function (response) {
+                $("#password-response").html(response);
+                setTimeout(function () { $("#password-response").html(""); }, 2000);
+            },
+            error: function (error) {
+                $("#password-response").html(error);
+                setTimeout(function () { $("#password-response").html(""); }, 2000);
+            }
+        });
+    });
+</script>
 
 <style>
     .demo-section label {
