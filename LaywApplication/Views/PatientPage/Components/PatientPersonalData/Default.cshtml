@@ -123,7 +123,25 @@
 					</div>
 				</div>
 				<div class="col-sm-4 info no-space">
-					<h2>Total Calories</h2>
+					<h2>Average Floors</h2>
+					<i class="fas fa-sort fa-2x"></i>
+					<div class="row">
+						<div class="col-sm-4 col-sm-offset-2 no-space week-data">
+							<p>
+								@Model.AverageFloors.Week.ToString("0.00")<br />
+								<span class="unit-measure">week</span>
+							</p>
+						</div>
+						<div class="col-sm-4 no-space">
+							<p>
+								@Model.AverageFloors.Month.ToString("0.00")<br />
+								<span class="unit-measure">month</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 info no-space">
+					<h2>Total Calories Out</h2>
 					<i class="fas fa-fire fa-2x"></i>
 					<div class="row">
 						<div class="col-sm-4 col-sm-offset-2 no-space week-data">
@@ -140,34 +158,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4 info no-space">
-					<h2>Average Floor</h2>
-					<i class="fas fa-shoe-prints fa-2x"></i>
-					<div class="row">
-						<div class="col-sm-4 col-sm-offset-2 no-space week-data">
-							<p>
-								@Model.AverageFloors.Week.ToString("0.00")<br />
-								<span class="unit-measure">week</span>
-							</p>
-						</div>
-						<div class="col-sm-4 no-space">
-							<p>
-								@Model.AverageFloors.Month.ToString("0.00")<br />
-								<span class="unit-measure">month</span>
-							</p>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
-<script>
-$("#tab-item-personal-data").click(function () {
-	counter("#personal-data-@Model.Patient.Name .counter");
-});
-</script>
 
 <style>
 	.card {
@@ -272,12 +266,12 @@ $("#tab-item-personal-data").click(function () {
 		color: #605ca8;
 	}
 	#patient-summary-card {
-		margin-top: 35px;
+		margin-top: 38px;
 	}
 	#patient-summary-card > .box .info > h2 {
 		font-style: italic;
 		margin-bottom: 20px;
-		font-size: 25px;
+		font-size: 23px;
 		margin-top:0;
 	}
 	#patient-summary-card > .box .info .week-data > p {
