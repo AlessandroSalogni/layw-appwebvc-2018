@@ -3,46 +3,65 @@
 @{
     Layout = "Layouts/_Admin";
 }
-<div style="text-align:right; width:100%">
-    <a id="btn-change-password" class="k-button">Change password</a>
-    
-    <a href="/signout?returnUrl=%2F" class="k-button">Sign out</a>
+
+<div class="row" style="text-align:right; width:100%">
+    <div class="col-sm-12">
+        <a id="btn-manage-patients" class="k-button">Manage patients</a>
+        <a id="btn-change-password" class="k-button">Change password</a>
+        <a href="/signout?returnUrl=%2F" class="k-button">Sign out</a>
+    </div>
 </div>
 
-<div style="width:100%" class="text-center">
-    <h1>Welcome to your administration page</h1>
+<div class="row" style="width:100%">
+    <div class="col-sm-12">
+        <h1>Welcome to your administration page</h1>
+    </div>
 </div>
+<div id="patient-manager" class="panel text-center">
+    <div class="row" style="width:100%">
+        <div class="col-sm-12">
+            <h2>Choose a doctor from the list below:</h2>
+            <select id="doctor" style="width: 50%;">
+                <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
 
-<h2>Choose a doctor from the list below:</h2>
-<select id="doctor" style="width: 50%;">
-    <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
-
-    @for (int i = 1; i < Model.Doctors.Count; i++)
-    {
-        <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
-    }
-</select>
-
-<h4 style="margin-top:30px;">Manage the patients below of the doctor selected, and then press "Apply"</h4>
-<div id="patients-box" style="width:50%; margin-right:auto; margin-left:auto;" ></div>
-
-<button class="k-button" id="post-patients" style="margin-top:20px;">Apply</button>
-
-<h4 id="response" style="font-weight: 800; margin-top:20px; font-size:20px; color:dodgerblue"></h4>
-
-
-
-<div id="div-change-password" class="panel text-center" style="display:none">
-    <form id="form-change-password" method="post" action="~/AdminAuthentication/@ViewBag.AdminEmail/update">
-        <div class="form-group">
-            <input type="text" class="form-control" name="oldPassword" placeholder="Old password" />
-            <input type="text" class="form-control" name="newPassword" placeholder="New password" />
-
-            <button type="submit" id="btn-change-pass" class="btn btn-info">Change</button>
-
-            <h4 id="password-response"></h4>
+                @for (int i = 1; i < Model.Doctors.Count; i++)
+                {
+                    <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
+                }
+            </select>
         </div>
-    </form>
+    </div>
+
+    <div class="row" style="width:100%">
+        <div class="col-sm-12">
+            <h4 style="margin-top:30px;">Manage the patients below of the doctor selected, and then press "Apply"</h4>
+            <div id="patients-box" style="width:50%; margin-right:auto; margin-left:auto;" ></div>
+        </div>
+    </div>
+
+    <div class="row" style="width:100%">
+        <div class="col-sm-12">
+            <button class="k-button" id="post-patients" style="margin-top:20px;">Apply</button>
+            <h4 id="response"></h4>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="width:100%">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div id="div-change-password" class="panel text-center" style="display:none;">
+            <form id="form-change-password" method="post" action="~/AdminAuthentication/@ViewBag.AdminEmail/update">
+                <div class="form-group">
+                    <label>Change your password</label>
+                    <input type="text" class="form-control" name="oldPassword" placeholder="Old password" required/>
+                    <input type="text" class="form-control" name="newPassword" placeholder="New password" required/>
+
+                    <button type="submit" id="btn-change-pass" class="k-button" style="margin-top:20px;">Change</button>
+                    <h4 id="password-response"></h4>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -143,7 +162,11 @@
     });
 
     $("#btn-change-password").click(function () {
-        $("#div-change-password").toggle(800);
+        $("#div-change-password").toggle(500);
+    });
+
+    $("#btn-manage-patients").click(function () {
+        $("#patient-manager").toggle(500);
     });
 
     $('#form-change-password').submit(function (event) {
