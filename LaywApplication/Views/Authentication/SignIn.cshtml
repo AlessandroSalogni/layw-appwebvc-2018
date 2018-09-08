@@ -117,14 +117,22 @@
                 <div id="form-admin" class="panel text-center" style="display:none;">
                     <form method="post" action="~/AdminAuthentication">
                         <div class="form-group">
-                            
-                            <input type="text" class="form-control" name="email" placeholder="Email"/>
-                            <input type="password" class="form-control" name="password" placeholder="Password"/>
+
+                            <input type="text" class="form-control" name="email" placeholder="Email" />
+                            <input type="password" class="form-control" name="password" placeholder="Password" />
 
                             <button id="btn-form-admin" type="submit" class="btn btn-info">Login</button>
                         </div>
                     </form>
                 </div>
+
+                @{
+                    if (TempData["ErrorAdminMessage"] != null)
+                    {
+                        <script>$("#form-admin").toggle()</script>
+                        <div class="text-center">@TempData["ErrorAdminMessage"]</div>
+                    }
+                }
             </div>
         </div>
     </div>  
