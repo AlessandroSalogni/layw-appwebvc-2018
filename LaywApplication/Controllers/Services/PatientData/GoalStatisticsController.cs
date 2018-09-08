@@ -1,10 +1,9 @@
 ﻿using LaywApplication.Configuration;
-using LaywApplication.Controllers.PatientController;
-using LaywApplication.Controllers.PatientController.Abstract;
+using LaywApplication.Controllers.Services.PatientData.Abstract;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Services.PatientData
 {
   
     [Route("~/dashboard/patients/{id}/[controller]")]

@@ -1,4 +1,5 @@
 ﻿using LaywApplication.Configuration;
+using LaywApplication.Controllers.Abstract;
 using LaywApplication.Controllers.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LaywApplication.Controllers.PatientController
+namespace LaywApplication.Controllers.Services.PatientData.Abstract
 {
     public abstract class BaseJsonReadController<TModel> : BaseJsonController where TModel : class
     {

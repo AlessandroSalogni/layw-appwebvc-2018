@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LaywApplication.Configuration;
+using LaywApplication.Controllers.Abstract;
+using LaywApplication.Controllers.Services;
 using LaywApplication.Data;
-using LaywApplication.Extensions;
 using LaywApplication.Models;
 using LinqToDB;
 using LinqToDB.DataProvider.SQLite;
@@ -17,21 +15,18 @@ namespace LaywApplication.Controllers
     {
         private readonly string ConnectionString;
         private readonly DoctorController DoctorController;
-        private readonly PatientCollectionController PatientCollectionController;
+        private readonly PatientController PatientCollectionController;
         
-
-        public AdminAuthenticationController(string connectionString, ServerIP IPConfig, JsonStructure jsonStructureConfig) : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Patient)
+        public AdminAuthenticationController(string connectionString, ServerIP IPConfig, JsonStructure jsonStructureConfig) 
+            : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Patient)
         {
             DoctorController = new DoctorController(IPConfig, jsonStructureConfig);
-            PatientCollectionController = new PatientCollectionController(IPConfig, jsonStructureConfig);
+            PatientCollectionController = new PatientController(IPConfig, jsonStructureConfig);
             ConnectionString = connectionString;
         }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            return Redirect("~/signin");
-        }
+        public IActionResult Index() => Redirect("~/signin");
 
         [HttpPost]
         public async Task<IActionResult> Index(IFormCollection collection)

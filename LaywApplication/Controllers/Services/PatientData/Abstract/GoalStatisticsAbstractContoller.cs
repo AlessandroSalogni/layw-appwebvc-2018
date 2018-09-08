@@ -1,4 +1,5 @@
 ﻿using LaywApplication.Configuration;
+using LaywApplication.Controllers.Abstract;
 using LaywApplication.Models;
 using LaywApplication.Models.Abstract;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LaywApplication.Controllers.PatientController.Abstract
+namespace LaywApplication.Controllers.Services.PatientData.Abstract
 {
     public abstract class GoalStatisticsController<TType, TModelGoal, TModelRealData> : BaseJsonController
       where TType : struct, IComparable<TType>

@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
+using LaywApplication.Controllers.Abstract;
 using LaywApplication.Controllers.Utils;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Services.PatientData
 {
     [Route("~/dashboard/patients/{id}/[controller]")]
     public class TrainingController : BaseJsonController

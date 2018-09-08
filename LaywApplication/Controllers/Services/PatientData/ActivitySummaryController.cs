@@ -1,7 +1,8 @@
 ﻿using LaywApplication.Configuration;
+using LaywApplication.Controllers.Services.PatientData.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LaywApplication.Controllers.PatientController
+namespace LaywApplication.Controllers.Services.PatientData
 {
     [Route("~/dashboard/patients/{id}/[controller]")]
     public class ActivitySummaryController : BaseJsonReadController<Models.ActivitySummary>

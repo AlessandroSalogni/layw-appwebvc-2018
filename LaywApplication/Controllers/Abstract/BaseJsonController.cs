@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Abstract
 {
     public abstract class BaseJsonController : BaseController
     {

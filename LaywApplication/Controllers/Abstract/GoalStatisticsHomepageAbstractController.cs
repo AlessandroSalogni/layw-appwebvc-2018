@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
-using LaywApplication.Controllers.PatientController;
+using LaywApplication.Controllers.Services.PatientData;
+using LaywApplication.Controllers.Services.PatientData.Abstract;
 using LaywApplication.Controllers.Utils;
-using LaywApplication.Models;
 using LaywApplication.Models.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Abstract
 {
     public abstract class GoalStatisticsHomepageAbstractController<TType, TModelGoal, TModelRealData> : BaseJsonController
         where TType : struct, IComparable<TType>

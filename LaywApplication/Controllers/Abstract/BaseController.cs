@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Converters;
 using System;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Abstract
 {
     public class BaseController : Controller
     {
@@ -16,5 +16,7 @@ namespace LaywApplication.Controllers
         protected readonly ServerIP IPConfig;
 
         protected BaseController(ServerIP IPConfig) => this.IPConfig = IPConfig;
+
+        protected BaseController() { }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using LaywApplication.Configuration;
+using LaywApplication.Controllers.Services.PatientData.Abstract;
 using LaywApplication.Controllers.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace LaywApplication.Controllers.PatientController
+namespace LaywApplication.Controllers.Services.PatientData
 {
     [Route("~/dashboard/patients/{id}/[controller]")]
     public class GoalWeightController : BaseJsonReadController<Models.GoalWeight>

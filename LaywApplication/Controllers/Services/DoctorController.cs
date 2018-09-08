@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
+using LaywApplication.Controllers.Abstract;
 using LaywApplication.Controllers.Utils;
-using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Services
 {
     [Route("~/dashboard/doctors")]
     public class DoctorController : BaseJsonController
@@ -18,31 +18,17 @@ namespace LaywApplication.Controllers
         [HttpGet]
         public async Task<List<Models.Doctor>> Read()
         {
-            var doctorConfig = JsonDataConfig as Configuration.Doctor;
+            var doctorConfig = JsonDataConfig as Doctor;
 
             JObject doctorsJson = await APIUtils.GetAsync(IPConfig.GetTotalUrl() + doctorConfig.Url);
-
-            if (doctorsJson == null)
-                return new List<Models.Doctor>();
-            else
-            {
-                var doctors = ((JArray)doctorsJson[doctorConfig.RootDoctors]).GetList<Models.Doctor>();
-                foreach (Models.Doctor doctor in doctors)
-                {
-                    JObject patientsJson = await APIUtils.GetAsync(IPConfig.GetTotalUrl() + doctorConfig.UrlPatients + "?" + QueryParamsConfig.DoctorId + "=" + doctor.Email);
-                    if (patientsJson == null)
-                        doctor.Patients = new List<Models.Patient>();
-                    else
-                        doctor.Patients = ((JArray)patientsJson[doctorConfig.RootPatients]).GetList<Models.Patient>();
-                }
-                return doctors;
-            }
+            return (doctorsJson == null) ? new List<Models.Doctor>() :
+                ((JArray)doctorsJson[doctorConfig.RootDoctors]).GetList<Models.Doctor>();
         }
 
         [HttpGet("{email}")]
         public async Task<List<Models.Patient>> Read(string email)
         {
-            var doctorConfig = JsonDataConfig as Configuration.Doctor;
+            var doctorConfig = JsonDataConfig as Doctor;
 
             JObject patientsJson = await APIUtils.GetAsync(IPConfig.GetTotalUrl() + doctorConfig.UrlPatients + 
                 "?" + QueryParamsConfig.DoctorId + "=" + email);
@@ -53,7 +39,7 @@ namespace LaywApplication.Controllers
         [HttpPut("{email}/update")]
         public async Task<object> Update(string email, [FromBody]List<Models.Patient> item)
         {
-            var doctorConfig = JsonDataConfig as Configuration.Doctor;
+            var doctorConfig = JsonDataConfig as Doctor;
             
             var patientListIdJson = new JArray();
             item.ForEach(x => patientListIdJson.Add(x.Id));

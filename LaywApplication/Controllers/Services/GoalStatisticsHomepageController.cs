@@ -1,9 +1,10 @@
 ﻿using LaywApplication.Configuration;
-using LaywApplication.Controllers.PatientController;
+using LaywApplication.Controllers.Abstract;
+using LaywApplication.Controllers.Services.PatientData;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Services
 {
     [Route("~/dashboard/homepage/[controller]")]
     public class GoalStepsDailyStatisticsHomepageController
