@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
-using LaywApplication.Controllers.PatientController;
+using LaywApplication.Controllers.Services.PatientData;
 using LaywApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 
