@@ -37,6 +37,9 @@ namespace LaywApplication
             services.Configure<ChartGoalPatientPageInfo>(Configuration.GetSection("chart-goal-patient-page-info"));
             services.Configure<ChartHomepageInfo>(Configuration.GetSection("chart-homepage-info"));
 
+            var settingsLaywGmail = Configuration.GetSection("layw-gmail-data").Get<LaywGmailData>();
+            services.AddSingleton(settingsLaywGmail);
+
             var settingsDoctorAccount = Configuration.GetSection("doctor-account").Get<DoctorAccount>();
             services.AddSingleton(settingsDoctorAccount);
 

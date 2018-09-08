@@ -20,13 +20,15 @@ namespace LaywApplication.Controllers
         private readonly string ConnectionString;
         private readonly DoctorController DoctorController;
         private readonly PatientController PatientCollectionController;
+        private LaywGmailData Gmail { get; set; }
 
-        public AdminAuthenticationController(string connectionString, ServerIP IPConfig, JsonStructure jsonStructureConfig) 
+        public AdminAuthenticationController(string connectionString, ServerIP IPConfig, JsonStructure jsonStructureConfig, LaywGmailData gmail) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Patient)
         {
             DoctorController = new DoctorController(IPConfig, jsonStructureConfig);
             PatientCollectionController = new PatientController(IPConfig, jsonStructureConfig);
             ConnectionString = connectionString;
+            Gmail = gmail;
         }
 
         [HttpGet]
@@ -90,12 +92,23 @@ namespace LaywApplication.Controllers
             {
                 db.InsertOrReplace(new Admin { Email = email, Password = password });
 
-                SendEmail(email, password);
-
-                db.Delete(new Admin { Email = email, Password = password});
+                try
+                { 
+                    SendEmail(email, password);
+                }
+                catch (SmtpException)
+                {
+                    db.Delete(new Admin { Email = email, Password = password });
+                    return "Error. Maybe the inserted email is invalid, or there are connection errors.";
+                }
+                catch (FormatException)
+                {
+                    db.Delete(new Admin { Email = email, Password = password });
+                    return "Invalid email format";
+                }
             }
 
-            return Empty;
+            return "Successfully added";
         }
 
         private string PasswordGenerator()
@@ -110,24 +123,24 @@ namespace LaywApplication.Controllers
             try
             {
                 MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                SmtpClient SmtpServer = new SmtpClient(Gmail.SMTP);
 
-                mail.From = new MailAddress("lookafteryourweight@gmail.com");
+                mail.From = new MailAddress(Gmail.Email);
                 mail.To.Add(email);
-                mail.Subject = "Layw Admin";
+                mail.Subject = "LAYW Admin";
                 mail.Body = "Congratulations! You have just become a layw administrator. Your login data:\n" +
                     "Mail: " + email + "\n" + "Password: " + password + ".\n" +
                     "Remember to change your password. Thank you for your help.\n\nTeam LAYW";
                 SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("lookafteryourweight@gmail.com", "layw-2018");
-                SmtpServer.EnableSsl = true;
-                SmtpServer.Timeout = 20000;
+                SmtpServer.Port = Gmail.Port;
+                SmtpServer.Credentials = new System.Net.NetworkCredential(Gmail.Email, Gmail.Password);
+                SmtpServer.EnableSsl = Gmail.EnableSSL;
+                SmtpServer.Timeout = Gmail.TimeOut;
                 SmtpServer.Send(mail);
             }
-            catch (Exception ex)
+            catch (Exception e) when (e is SmtpException || e is FormatException)
             {
-                Console.WriteLine(ex.Data);
+                throw e;
             }
         }
     }
