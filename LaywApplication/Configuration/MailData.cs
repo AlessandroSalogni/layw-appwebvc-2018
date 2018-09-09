@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Configuration
 {
-    public class LaywGmailData
+    public class MailData
     {
         public string Email { get; set; }
         public string Password { get; set; }
