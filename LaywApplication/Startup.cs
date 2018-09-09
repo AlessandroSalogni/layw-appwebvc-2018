@@ -56,7 +56,7 @@ namespace LaywApplication
             var settingsHomepageChartInfo = Configuration.GetSection("chart-homepage-info").Get<ChartHomepageInfo>();
             services.AddSingleton(settingsHomepageChartInfo);
 
-            services.AddSingleton(new MQTTClient(Configuration.GetSection("mqtt-info").Get<MQTTInfo>()));
+            services.AddSingleton(new MQTTClient(Configuration.GetSection("mqtt-info").Get<MQTTInfo>(), settingsJsonStructure));
 
             services.AddAuthentication(options =>
             {

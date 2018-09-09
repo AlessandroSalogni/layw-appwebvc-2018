@@ -10,12 +10,21 @@ namespace LaywApplication.Mqtt
     public class MQTTClient
     {
         private readonly MqttClient client;
+        private readonly MQTTInfo MQTTConfig;
+        private readonly QueryParams QueryParamsConfig;
+        private readonly JsonData WeightConfig;
+        private readonly JsonData ActivitySummaryConfig;
 
-        public MQTTClient(MQTTInfo MQTTConfig)
+        public MQTTClient(MQTTInfo MQTTConfig, JsonStructure jsonStructureConfig)
         {
             client = new MqttClient(MQTTConfig.BrokerHostName, MQTTConfig.BrokerPort, false, null, null, 0, null, null);
             client.Connect(Guid.NewGuid().ToString(), MQTTConfig.Username, MQTTConfig.Password);
-            client.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
+            client.MqttMsgPublishReceived += MqttMsgPublishReceived;
+
+            this.MQTTConfig = MQTTConfig;
+            QueryParamsConfig = jsonStructureConfig.QueryParams;
+            WeightConfig = jsonStructureConfig.Weight;
+            ActivitySummaryConfig = jsonStructureConfig.ActivitySummary;
         }
 
         public void AddTopic(string topic)
@@ -23,7 +32,7 @@ namespace LaywApplication.Mqtt
 
         public void RemoveTopic(string topic) => client.Unsubscribe(new string[] { topic });
 
-        public static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        public void MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             var splitTopic = e.Topic.Split(new char[] { '/' });
             if (splitTopic.Length < 4)
@@ -31,14 +40,15 @@ namespace LaywApplication.Mqtt
 
             var json = JObject.Parse(System.Text.Encoding.UTF8.GetString(e.Message));
 
-            if (splitTopic[2] == "weight")
-                json = (JObject)json["weights"];
-            else if (splitTopic[2] == "activity-summary")
-                json = (JObject)json["activity-summary"];
+            if (splitTopic[2] == WeightConfig.Key[0])
+                json = (JObject)json[WeightConfig.Root];
+            else if (splitTopic[2] == ActivitySummaryConfig.Root)
+                json = (JObject)json[ActivitySummaryConfig.Root];
 
             json.Remove("date");
-            APIUtils.Post("https://localhost:44333/dashboard/mqtt/" + splitTopic[2].Replace("-", "") + "?patientId=" 
-                + splitTopic[3] + "&doctorEmail=" + splitTopic[1], json.ToString());
+            APIUtils.Post(MQTTConfig.ControllerUrl + splitTopic[2].Replace("-", "") + "?" + 
+                QueryParamsConfig.PatientId + "=" + splitTopic[3] + "&" + QueryParamsConfig.DoctorEmail + 
+                "=" + splitTopic[1], json.ToString());
         }
     }
 }

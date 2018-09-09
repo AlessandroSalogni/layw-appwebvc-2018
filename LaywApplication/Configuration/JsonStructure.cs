@@ -26,6 +26,8 @@ namespace LaywApplication.Configuration
         public string Period { get; set; }
         public string Date { get; set; }
         public string DoctorId { get; set; }
+        public string DoctorEmail { get; set; }
+        public string PatientId { get; set; }
     }
     public class AdditionalPath
     {
