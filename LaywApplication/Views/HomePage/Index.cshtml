@@ -9,9 +9,37 @@
 	var weightChartInfo = ChartHomepageInfo.Value.WeightChartInfo;
 	var stepsChartInfo = ChartHomepageInfo.Value.StepsDailyChartInfo;
 	var caloriesChartInfo = ChartHomepageInfo.Value.CaloriesOutChartInfo;
+
+	var male = @Model.Patients.Count(x => x.Gender == Gender.MALE);
+	var female = Model.Patients.Count - male;
 }
 
-<div class="container">
+<div class="container text-center">
+	<div id="general-info" class="row">
+		<div class="col-sm-12">
+			<div class="card text-center">
+				<div class="box">
+					<div class="row">
+						<div class="col-sm-2 col-sm-offset-2 info sub-info no-space">
+							<h2>Male</h2>
+							<i class="fas fa-mars fa-2x"></i>
+							<p class="counter" data-count="@male">0</p>
+						</div>
+						<div class="col-sm-4 info no-space">
+							<h2>Total Patients</h2>
+							<i class="fas fa-users fa-4x"></i>
+							<p class="counter" data-count="@Model.Patients.Count">0</p>
+						</div>
+						<div class="col-sm-2 info sub-info no-space">
+							<h2>Female</h2>
+							<i class="fas fa-venus fa-2x"></i>
+							<p class="counter" data-count="@female">0</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="goal-statistics" class="row text-center">
 		<div class="col-sm-4">
 			@{
@@ -28,13 +56,14 @@
 				await Html.RenderPartialAsync("Components/GoalChartStatistics/Default", caloriesChartInfo, viewDataDictionary);
 			}
 		</div>
-		@*<div class="col-sm-4">
-			@{
-				await Html.RenderPartialAsync("PatientHomepageDonutChart", Tuple.Create("Patients", "patientchartdashboard", "Patient"));
-			}
-		</div>*@
 	</div>
 </div>
+
+<script>
+	$(document).ready(function () {
+		counter("#general-info .counter");
+	});
+</script>
 
 <style>
 	.no-space {
@@ -86,5 +115,57 @@
 		padding: 5px 20px;
 		margin: 5px;
 		box-shadow: 0 6px 6px rgba(0,0,0,.2), 0 2px 3px rgba(0,0,0,.05);
+	}
+	#general-info {
+		margin: 0 0 30px;
+	}
+	#general-info .card {
+		padding: 0;
+		border-radius: 30px;
+		transition: 0.5s;
+		color: rgba(8,26,40,1);
+	}
+	#general-info .card > .box {
+		text-align: center;
+		padding: 5px 25px 10px;
+		box-sizing: border-box;
+		width: 100%;
+		height: 100%;
+		border: none;
+		margin: 20px 0;
+		box-shadow: none;
+		border-radius: 30px;
+		background-color: inherit;
+	}
+	#general-info .card > .box .sub-info {
+		margin-top: 30px;
+	}
+	#general-info .card > .box .info > h2 {
+		margin-top: 15px;
+		font-size: 25px;
+		font-weight: 600;
+		font-style: italic;
+	}
+	#general-info .card > .box .sub-info > h2 {
+		font-size: 18px;
+	}
+	#general-info .card > .box .info > .fa-4x {
+		color: #4ad1e5;
+	}
+	#general-info .card > .box .info > .fa-venus {
+		color: #FF40A0;
+	}
+	#general-info .card > .box .info > .fa-mars {
+		color: #0080FF;
+	}
+	#general-info .card > .box .info > p {
+		font-style: italic;
+		font-size: 40px;
+		font-weight: 400;
+		margin-top: 15px;
+		margin-bottom: 0;
+	}
+	#general-info .card > .box .sub-info > p {
+		font-size: 25px;
 	}
 </style>
