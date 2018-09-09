@@ -35,6 +35,7 @@ namespace LaywApplication
         {
             services.Configure<Kendo>(Configuration.GetSection("kendo"));
             services.Configure<Theme>(Configuration.GetSection("theme"));
+            services.Configure<Logo>(Configuration.GetSection("logo"));
             services.Configure<ChartGoalPatientPageInfo>(Configuration.GetSection("chart-goal-patient-page-info"));
             services.Configure<ChartHomepageInfo>(Configuration.GetSection("chart-homepage-info"));
 
