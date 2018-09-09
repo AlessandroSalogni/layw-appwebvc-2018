@@ -56,6 +56,8 @@ namespace LaywApplication
             var settingsHomepageChartInfo = Configuration.GetSection("chart-homepage-info").Get<ChartHomepageInfo>();
             services.AddSingleton(settingsHomepageChartInfo);
 
+            services.AddSingleton(new MQTTClient(Configuration.GetSection("mqtt-info").Get<MQTTInfo>()));
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -145,7 +147,7 @@ namespace LaywApplication
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<MQTTHub>("/mqttHub");
+                routes.MapHub<MqttHub>("/mqttHub");
             });
 
             app.UseMvcWithDefaultRoute();
