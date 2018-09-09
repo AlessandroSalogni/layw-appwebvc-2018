@@ -42,6 +42,14 @@
         sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
     });
 
+    $('#logoHomepage').click(function (e) {
+        $('.sidebar-menu > li').each(function () {
+            $(this).removeClass('active');
+        });
+        $('.sidebar-menu > #homepage').addClass('active');
+        sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
+    });
+
     $('.sidebar-menu > #homepage').click(function (e) {
         sessionStorage.setItem('treeviewmenu-active', null);
     });
