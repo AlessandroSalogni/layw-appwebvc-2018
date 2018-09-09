@@ -61,22 +61,25 @@
 	var connection = new signalR.HubConnectionBuilder().withUrl("/mqttHub").build();
 
 	connection.on("@Model.Email/weight", function (patientName, patientId) {
-		var body  = "<li><a href='/dashboard/patients/" + patientId + "'>" +
-			"<i class='fa fa-lg fa-balance-scale text-yellow'></i>" + patientName + " has reached the weight goal</a></li>";
+		var text = patientName + " has reached the weight goal";
+		var body = "<li><a href='/dashboard/patients/" + patientId + "' title='" + text + "'>" +
+			"<i class='fa fa-lg fa-balance-scale text-yellow text-center'></i>" + text + "</a></li>";
 		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
 			sessionStorage.getItem("notifications-body") + body)
 	});
 
 	connection.on("@Model.Email/steps", function (patientName, patientId) {
-		var body  = "<li><a href='/dashboard/patients/" + patientId + "'>" +
-			"<i class='fa fa-lg fa-shoe-prints text-yellow'></i>" + patientName + " has reached the steps goal</a></li>";
+		var text = patientName + " has reached the steps goal";
+		var body  = "<li><a href='/dashboard/patients/" + patientId + "' title='" + text + "'>" +
+			"<i class='fa fa-lg fa-shoe-prints text-yellow text-center'></i>" + text + "</a></li>";
 		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
 			sessionStorage.getItem("notifications-body") + body)
 	});
 
 	connection.on("@Model.Email/calories", function (patientName, patientId) {
-		var body  = "<li><a href='/dashboard/patients/" + patientId + "'>" +
-			"<i class='fa fa-lg fa-fire text-yellow'></i>" + patientName + " has reached the calories out goal</a></li>";
+		var text = patientName + " has reached the calories out goal";
+		var body = "<li><a href='/dashboard/patients/" + patientId + "' title='" + text + "'>" +
+			"<i class='fa fa-lg fa-fire text-yellow text-center'></i>" + text + "</a></li>";
 		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
 			sessionStorage.getItem("notifications-body") + body)
 	});
