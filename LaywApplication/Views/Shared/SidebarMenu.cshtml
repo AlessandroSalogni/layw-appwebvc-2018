@@ -33,43 +33,6 @@
     </li>
 </ul>
 
-<script>/*
-    $('.sidebar-menu > li').click(function (e) {
-        $('.sidebar-menu > li').each(function () {
-            $(this).removeClass('active');
-        });
-        $(this).addClass('active');
-        sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
-    });
-
-    $('#logoHomepage').click(function (e) {
-        $('.sidebar-menu > li').each(function () {
-            $(this).removeClass('active');
-        });
-        $('.sidebar-menu > #homepage').addClass('active');
-        sessionStorage.setItem('sidebarmenu-active', $(this).attr("id"));
-    });
-
-    $('.sidebar-menu > #homepage').click(function (e) {
-        sessionStorage.setItem('treeviewmenu-active', null);
-    });
-
-    if (sessionStorage.getItem('sidebarmenu-active'))
-        $('.sidebar-menu > #' + sessionStorage.getItem('sidebarmenu-active')).addClass('active');
-    else
-        $('.sidebar-menu > #homepage').addClass('active');
-
-    $('.treeview-menu > li').click(function (e) {
-        $('.treeview-menu > li').each(function () {
-            $(this).removeClass('active');
-        });
-        $(this).addClass('active');
-        sessionStorage.setItem('treeviewmenu-active', $(this).attr("id"));
-    });
-    if (sessionStorage.getItem('treeviewmenu-active'))
-        $('.treeview-menu > #' + sessionStorage.getItem('treeviewmenu-active')).addClass('active');*/
-</script>
-
 <style>
     .treeview-menu > li:hover > a {
         background: #1e282c;
