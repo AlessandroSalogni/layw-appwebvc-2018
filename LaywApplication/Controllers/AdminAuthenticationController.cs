@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Abstract;
 using LaywApplication.Controllers.Services;
+using LaywApplication.Controllers.Utils;
 using LaywApplication.Data;
 using LaywApplication.Models;
 using LinqToDB;
@@ -23,15 +24,15 @@ namespace LaywApplication.Controllers
         private readonly string ConnectionString;
         private readonly DoctorController DoctorController;
         private readonly PatientController PatientCollectionController;
-        private LaywGmailData Gmail { get; set; }
+        private MailData MailData { get; set; }
 
-        public AdminAuthenticationController(string connectionString, ServerIP IPConfig, JsonStructure jsonStructureConfig, LaywGmailData gmail) 
+        public AdminAuthenticationController(string connectionString, ServerIP IPConfig, JsonStructure jsonStructureConfig, MailData mailData) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.Patient)
         {
             DoctorController = new DoctorController(IPConfig, jsonStructureConfig);
             PatientCollectionController = new PatientController(IPConfig, jsonStructureConfig);
             ConnectionString = connectionString;
-            Gmail = gmail;
+            MailData = mailData;
         }
 
         [HttpGet]
@@ -55,7 +56,7 @@ namespace LaywApplication.Controllers
         public async Task<IActionResult> Index(IFormCollection collection)
         {
             string email = collection["email"];
-            string password = MD5Crypt(collection["password"]);
+            string password = PasswordUtils.MD5Crypt(collection["password"]);
 
             var dbFactory = new AdminDataContextFactory( dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
 
@@ -78,8 +79,8 @@ namespace LaywApplication.Controllers
         [HttpPut("{email}/update")]
         public object Update(string email, IFormCollection collection)
         {
-            string oldPassword = MD5Crypt(collection["oldPassword"]);
-            string newPassword = MD5Crypt(collection["newPassword"]);
+            string oldPassword = PasswordUtils.MD5Crypt(collection["oldPassword"]);
+            string newPassword = PasswordUtils.MD5Crypt(collection["newPassword"]);
             
             var dbFactory = new AdminDataContextFactory(dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
 
@@ -101,8 +102,8 @@ namespace LaywApplication.Controllers
         public object Create(IFormCollection collection)
         {
             string email = collection["mailNewAdmin"];
-            string passwordNotCrypted = PasswordGenerator();
-            string password = MD5Crypt(passwordNotCrypted);
+            string passwordNotCrypted = PasswordUtils.PasswordGenerator();
+            string password = PasswordUtils.MD5Crypt(passwordNotCrypted);
             var dbFactory = new AdminDataContextFactory(dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
             
             using (var db = dbFactory.Create())
@@ -111,7 +112,9 @@ namespace LaywApplication.Controllers
 
                 try
                 { 
-                    SendEmail(email, passwordNotCrypted);
+                    (new Emailer(MailData)).SendEmail(email, "Congratulations! You have just become a layw administrator. Your login data:\n" +
+                    "Mail: " + email + "\n" + "Password: " + passwordNotCrypted + "\n" +
+                    "Remember to change your password. Thank you for your help.\n\nTeam LAYW", "Team LAYW");
                 }
                 catch (SmtpException)
                 {
@@ -124,49 +127,7 @@ namespace LaywApplication.Controllers
                     return "Invalid email format";
                 }
             }
-
             return "Successfully added";
-        }
-
-        private string PasswordGenerator()
-        {
-            Random random = new Random();
-            string chars = "abcdefghilmnopqrstuvz0123456789";
-            return new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        private void SendEmail(string email, string password)
-        {
-            try
-            {
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient(Gmail.SMTP);
-
-                mail.From = new MailAddress(Gmail.Email);
-                mail.To.Add(email);
-                mail.Subject = "LAYW Admin";
-                mail.Body = "Congratulations! You have just become a layw administrator. Your login data:\n" +
-                    "Mail: " + email + "\n" + "Password: " + password + "\n" +
-                    "Remember to change your password. Thank you for your help.\n\nTeam LAYW";
-                SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-                SmtpServer.Port = Gmail.Port;
-                SmtpServer.Credentials = new System.Net.NetworkCredential(Gmail.Email, Gmail.Password);
-                SmtpServer.EnableSsl = Gmail.EnableSSL;
-                SmtpServer.Timeout = Gmail.TimeOut;
-                SmtpServer.Send(mail);
-            }
-            catch (Exception e) when (e is SmtpException || e is FormatException)
-            {
-                throw e;
-            }
-        }
-
-        public static string MD5Crypt(string value)
-        {
-            using (var md5 = MD5.Create())
-            {
-                return Encoding.Default.GetString(md5.ComputeHash(Encoding.ASCII.GetBytes(value)));
-            }
         }
     }
 }

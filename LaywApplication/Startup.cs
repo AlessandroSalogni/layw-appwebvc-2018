@@ -38,7 +38,7 @@ namespace LaywApplication
             services.Configure<ChartGoalPatientPageInfo>(Configuration.GetSection("chart-goal-patient-page-info"));
             services.Configure<ChartHomepageInfo>(Configuration.GetSection("chart-homepage-info"));
 
-            var settingsLaywGmail = Configuration.GetSection("layw-gmail-data").Get<LaywGmailData>();
+            var settingsLaywGmail = Configuration.GetSection("layw-gmail-data").Get<MailData>();
             services.AddSingleton(settingsLaywGmail);
 
             var settingsDoctorAccount = Configuration.GetSection("doctor-account").Get<DoctorAccount>();
@@ -163,9 +163,9 @@ namespace LaywApplication
             using (var db = dataContext.Create())
             {
                 db.CreateTableIfNotExists<Admin>();
-                db.InsertOrReplace(new Admin { Email = "salogni.alex@libero.com", Password = AdminAuthenticationController.MD5Crypt("admin") });
-                db.InsertOrReplace(new Admin { Email = "20013787@studenti.uniupo.it", Password = AdminAuthenticationController.MD5Crypt("admin") });
-                db.InsertOrReplace(new Admin { Email = "user", Password = AdminAuthenticationController.MD5Crypt("admin") });
+
+                var adminLogin = Configuration.GetSection("admin-login").Get<AdminLogin>();
+                db.InsertOrReplace(new Admin { Email = adminLogin.Email, Password = PasswordUtils.MD5Crypt(adminLogin.Password) });
             }
         }
     }

@@ -5,13 +5,9 @@ using System.Threading.Tasks;
 
 namespace LaywApplication.Configuration
 {
-    public class LaywGmailData
+    public class AdminLogin
     {
         public string Email { get; set; }
         public string Password { get; set; }
-        public int Port { get; set; }
-        public int TimeOut { get; set; }
-        public bool EnableSSL { get; set; }
-        public string SMTP { get; set; }
     }
 }
