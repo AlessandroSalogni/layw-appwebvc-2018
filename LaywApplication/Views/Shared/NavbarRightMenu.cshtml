@@ -40,7 +40,7 @@
 				<!-- Menu Footer-->
 				<li class="user-footer">
 					<div class="text-center">
-						<a href="/signout?doctorEmail=@Model.Email&returnUrl=%2F" class="btn btn-default btn-flat">Sign out</a>
+						<a href="/signout?doctorEmail=@Model.Email&returnUrl=%2F" id="btn-sign-out" class="k-button">Sign out</a>
 					</div>
 				</li>
 			</ul>
@@ -132,4 +132,7 @@
 		margin: 10px;
 		cursor: pointer;
 	}
+    #btn-sign-out {
+        border-radius: 10px;
+    }
 </style>
