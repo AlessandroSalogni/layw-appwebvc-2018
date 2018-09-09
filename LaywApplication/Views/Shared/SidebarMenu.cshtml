@@ -5,14 +5,14 @@
 
 <ul class="sidebar-menu" data-widget="tree">
     <li id="homepage" class="menu-homepage"><a href="~/dashboard/homepage"><i class="fa fa-home" style="color:orange"></i> <span>Homepage</span></a></li> <!--TODO schiaffato url, mettere in config-->
-    <li id="patient" class="treeview">
+    <li id="patient-menu" class="treeview">
         <a href="#">
             <i class="fa fa-heartbeat" style="color:red"></i> <span>Patients</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
-        <ul class="treeview-menu">
+        <ul class="treeview-menu" id="patient-menu-treeview">
             @{
                 foreach (Patient p in Model.OrderBy(x => x.Name))
                 {
@@ -33,7 +33,7 @@
     </li>
 </ul>
 
-<script>
+<script>/*
     $('.sidebar-menu > li').click(function (e) {
         $('.sidebar-menu > li').each(function () {
             $(this).removeClass('active');
@@ -67,7 +67,7 @@
         sessionStorage.setItem('treeviewmenu-active', $(this).attr("id"));
     });
     if (sessionStorage.getItem('treeviewmenu-active'))
-        $('.treeview-menu > #' + sessionStorage.getItem('treeviewmenu-active')).addClass('active');
+        $('.treeview-menu > #' + sessionStorage.getItem('treeviewmenu-active')).addClass('active');*/
 </script>
 
 <style>

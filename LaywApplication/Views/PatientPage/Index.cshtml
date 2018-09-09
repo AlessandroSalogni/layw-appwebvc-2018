@@ -176,6 +176,10 @@
 </style>
 
 <script>
-	$(document).ready(createTabStrip("main"));
+    $(document).ready(createTabStrip("main"));
+    
+    $("#patient-menu").addClass("menu-open");
+    $("#patient-menu-treeview").css("display","block");
+    $("#patient-@Model.Name.Replace(" ", "_")").addClass("active");
 </script>
 
