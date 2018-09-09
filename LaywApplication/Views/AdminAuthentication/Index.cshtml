@@ -4,88 +4,57 @@
     Layout = "Layouts/_Admin";
 }
 
-<div class="row" style="text-align:right; width:100%">
-    <div class="col-sm-12">
-        <a id="btn-manage-patients" class="k-button">Manage patients</a>
-        <a id="btn-change-password" class="k-button">Change password</a>
-        <a href="/signout?returnUrl=%2F" class="k-button">Sign out</a>
-    </div>
-</div>
+<div id="admin-auth">
 
-<div class="row" style="width:100%">
-    <div class="col-sm-12">
-        <h1>Welcome to your administration page</h1>
-    </div>
-</div>
-<div id="patient-manager" class="panel text-center">
-    <div class="row" style="width:100%">
-        <div class="col-sm-12">
-            <h2>Choose a doctor from the list below:</h2>
-            <select id="doctor" style="width: 50%;">
-                <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
 
-                @for (int i = 1; i < Model.Doctors.Count; i++)
-                {
-                    <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
-                }
-            </select>
-        </div>
-    </div>
+    @{ await Html.RenderPartialAsync("ButtonHeader"); }
 
     <div class="row" style="width:100%">
         <div class="col-sm-12">
-            <h4 style="margin-top:30px;">Manage the patients below of the doctor selected, and then press "Apply"</h4>
-            <div id="patients-box" style="width:50%; margin-right:auto; margin-left:auto;" ></div>
+            <h1>Welcome to your administration page</h1>
+        </div>
+    </div>
+    <div id="patient-manager" class="panel text-center active-panel">
+        <div class="row" style="width:100%">
+            <div class="col-sm-12">
+                <h2>Choose a doctor from the list below:</h2>
+                <select id="doctor" style="width: 50%;">
+                    <option value="@Model.Doctors[0].Email" selected>@Model.Doctors[0].Name</option>
+
+                    @for (int i = 1; i < Model.Doctors.Count; i++)
+                    {
+                        <option value="@Model.Doctors[i].Email">@Model.Doctors[i].Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row" style="width:100%">
+            <div class="col-sm-12">
+                <h4 style="margin-top:30px;">Manage the patients below of the doctor selected, and then press "Apply"</h4>
+                <div id="patients-box" style="width:50%; margin-right:auto; margin-left:auto;"></div>
+            </div>
+        </div>
+
+        <div class="row" style="width:100%">
+            <div class="col-sm-12">
+                <button class="k-button" id="post-patients" style="margin-top:20px;">Apply</button>
+                <h4 id="response"></h4>
+            </div>
         </div>
     </div>
 
-    <div class="row" style="width:100%">
-        <div class="col-sm-12">
-            <button class="k-button" id="post-patients" style="margin-top:20px;">Apply</button>
-            <h4 id="response"></h4>
-        </div>
-    </div>
+    @{ await Html.RenderPartialAsync("FormChangePassword"); }
+
+    @{ await Html.RenderPartialAsync("FormAddAdmin"); }
+
 </div>
-
-<div class="row" style="width:100%">
-    <div class="col-sm-6 col-sm-offset-3">
-        <div id="div-change-password" class="panel text-center" style="display:none;">
-            <form id="form-change-password" method="post" action="~/AdminAuthentication/@ViewBag.AdminEmail/update">
-                <div class="form-group">
-                    <label>Change your password</label>
-                    <input type="text" class="form-control" name="oldPassword" placeholder="Old password" required/>
-                    <input type="text" class="form-control" name="newPassword" placeholder="New password" required/>
-
-                    <button type="submit" id="btn-change-pass" class="k-button" style="margin-top:20px;">Change</button>
-                    <h4 id="password-response"></h4>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 
 <script>
-    $(document).ready(function () {
-        Array.prototype.except = function (arr, comparer) {
-            if (!(arr instanceof Array)) arr = [arr];
-            comparer = comparer || DefaultEqualityComparer;
-            var l = this.length;
-            var res = [];
-            for (var i = 0; i < l; i++) {
-                var k = arr.length;
-                var t = false;
-                while (k-- > 0) {
-                    if (comparer(this[i], arr[k]) === true) {
-                        t = true;
-                        break;
-                    }
-                }
-                if (!t) res.push(this[i]);
-            }
-            return res;
-        };
+    var toggleTime = 500;
+    var responseTimeout = 5000;
 
+    $(document).ready(function () {
         var patients;
         var url = "@Url.Content("~/dashboard/doctors/")";
         var json = @Html.Raw(Json.Serialize(Model))
@@ -102,27 +71,13 @@
 
         $("#post-patients").click(function () {
             var url = "@Url.Content("~/dashboard/doctors/")";
-            var ids = JSON.parse(JSON.stringify(patients.value()));
+            var idPatientsSelected = JSON.parse(JSON.stringify(patients.value()));
 
-            var ar = [];
-            for (var i = 0; i < ids.length; i++)
-                ar.push({ id: ids[i] });
+            var idArray = [];
+            for (var i = 0; i < idPatientsSelected.length; i++)
+                idArray.push({ id: idPatientsSelected[i] });
 
-            $.ajax({
-                url: url + d.value() + "/update",
-                type: 'PUT',
-                data: JSON.stringify(ar),
-                dataType: 'json',
-                contentType: "application/json",
-                success: function (data) {
-                    $("#response").html("Applied succesfully");
-                    setTimeout(function () { $("#response").html(""); }, 2000);
-                },
-                error: function (data) {
-                    $("#response").html("Error");
-                    setTimeout(function () { $("#response").html(""); }, 2000);
-                }
-            });
+            ajaxPut(url + d.value() + "/update", JSON.stringify(idArray), 'json', "application/json", responseTimeout, $("#response"), "Applied succesfully", null);
         });
 
         function getPatients() {
@@ -141,52 +96,126 @@
             });
         }
 
+        function getAdministrators() {
+            var url = "@Url.Content("~/adminauthentication/read")";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    insertAdmins(data);
+                },
+                error: function () {
+                    return "Error, no admins found";
+                }
+            });
+        }
+
         function insertPatients(patientsOfSelectedDoctor) {
             $('#patients-box').html('');
             var html = "<select id='patients' multiple='multiple' data-placeholder='Select patients...'>";
 
-            for (var i = 0; i < patientsOfSelectedDoctor.length; i++) 
+            for (var i = 0; i < patientsOfSelectedDoctor.length; i++)
                 html = html.concat("<option value=" + parseInt(patientsOfSelectedDoctor[i].id) + " selected>" + patientsOfSelectedDoctor[i].name + "</option>");
-            
+
             var nopatients = (json.patients.except(patientsOfSelectedDoctor, function (a, b) { return a.id === b.id; }));
 
-            for (var j = 0; j < nopatients.length; j++) 
+            for (var j = 0; j < nopatients.length; j++)
                 html = html.concat("<option value=" + parseInt(nopatients[j].id) + ">" + nopatients[j].name + "</option>");
-            
+
             html = html.concat("</select>");
             $('#patients-box').html(html);
             patients = $("#patients").kendoMultiSelect().data("kendoMultiSelect");
         }
 
+        function insertAdmins(admins)
+        {
+            $('#admins-box').html('');
+            var html = "<ul class='list-group'>";
+
+            for (var i = 0; i < admins.length; i++)
+                html = html.concat("<li class='list-group-item'>" + admins[i].email + "</li>");
+            
+            html = html.concat("</ul>");
+            $('#admins-box').html(html);
+        }
+
+        $("#btn-change-password").click(function () {
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");
+            $("#div-change-password").toggle(toggleTime).addClass("active-panel");
+        });
+
+        $("#btn-manage-patients").click(function () {
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");
+            $("#patient-manager").toggle(toggleTime).addClass("active-panel");
+        });
+
+        $("#btn-add-admins").click(function () {
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");
+            $("#div-add-admins").toggle(toggleTime).addClass("active-panel");
+        });
+
+        $('#form-change-password').submit(function (event) {
+            event.preventDefault();
+            ajaxPut(this.action, $(this).serialize(), "html", "application/x-www-form-urlencoded",
+                responseTimeout, $("#password-response"), null, null);
+        });
+        
+        $('#form-add-admins').submit(function (event) {
+            event.preventDefault();
+            ajaxPost(this.action, $(this).serialize(), "html", "application/x-www-form-urlencoded",
+                responseTimeout, $("#add-response"), null, getAdministrators);
+        });
+
+        $("#seeNewPassword").mousedown(function () {
+            $("#newPassword").attr("type","text");
+        });
+
+        $("#seeNewPassword").mouseup(function () {
+            $("#newPassword").attr("type", "password");
+        });
+
+        $("#seeNewPassword").mouseleave(function () {
+            $("#newPassword").attr("type", "password");
+        });
+
+
         getPatients();
+        getAdministrators();
     });
+    
 
-    $("#btn-change-password").click(function () {
-        $("#div-change-password").toggle(500);
-    });
+    function ajaxPost(url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc) {
+        ajaxPutPost("POST", url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc);
+    }
 
-    $("#btn-manage-patients").click(function () {
-        $("#patient-manager").toggle(500);
-    });
+    function ajaxPut(url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc) {
+        ajaxPutPost("PUT", url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc);
+    }
 
-    $('#form-change-password').submit(function (event) {
-        event.preventDefault();
-
+    function ajaxPutPost(type, url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc) {
         $.ajax({
-            type: this.method,
-            url: this.action,
-            data: $(this).serialize(),
-            dataType: 'html',
+            type: type,
+            url: url,
+            data: data,
+            dataType: dataType,
+            contentType: contentType,
             success: function (response) {
-                $("#password-response").html(response);
-                setTimeout(function () { $("#password-response").html(""); }, 2000);
+                if (message !== null)
+                    response = message;
+                divResponse.html(response);
+                setTimeout(function () { divResponse.html(""); }, responseTimeout);
+                if (afterFunc !== null)
+                    afterFunc();
             },
             error: function (error) {
-                $("#password-response").html(error);
-                setTimeout(function () { $("#password-response").html(""); }, 2000);
+                divResponse.html(error);
+                setTimeout(function () { divResponse.html(""); }, responseTimeout);
             }
         });
-    });
+    }
+    
 </script>
 
 <style>

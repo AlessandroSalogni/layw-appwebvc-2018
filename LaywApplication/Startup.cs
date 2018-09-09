@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
+using LaywApplication.Controllers;
 using LaywApplication.Controllers.Utils;
 using LaywApplication.Data;
 using LaywApplication.Extensions;
@@ -36,6 +37,9 @@ namespace LaywApplication
             services.Configure<Theme>(Configuration.GetSection("theme"));
             services.Configure<ChartGoalPatientPageInfo>(Configuration.GetSection("chart-goal-patient-page-info"));
             services.Configure<ChartHomepageInfo>(Configuration.GetSection("chart-homepage-info"));
+
+            var settingsLaywGmail = Configuration.GetSection("layw-gmail-data").Get<LaywGmailData>();
+            services.AddSingleton(settingsLaywGmail);
 
             var settingsDoctorAccount = Configuration.GetSection("doctor-account").Get<DoctorAccount>();
             services.AddSingleton(settingsDoctorAccount);
@@ -157,9 +161,9 @@ namespace LaywApplication
             using (var db = dataContext.Create())
             {
                 db.CreateTableIfNotExists<Admin>();
-                db.InsertOrReplace(new Admin { Email = "salogni.alex@libero.com", Password = "admin" });
-                db.InsertOrReplace(new Admin { Email = "20013787@studenti.uniupo.it", Password = "admin" });
-                db.InsertOrReplace(new Admin { Email = "user", Password = "admin" });
+                db.InsertOrReplace(new Admin { Email = "salogni.alex@libero.com", Password = AdminAuthenticationController.MD5Crypt("admin") });
+                db.InsertOrReplace(new Admin { Email = "20013787@studenti.uniupo.it", Password = AdminAuthenticationController.MD5Crypt("admin") });
+                db.InsertOrReplace(new Admin { Email = "user", Password = AdminAuthenticationController.MD5Crypt("admin") });
             }
         }
     }

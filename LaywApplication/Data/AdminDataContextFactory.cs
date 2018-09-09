@@ -8,9 +8,9 @@ namespace LaywApplication.Data
 {
     public class AdminDataContextFactory : IDataContextFactory<AdminDataContext>
     {
-        readonly IDataProvider dataProvider;
+        private readonly IDataProvider dataProvider;
 
-        readonly string connectionString;
+        private readonly string connectionString;
 
         public AdminDataContextFactory(IDataProvider dataProvider, string connectionString)
         {
