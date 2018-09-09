@@ -77,21 +77,7 @@
             for (var i = 0; i < idPatientsSelected.length; i++)
                 idArray.push({ id: idPatientsSelected[i] });
 
-            $.ajax({
-                url: url + d.value() + "/update",
-                type: 'PUT',
-                data: JSON.stringify(idArray),
-                dataType: 'json',
-                contentType: "application/json",
-                success: function (data) {
-                    $("#response").html("Applied succesfully");
-                    setTimeout(function () { $("#response").html(""); }, responseTimeout);
-                },
-                error: function (data) {
-                    $("#response").html("Error");
-                    setTimeout(function () { $("#response").html(""); }, responseTimeout);
-                }
-            });
+            ajaxPut(url + d.value() + "/update", JSON.stringify(idArray), 'json', "application/json", responseTimeout, $("#response"), "Applied succesfully", null);
         });
 
         function getPatients() {
@@ -106,6 +92,22 @@
                 },
                 error: function (data) {
                     console.log(data);
+                }
+            });
+        }
+
+        function getAdministrators() {
+            var url = "@Url.Content("~/adminauthentication/read")";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    insertAdmins(data);
+                },
+                error: function () {
+                    return "Error, no admins found";
                 }
             });
         }
@@ -127,58 +129,43 @@
             patients = $("#patients").kendoMultiSelect().data("kendoMultiSelect");
         }
 
+        function insertAdmins(admins)
+        {
+            $('#admins-box').html('');
+            var html = "<ul class='list-group'>";
+
+            for (var i = 0; i < admins.length; i++)
+                html = html.concat("<li class='list-group-item'>" + admins[i].email + "</li>");
+            
+            html = html.concat("</ul>");
+            $('#admins-box').html(html);
+        }
+
         $("#btn-change-password").click(function () {
             $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");
             $("#div-change-password").toggle(toggleTime).addClass("active-panel");
         });
 
         $("#btn-manage-patients").click(function () {
-            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");;
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");
             $("#patient-manager").toggle(toggleTime).addClass("active-panel");
         });
 
         $("#btn-add-admins").click(function () {
-            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");;
+            $("#admin-auth .active-panel").toggle(toggleTime).removeClass("active-panel");
             $("#div-add-admins").toggle(toggleTime).addClass("active-panel");
         });
 
         $('#form-change-password').submit(function (event) {
             event.preventDefault();
-
-            $.ajax({
-                type: "PUT",
-                url: this.action,
-                data: $(this).serialize(),
-                dataType: 'html',
-                success: function (response) {
-                    $("#password-response").html(response);
-                    setTimeout(function () { $("#password-response").html(""); }, responseTimeout);
-                },
-                error: function (error) {
-                    $("#password-response").html(error);
-                    setTimeout(function () { $("#password-response").html(""); }, responseTimeout);
-                }
-            });
+            ajaxPut(this.action, $(this).serialize(), "html", "application/x-www-form-urlencoded",
+                responseTimeout, $("#password-response"), null, null);
         });
-
-
+        
         $('#form-add-admins').submit(function (event) {
             event.preventDefault();
-
-            $.ajax({
-                type: "POST",
-                url: this.action,
-                data: $(this).serialize(),
-                dataType: 'html',
-                success: function (response) {
-                    $("#add-response").html(response);
-                    setTimeout(function () { $("#add-response").html(""); }, responseTimeout);
-                },
-                error: function (error) {
-                    $("#add-response").html(error);
-                    setTimeout(function () { $("#add-response").html(""); }, responseTimeout);
-                }
-            });
+            ajaxPost(this.action, $(this).serialize(), "html", "application/x-www-form-urlencoded",
+                responseTimeout, $("#add-response"), null, getAdministrators);
         });
 
         $("#seeNewPassword").mousedown(function () {
@@ -195,7 +182,40 @@
 
 
         getPatients();
+        getAdministrators();
     });
+    
+
+    function ajaxPost(url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc) {
+        ajaxPutPost("POST", url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc);
+    }
+
+    function ajaxPut(url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc) {
+        ajaxPutPost("PUT", url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc);
+    }
+
+    function ajaxPutPost(type, url, data, dataType, contentType, responseTimeout, divResponse, message, afterFunc) {
+        $.ajax({
+            type: type,
+            url: url,
+            data: data,
+            dataType: dataType,
+            contentType: contentType,
+            success: function (response) {
+                if (message !== null)
+                    response = message;
+                divResponse.html(response);
+                setTimeout(function () { divResponse.html(""); }, responseTimeout);
+                if (afterFunc !== null)
+                    afterFunc();
+            },
+            error: function (error) {
+                divResponse.html(error);
+                setTimeout(function () { divResponse.html(""); }, responseTimeout);
+            }
+        });
+    }
+    
 </script>
 
 <style>

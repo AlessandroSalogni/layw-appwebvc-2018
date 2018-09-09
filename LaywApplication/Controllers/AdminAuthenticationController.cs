@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -33,6 +34,20 @@ namespace LaywApplication.Controllers
 
         [HttpGet]
         public IActionResult Index() => Redirect("~/signin");
+
+        [HttpGet("read")]
+        public List<Admin> Read()
+        {
+            var dbFactory = new AdminDataContextFactory(dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
+
+            List<Admin> admins = new List<Admin>();
+            using (var db = dbFactory.Create())
+            {
+                admins = db.GetTable<Admin>().ToList();
+            }
+
+            return admins;
+        }
 
         [HttpPost]
         public async Task<IActionResult> Index(IFormCollection collection)
@@ -98,7 +113,7 @@ namespace LaywApplication.Controllers
                 catch (SmtpException)
                 {
                     db.Delete(new Admin { Email = email, Password = password });
-                    return "Error. Maybe the inserted email is invalid, or there are connection errors.";
+                    return "Error. Maybe the inserted email is invalid, or there are connection errors. Try again.";
                 }
                 catch (FormatException)
                 {
@@ -128,7 +143,7 @@ namespace LaywApplication.Controllers
                 mail.To.Add(email);
                 mail.Subject = "LAYW Admin";
                 mail.Body = "Congratulations! You have just become a layw administrator. Your login data:\n" +
-                    "Mail: " + email + "\n" + "Password: " + password + ".\n" +
+                    "Mail: " + email + "\n" + "Password: " + password + "\n" +
                     "Remember to change your password. Thank you for your help.\n\nTeam LAYW";
                 SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
                 SmtpServer.Port = Gmail.Port;
