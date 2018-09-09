@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Abstract;
@@ -53,7 +55,7 @@ namespace LaywApplication.Controllers
         public async Task<IActionResult> Index(IFormCollection collection)
         {
             string email = collection["email"];
-            string password = collection["password"];
+            string password = MD5Crypt(collection["password"]);
 
             var dbFactory = new AdminDataContextFactory( dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
 
@@ -76,8 +78,8 @@ namespace LaywApplication.Controllers
         [HttpPut("{email}/update")]
         public object Update(string email, IFormCollection collection)
         {
-            string oldPassword = collection["oldPassword"];
-            string newPassword = collection["newPassword"];
+            string oldPassword = MD5Crypt(collection["oldPassword"]);
+            string newPassword = MD5Crypt(collection["newPassword"]);
             
             var dbFactory = new AdminDataContextFactory(dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
 
@@ -99,7 +101,8 @@ namespace LaywApplication.Controllers
         public object Create(IFormCollection collection)
         {
             string email = collection["mailNewAdmin"];
-            string password = PasswordGenerator();
+            string passwordNotCrypted = PasswordGenerator();
+            string password = MD5Crypt(passwordNotCrypted);
             var dbFactory = new AdminDataContextFactory(dataProvider: SQLiteTools.GetDataProvider(), connectionString: ConnectionString);
             
             using (var db = dbFactory.Create())
@@ -108,7 +111,7 @@ namespace LaywApplication.Controllers
 
                 try
                 { 
-                    SendEmail(email, password);
+                    SendEmail(email, passwordNotCrypted);
                 }
                 catch (SmtpException)
                 {
@@ -155,6 +158,14 @@ namespace LaywApplication.Controllers
             catch (Exception e) when (e is SmtpException || e is FormatException)
             {
                 throw e;
+            }
+        }
+
+        public static string MD5Crypt(string value)
+        {
+            using (var md5 = MD5.Create())
+            {
+                return Encoding.Default.GetString(md5.ComputeHash(Encoding.ASCII.GetBytes(value)));
             }
         }
     }
