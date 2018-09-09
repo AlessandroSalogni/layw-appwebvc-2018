@@ -1,14 +1,13 @@
 ﻿using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Abstract;
-using LaywApplication.Controllers.Services;
 using LaywApplication.Controllers.Services.PatientData;
 using LaywApplication.Models;
 using LaywApplication.Mqtt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
-namespace LaywApplication.Controllers
+namespace LaywApplication.Controllers.Services
 {
     [Route("~/dashboard/mqtt")]
     public class MQTTController : BaseController
@@ -35,7 +34,7 @@ namespace LaywApplication.Controllers
                 .Read(patientId, DateTimeNow.ToString(italianDateFormat));
 
             if (item.Weight <= goalWeight.Goal)
-                await HubContext.Clients.All.SendAsync(doctorEmail + "/weight", patient.Name, patientId);
+                await HubContext.Clients.All.SendAsync(doctorEmail + "/" + WeightConfig.Key[0], patient.Name, patientId);
 
             return Empty;
         }
@@ -49,10 +48,10 @@ namespace LaywApplication.Controllers
             var goalCalories = await new GoalCaloriesOutController(IPConfig, JsonStructureConfig)
                 .Read(patientId, DateTimeNow.ToString(italianDateFormat));
 
-            if (item.Steps <= goalSteps.Goal)
-                await HubContext.Clients.All.SendAsync(doctorEmail + "/steps", patient.Name, patientId);
-            if (item.CaloriesCategory.OutCalories <= goalSteps.Goal)
-                await HubContext.Clients.All.SendAsync(doctorEmail + "/calories", patient.Name, patientId);
+            if (item.Steps >= goalSteps.Goal)
+                await HubContext.Clients.All.SendAsync(doctorEmail + "/" + ActivitySummaryConfig.Key[0], patient.Name, patientId);
+            if (item.CaloriesCategory.OutCalories >= goalSteps.Goal)
+                await HubContext.Clients.All.SendAsync(doctorEmail + "/" + ActivitySummaryConfig.Key[1], patient.Name, patientId);
 
             return Empty;
         }

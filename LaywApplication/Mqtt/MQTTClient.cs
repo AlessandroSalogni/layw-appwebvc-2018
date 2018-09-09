@@ -1,7 +1,6 @@
 ﻿using System;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Utils;
-using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json.Linq;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
@@ -27,11 +26,19 @@ namespace LaywApplication.Mqtt
         public static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             var splitTopic = e.Topic.Split(new char[] { '/' });
+            if (splitTopic.Length < 4)
+                return;
 
-            var weightJson = (JObject)JObject.Parse(System.Text.Encoding.UTF8.GetString(e.Message))["weights"];
-            weightJson.Remove("date");
-            APIUtils.Post("https://localhost:44333/dashboard/mqtt/" + splitTopic[2] + "?patientId=" 
-                + splitTopic[3] + "&doctorEmail=" + splitTopic[1], weightJson.ToString());
+            var json = JObject.Parse(System.Text.Encoding.UTF8.GetString(e.Message));
+
+            if (splitTopic[2] == "weight")
+                json = (JObject)json["weights"];
+            else if (splitTopic[2] == "activity-summary")
+                json = (JObject)json["activity-summary"];
+
+            json.Remove("date");
+            APIUtils.Post("https://localhost:44333/dashboard/mqtt/" + splitTopic[2].Replace("-", "") + "?patientId=" 
+                + splitTopic[3] + "&doctorEmail=" + splitTopic[1], json.ToString());
         }
     }
 }
