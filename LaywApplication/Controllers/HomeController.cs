@@ -8,13 +8,12 @@ namespace LaywApplication.Controllers
 {
     public class HomeController : Controller
     {
-        public static IHubContext<MQTTHub> HubContext;
-
+        private readonly MQTTClient MQTTClient;
         private readonly DoctorAccount DoctorAccountConfig;
 
-        public HomeController(IHubContext<MQTTHub> hubContext, DoctorAccount doctorAccountConfig)
+        public HomeController(MQTTClient MQTTClient, DoctorAccount doctorAccountConfig)
         {
-            HubContext = hubContext;
+            this.MQTTClient = MQTTClient;
             DoctorAccountConfig = doctorAccountConfig;
         }
 
@@ -24,7 +23,7 @@ namespace LaywApplication.Controllers
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 var doctorEmail = User.Claims.FirstOrDefault(c => c.Type == DoctorAccountConfig.Email).Value;
-                MQTTClient.Instance.AddTopic("server/" + doctorEmail);
+                MQTTClient.AddTopic("server/" + doctorEmail + "/#");
 
                 return Redirect("~/dashboard/homepage");
             }

@@ -9,6 +9,10 @@ namespace LaywApplication.Controllers
 {
     public class AuthenticationController : Controller
     {
+        private readonly MQTTClient MQTTClient;
+
+        public AuthenticationController(MQTTClient MQTTClient) => this.MQTTClient = MQTTClient;
+
         [HttpGet("~/signin")]
         public async Task<IActionResult> SignIn() => View("SignIn", await HttpContext.GetExternalProvidersAsync());
 
@@ -36,7 +40,7 @@ namespace LaywApplication.Controllers
         [HttpGet("~/signout"), HttpPost("~/signout")]
         public IActionResult SignOut(string doctorEmail)
         {
-            MQTTClient.Instance.RemoveTopic("server/" + doctorEmail);
+            MQTTClient.RemoveTopic("server/" + doctorEmail + "/#");
 
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider

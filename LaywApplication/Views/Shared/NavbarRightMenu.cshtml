@@ -7,23 +7,16 @@
 			<!-- Menu toggle button -->
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="fa fa-bell"></i>
-				<span id="notifications-number" class="label label-warning"></span> @*aumentare numero in base a quando un paziente raggiunge un obiettivo*@
+				<span id="notifications-number" class="label label-warning"></span> 
 			</a>
-			<ul class="dropdown-menu">
-				<li class="header">You have 10 notifications</li> @*aumentare numero in base a quando un paziente raggiunge un obiettivo*@
-				<li>
+			<ul id="notification" class="dropdown-menu">
+				<li class="header"></li>
+				<li class="body">
 					<!-- Inner Menu: contains the notifications -->
 					<ul class="menu">
-						<li>
-							<!-- start notification -->
-							<a href="#">
-								<i class="fa fa-trophy text-yellow"></i> 5 new members joined today @*il paziente x ha raggiunto l'obiettivo y*@
-							</a>
-						</li>
-						<!-- end notification -->
 					</ul>
 				</li>
-				<li class="footer"><a href="#">View all</a></li>
+				<li class="footer text-center">Clear</li>
 			</ul>
 		</li>
 		<!-- User Account Menu -->
@@ -61,24 +54,82 @@
 <script src="~/lib/signalr/signalr.js"></script>
 <script type="text/javascript">
 	"use strict";
-	var numberSpan = document.getElementById("notifications-number");
-
-	if (sessionStorage.getItem("notifications-number") && sessionStorage.getItem("notifications-number") !=  0)
-		numberSpan.innerHTML = sessionStorage.getItem("notifications-number");
-	else
-		sessionStorage.setItem("notifications-number", "0");
+	var numberSpan = $("#notifications-number");
+	var header = $("#notification > .header");
+	var body = $("#notification > .body > .menu");
 
 	var connection = new signalR.HubConnectionBuilder().withUrl("/mqttHub").build();
-	connection.start();
 
-	connection.on("server/@Model.Email", function (message) {
-		var number = parseInt(sessionStorage.getItem("notifications-number"));
-
-		sessionStorage.setItem("notifications-number", (number + 1).toString());
-		numberSpan.innerHTML = (number + 1).toString();
+	connection.on("@Model.Email/weight", function (patientName, patientId) {
+		var body  = "<li><a href='/dashboard/patients/" + patientId + "'>" +
+			"<i class='fa fa-lg fa-balance-scale text-yellow'></i>" + patientName + " has reached the weight goal</a></li>";
+		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
+			sessionStorage.getItem("notifications-body") + body)
 	});
 
-	//connection.start().catch(function (err) {
-	//	return console.error(err.toString());
-	//});
+	connection.on("@Model.Email/steps", function (patientName, patientId) {
+		var body  = "<li><a href='/dashboard/patients/" + patientId + "'>" +
+			"<i class='fa fa-lg fa-shoe-prints text-yellow'></i>" + patientName + " has reached the steps goal</a></li>";
+		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
+			sessionStorage.getItem("notifications-body") + body)
+	});
+
+	connection.on("@Model.Email/calories", function (patientName, patientId) {
+		var body  = "<li><a href='/dashboard/patients/" + patientId + "'>" +
+			"<i class='fa fa-lg fa-fire text-yellow'></i>" + patientName + " has reached the calories out goal</a></li>";
+		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
+			sessionStorage.getItem("notifications-body") + body)
+	});
+
+	connection.start({ transport: ['longPolling', 'webSockets'] });
+
+	if (sessionStorage.getItem("notifications-number") && sessionStorage.getItem("notifications-number") != "0") 
+		setNotification(sessionStorage.getItem("notifications-number"), sessionStorage.getItem("notifications-body"));
+	else
+		setNotification("", "");
+
+	function setNotification(number, bodyText) {
+		if (number == "") {
+			sessionStorage.setItem("notifications-number", "0");
+			sessionStorage.setItem("notifications-body", "");
+
+			header.html("You have 0 notifications");
+			body.html("");
+		}
+		else {
+			sessionStorage.setItem("notifications-number", number);
+			sessionStorage.setItem("notifications-body", bodyText);
+
+			header.html("You have " + number + " notifications");
+			body.html(bodyText);
+		}
+
+		numberSpan.html(number);
+	}
+
+	$("#notification > .footer").click(function () {
+		setNotification("", "");
+	})
 </script>
+
+<style>
+	#notification {
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+	}
+	#notification .header {
+		padding: 10px 15px;
+		font-weight: 800;
+		background-color: inherit;
+		font-style: italic;
+	}
+	#notification .body i {
+		margin-right: 15px;
+		font-size: 1.2em;
+	}
+	#notification .footer {
+		font-weight: 700;
+		margin: 10px;
+		cursor: pointer;
+	}
+</style>

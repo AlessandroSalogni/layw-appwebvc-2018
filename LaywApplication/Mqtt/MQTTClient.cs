@@ -1,5 +1,8 @@
 ﻿using System;
-using LaywApplication.Controllers;
+using LaywApplication.Configuration;
+using LaywApplication.Controllers.Utils;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json.Linq;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
@@ -7,27 +10,13 @@ namespace LaywApplication.Mqtt
 {
     public class MQTTClient
     {
-        private static MQTTClient instance;
-        private static readonly object _sync = new object();
-        private readonly MqttClient client = new MqttClient("m14.cloudmqtt.com", 12804, false, null, null, 0, null, null);
+        private readonly MqttClient client;
 
-        private MQTTClient() { }
-
-        public static MQTTClient Instance
+        public MQTTClient(MQTTInfo MQTTConfig)
         {
-            get
-            {
-                if (instance == null)
-                    lock (_sync) 
-                        if (instance == null)
-                        {
-                            instance = new MQTTClient();
-                            instance.client.Connect(Guid.NewGuid().ToString(), "yiutnzag", "xybyYIM0Hfk7");
-                            instance.client.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
-                        }
-
-                return instance;
-            }
+            client = new MqttClient(MQTTConfig.BrokerHostName, MQTTConfig.BrokerPort, false, null, null, 0, null, null);
+            client.Connect(Guid.NewGuid().ToString(), MQTTConfig.Username, MQTTConfig.Password);
+            client.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
         }
 
         public void AddTopic(string topic)
@@ -36,6 +25,13 @@ namespace LaywApplication.Mqtt
         public void RemoveTopic(string topic) => client.Unsubscribe(new string[] { topic });
 
         public static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
-            => new MQTTHub(HomeController.HubContext).SendNotification(sender.ToString(), e.Topic);
+        {
+            var splitTopic = e.Topic.Split(new char[] { '/' });
+
+            var weightJson = (JObject)JObject.Parse(System.Text.Encoding.UTF8.GetString(e.Message))["weights"];
+            weightJson.Remove("date");
+            APIUtils.Post("https://localhost:44333/dashboard/mqtt/" + splitTopic[2] + "?patientId=" 
+                + splitTopic[3] + "&doctorEmail=" + splitTopic[1], weightJson.ToString());
+        }
     }
 }
