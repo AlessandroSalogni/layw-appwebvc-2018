@@ -93,7 +93,7 @@ namespace LaywApplication.Controllers
                     return "Password changed";
                 }
                 else
-                    return "Old password wrong";
+                    return "Old password wrong, or an error occurred.";
             }
         }
 
