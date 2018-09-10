@@ -30,10 +30,6 @@ function createGoalStatisticsLineChart(urlComplete, divId, beginDate, period, da
                     }
                 }
             },
-            sort: {
-                field: "date",
-                dir: "asc"
-            },
             schema: {
                 model: {
                     fields: {
