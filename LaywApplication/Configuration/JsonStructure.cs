@@ -59,7 +59,10 @@ namespace LaywApplication.Configuration
     public class GoalsWeight : JsonData { }
     public class GoalCaloriesOut : JsonData { }
     public class Activities : JsonData { }
-    public class ActivitySummary : JsonData { }
+    public class ActivitySummary : JsonData
+    {
+        public string RootMQTT { get; set; }
+    }
     public class Weight : JsonData { }
     public class Diet : JsonData { }
     public class Training : JsonData { }

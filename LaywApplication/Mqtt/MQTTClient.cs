@@ -13,7 +13,7 @@ namespace LaywApplication.Mqtt
         private readonly MQTTInfo MQTTConfig;
         private readonly QueryParams QueryParamsConfig;
         private readonly JsonData WeightConfig;
-        private readonly JsonData ActivitySummaryConfig;
+        private readonly ActivitySummary ActivitySummaryConfig;
 
         public MQTTClient(MQTTInfo MQTTConfig, JsonStructure jsonStructureConfig)
         {
@@ -41,9 +41,9 @@ namespace LaywApplication.Mqtt
             var json = JObject.Parse(System.Text.Encoding.UTF8.GetString(e.Message));
 
             if (splitTopic[2] == WeightConfig.Key[0])
-                json = (JObject)json[WeightConfig.Root];
+                json = (JObject)(json[WeightConfig.Key[0]] as JArray)[0];
             else if (splitTopic[2] == ActivitySummaryConfig.Root)
-                json = (JObject)json[ActivitySummaryConfig.Root];
+                json = (JObject)json[ActivitySummaryConfig.RootMQTT];
 
             json.Remove("date");
             APIUtils.Post(MQTTConfig.ControllerUrl + splitTopic[2].Replace("-", "") + "?" + 
