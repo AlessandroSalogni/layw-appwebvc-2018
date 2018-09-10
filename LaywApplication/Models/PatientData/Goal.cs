@@ -1,7 +1,7 @@
 ﻿using LaywApplication.Models.Abstract;
 using System;
 
-namespace LaywApplication.Models
+namespace LaywApplication.Models.PatientData
 {
     public class GoalWeight : GoalAbstract<double>
     {

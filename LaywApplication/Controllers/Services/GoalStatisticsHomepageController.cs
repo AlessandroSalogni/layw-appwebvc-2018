@@ -1,7 +1,7 @@
 ﻿using LaywApplication.Configuration;
 using LaywApplication.Controllers.Abstract;
 using LaywApplication.Controllers.Services.PatientData;
-using LaywApplication.Models;
+using LaywApplication.Models.PatientData;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.Controllers.Services
@@ -34,7 +34,7 @@ namespace LaywApplication.Controllers.Services
 
     [Route("~/dashboard/homepage/[controller]")]
     public class GoalCaloriesStatisticsHomepageController 
-        : GoalStatisticsHomepageAbstractController<int, Models.GoalCaloriesOut, ActivitySummaryCalories>
+        : GoalStatisticsHomepageAbstractController<int, Models.PatientData.GoalCaloriesOut, ActivitySummaryCalories>
     {
         public GoalCaloriesStatisticsHomepageController(ServerIP IPConfig, JsonStructure jsonStructureConfig,
             ChartHomepageInfo homepageChartInfo)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Services.PatientData;
-using LaywApplication.Models;
+using LaywApplication.Models.PatientData;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.ViewComponents
@@ -23,8 +23,8 @@ namespace LaywApplication.ViewComponents
         
         public async Task<IViewComponentResult> InvokeAsync(Models.Patient currentPatient)
         {
-            List<Models.ActivitySummary> summariesMonth = await ActivitySummaryController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat), "1m");
-            List<Models.ActivitySummary> summariesWeek = await ActivitySummaryController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat), "1w");
+            List<Models.PatientData.ActivitySummary> summariesMonth = await ActivitySummaryController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat), "1m");
+            List<Models.PatientData.ActivitySummary> summariesWeek = await ActivitySummaryController.Read(currentPatient.Id, DateTimeNow.ToString(italianDateFormat), "1w");
 
             var data = new PatientPersonalData
             {

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LaywApplication.Models
+namespace LaywApplication.Models.PatientData
 {
     public class Activity
     {
