@@ -7,17 +7,17 @@
 <script>
 	$(document).ready(function () {
 		$("#tab-item-diet-@day").click(function () {
-		var crudServiceBaseUrl = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + "/diet/" + day + "/")";
-		var dataSource = createGridTrainingDietDataSource(crudServiceBaseUrl, 6);
+			var crudServiceBaseUrl = "@Url.Content("~/dashboard/patients/" + ViewData["patientId"] + "/diet/" + day + "/")";
+			var dataSource = createGridTrainingDietDataSource(crudServiceBaseUrl, 6);
 
-		var columns = [];
-		columns.push({ "field": "name", "title": "Meals", "width": "140px" });
-		columns.push({ "field": "option1", "title": "Option 1" });
-		columns.push({ "field": "option2", "title": "Option 2" });
-		columns.push({ "field": "option3", "title": "Option 3" });
-		columns.push({ "command": "edit", "title": "&nbsp;", "width": "20px" });
+			var columns = [];
+			columns.push({ "field": "name", "title": "Meals", "width": "140px" });
+			columns.push({ "field": "option1", "title": "Option 1" });
+			columns.push({ "field": "option2", "title": "Option 2" });
+			columns.push({ "field": "option3", "title": "Option 3" });
+			columns.push({ "command": "edit", "title": "&nbsp;", "width": "20px" });
 
-		createGrid("diet-@day", false, "popup", dataSource, JSON.stringify(columns))
-	});
+			createGrid("diet-@day", false, "popup", dataSource, JSON.stringify(columns))
+		});
 	});
 </script>
