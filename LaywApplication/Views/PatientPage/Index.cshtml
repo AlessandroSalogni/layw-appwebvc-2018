@@ -3,7 +3,7 @@
 	ViewBag.PageHeader = Model.Name;
 }
 
-<div id="patient" class="container">
+<div id="patient" class="container no-display">
     <div class="k-content">
         <div id="tabstrip-main">
             <ul>
@@ -36,6 +36,9 @@
 	.no-space {
 		padding: 0;
 		border: none;
+	}
+	.no-display {
+		display: none;
 	}
 	.row-padding-top {
 		padding-top: 20px;
@@ -176,7 +179,10 @@
 </style>
 
 <script>
-    $(document).ready(createTabStrip("main"));
+	$(document).ready(function () {
+		createTabStrip("main");
+		$(".container").removeClass("no-display");
+	});
     
     $("#patient-menu").addClass("menu-open");
     $("#patient-menu-treeview").css("display","block");
