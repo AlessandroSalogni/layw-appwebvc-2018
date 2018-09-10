@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LaywApplication.Controllers.Abstract;
 using LaywApplication.Extensions;
 using LaywApplication.Mqtt;
 using Microsoft.AspNetCore.Authentication;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.Controllers
 {
-    public class AuthenticationController : Controller
+    public class AuthenticationController : BaseController
     {
         private readonly MQTTClient MQTTClient;
 
@@ -41,6 +42,7 @@ namespace LaywApplication.Controllers
         public IActionResult SignOut(string doctorEmail)
         {
             MQTTClient.RemoveTopic("server/" + doctorEmail + "/#");
+            HttpContext.Session.Remove(sessionKeyName + doctorEmail);
 
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
