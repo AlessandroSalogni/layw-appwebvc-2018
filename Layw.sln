@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaywAuthentication", "LaywAuthentication\LaywAuthentication.csproj", "{65298CD5-4519-4EA1-8C40-756078134906}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaywApplication", "LaywApplication\LaywApplication.csproj", "{CB9369F4-11E8-484B-906E-239A21B7A0D1}"
 EndProject
 Global
