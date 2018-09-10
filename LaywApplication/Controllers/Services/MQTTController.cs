@@ -50,7 +50,7 @@ namespace LaywApplication.Controllers.Services
 
             if (item.Steps >= goalSteps.Goal)
                 await HubContext.Clients.All.SendAsync(doctorEmail + "/" + ActivitySummaryConfig.Key[0], patient.Name, patientId);
-            if (item.CaloriesCategory.OutCalories >= goalSteps.Goal)
+            if (item.CaloriesCategory.OutCalories >= goalCalories.Goal)
                 await HubContext.Clients.All.SendAsync(doctorEmail + "/" + ActivitySummaryConfig.Key[1], patient.Name, patientId);
 
             return Empty;
