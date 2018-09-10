@@ -1,4 +1,4 @@
-﻿namespace LaywApplication.Models
+﻿namespace LaywApplication.Models.PatientData
 {
     public class GoalRealDataCompare<TType>
     {

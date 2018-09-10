@@ -1,6 +1,6 @@
 ﻿using LaywApplication.Models.Abstract;
 
-namespace LaywApplication.Models
+namespace LaywApplication.Models.PatientData
 {
     public class PatientWeight : RealDataAbstract<double>
     {

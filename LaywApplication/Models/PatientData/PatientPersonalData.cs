@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LaywApplication.Models
+namespace LaywApplication.Models.PatientData
 {
     public class PatientPersonalData
     {

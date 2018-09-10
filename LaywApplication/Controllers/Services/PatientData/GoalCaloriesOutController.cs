@@ -9,13 +9,13 @@ using Newtonsoft.Json.Linq;
 namespace LaywApplication.Controllers.Services.PatientData
 {
     [Route("~/dashboard/patients/{id}/[controller]")]
-    public class GoalCaloriesOutController : BaseJsonReadController<Models.GoalCaloriesOut>
+    public class GoalCaloriesOutController : BaseJsonReadController<Models.PatientData.GoalCaloriesOut>
     {
         public GoalCaloriesOutController(ServerIP IPConfig, JsonStructure jsonStructureConfig) 
             : base(IPConfig, jsonStructureConfig, jsonStructureConfig.GoalsCaloriesOut) { }
 
         [HttpPost("update")]
-        public async Task<object> Update(int id, [FromBody]Models.GoalCaloriesOut item)
+        public async Task<object> Update(int id, [FromBody]Models.PatientData.GoalCaloriesOut item)
         {
             var goalCaloriesJson = new JObject
             {

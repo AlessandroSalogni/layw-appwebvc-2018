@@ -2,7 +2,7 @@
 using LaywApplication.Configuration;
 using LaywApplication.Controllers.Abstract;
 using LaywApplication.Controllers.Services.PatientData;
-using LaywApplication.Models;
+using LaywApplication.Models.PatientData;
 using LaywApplication.Mqtt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -40,7 +40,7 @@ namespace LaywApplication.Controllers.Services
         }
 
         [HttpPost("activitysummary")]
-        public async Task<object> SendActivitySummaryNotification(int patientId, string doctorEmail, [FromBody]Models.ActivitySummary item)
+        public async Task<object> SendActivitySummaryNotification(int patientId, string doctorEmail, [FromBody]Models.PatientData.ActivitySummary item)
         {
             Models.Patient patient = await new PatientController(IPConfig, JsonStructureConfig).Read(patientId);
             var goalSteps = await new GoalStepsDailyController(IPConfig, JsonStructureConfig)

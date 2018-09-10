@@ -1,6 +1,6 @@
 ﻿using LaywApplication.Configuration;
 using LaywApplication.Controllers.Services.PatientData.Abstract;
-using LaywApplication.Models;
+using LaywApplication.Models.PatientData;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaywApplication.Controllers.Services.PatientData
