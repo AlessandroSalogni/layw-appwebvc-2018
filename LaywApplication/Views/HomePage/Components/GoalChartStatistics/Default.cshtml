@@ -29,7 +29,7 @@
 
 <script>
 	function createDashboard() {
-		var baseUrl = "@Url.Content("~/dashboard/homepage/" + Model.Controller)";
+		var baseUrl = "@Url.Content("~/dashboard/homepage" + Model.Controller)";
         createDonutChart(baseUrl + "/summary", "@divId", "@doctoEmail");
 		createGridTotalGoal(baseUrl + "/achieved", "@divId-achieved", "Achieved", "@doctoEmail");
 		createGridTotalGoal(baseUrl + "/notachieved", "@divId-notachieved", "Not Achieved", "@doctoEmail");
