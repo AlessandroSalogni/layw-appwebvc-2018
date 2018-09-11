@@ -116,10 +116,10 @@ namespace LaywApplication.Controllers
                     "Mail: " + email + "\n" + "Password: " + passwordNotCrypted + "\n" +
                     "Remember to change your password. Thank you for your help.\n\nTeam LAYW", "Team LAYW");
                 }
-                catch (SmtpException)
+                catch (SmtpException e)
                 {
                     db.Delete(new Admin { Email = email, Password = password });
-                    return "Error. Maybe the inserted email is invalid, or there are connection errors. Try again.";
+                    return "Error. Maybe the inserted email is invalid, or there are connection errors. Try again.\n" +  e.Message + "\n" + e.StackTrace;
                 }
                 catch (FormatException)
                 {
