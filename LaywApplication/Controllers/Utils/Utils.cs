@@ -72,6 +72,7 @@ namespace LaywApplication.Controllers.Utils
                 mail.Body = message;
                 SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
                 SmtpServer.Port = MailData.Port;
+                SmtpServer.UseDefaultCredentials = false;
                 SmtpServer.Credentials = new NetworkCredential(MailData.Email, MailData.Password);
                 SmtpServer.EnableSsl = MailData.EnableSSL;
                 SmtpServer.Timeout = MailData.TimeOut;
