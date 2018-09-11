@@ -62,7 +62,7 @@
 		var body = "<li><a href='/dashboard/patients/" + patientId + "' title='" + text + "'>" +
 			"<i class='fa fa-lg fa-balance-scale text-yellow text-center'></i>" + text + "</a></li>";
 		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
-			sessionStorage.getItem("notifications-body") + body)
+			body + sessionStorage.getItem("notifications-body"))
 	});
 
 	connection.on("@Model.Email/steps", function (patientName, patientId) {
@@ -70,7 +70,7 @@
 		var body  = "<li><a href='/dashboard/patients/" + patientId + "' title='" + text + "'>" +
 			"<i class='fa fa-lg fa-shoe-prints text-yellow text-center'></i>" + text + "</a></li>";
 		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
-			sessionStorage.getItem("notifications-body") + body)
+			body + sessionStorage.getItem("notifications-body"))
 	});
 
 	connection.on("@Model.Email/calories", function (patientName, patientId) {
@@ -78,7 +78,7 @@
 		var body = "<li><a href='/dashboard/patients/" + patientId + "' title='" + text + "'>" +
 			"<i class='fa fa-lg fa-fire text-yellow text-center'></i>" + text + "</a></li>";
 		setNotification((parseInt(sessionStorage.getItem("notifications-number")) + 1).toString(),
-			sessionStorage.getItem("notifications-body") + body)
+			body + sessionStorage.getItem("notifications-body"))
 	});
 
 	connection.start({ transport: ['longPolling', 'webSockets'] });
